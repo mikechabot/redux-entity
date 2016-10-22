@@ -1,31 +1,29 @@
-import { INITIAL_STATE } from '../../common/app-const';
-import {
+'use strict';
+
+const ACTION_TYPES = require('./action-types');
+const {
     FETCH_REQUEST,
     FETCH_SUCCESS,
     FETCH_FAILURE,
     RESET_ENTITY,
     DELETE_ENTITY
-} from '../actions/types';
+} = ACTION_TYPES;
 
-const model = (state = INITIAL_STATE.model, action) => {
+module.exports = function model(state = {}, action) {
     switch(action.type) {
         case RESET_ENTITY:  // fall through
         case FETCH_SUCCESS: // fall through
         case FETCH_FAILURE: // fall through
         case FETCH_REQUEST: {
-            return {
-                ...state,
-                [action.entity]: entity(
-                    state[action.entity],
-                    action
-                )
-            }
+            state[action.entity] = entity(
+                state[action.entity],
+                action
+            );
+            return Object.assign({}, state);
         }
         case DELETE_ENTITY: {
             delete state[action.entity];
-            return {
-                ...state
-            }
+            return Object.assign({}, state);
         }
         default: {
             return state;
@@ -39,47 +37,34 @@ const INITIAL_ENTITY_STATE = {
     data: {}
 };
 
-const entity = (
-    state = INITIAL_ENTITY_STATE,
-    action
-) => {
+function entity(state = INITIAL_ENTITY_STATE, action) {
     switch(action.type) {
         case FETCH_REQUEST: {
-            return {
-                ...state,
-                isFetching: true,
-                error: undefined
-            }
+            state.isFetching = true;
+            state.error = undefined;
+            return Object.assign({}, state);
         }
         case FETCH_SUCCESS: {
-            return {
-                ...state,
-                isFetching: false,
-                lastUpdated: action.lastUpdated,
-                data: action.data,
-                error: undefined
-            }
+            state.isFetching = false;
+            state.lastUpdated = action.lastUpdated;
+            state.data = action.data;
+            state.error = undefined;
+            return Object.assign({}, state);
         }
         case FETCH_FAILURE: {
-            return {
-                ...state,
-                isFetching: false,
-                lastUpdated: action.lastUpdated,
-                data: undefined,
-                error: action.error
-            }
+            state.isFetching = false;
+            state.lastUpdated = action.lastUpdated;
+            state.data = undefined;
+            state.error = action.error;
+            return Object.assign({}, state);
         }
         case RESET_ENTITY: {
-            return {
-                ...INITIAL_ENTITY_STATE,
-                lastUpdated: action.lastUpdated
-            }
-        }                
+            state = INITIAL_ENTITY_STATE;
+            state.lastUpdated = action.lastUpdated;
+            return Object.assign({}, state);
+        }
         default: {
             return state;
         }
     }
-};
-
-
-export default model;
+}

@@ -1,0 +1,24 @@
+{
+  "name": "redux-entity",
+  "version": "1.0.0",
+  "description": "A reducer and set of redux-thunk action creators for dispatching CRUD operations",
+  "main": "index.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikechabot/redux-entity.git"
+  },
+  "keywords": [
+    "redux",
+    "redux-thunk",
+    "asynchronous"
+  ],
+  "author": "Mike Chabot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikechabot/redux-entity/issues"
+  },
+  "homepage": "https://github.com/mikechabot/redux-entity#readme"
+}

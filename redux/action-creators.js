@@ -1,18 +1,9 @@
-import {
-    FETCH_REQUEST,
-    FETCH_SUCCESS,
-    FETCH_FAILURE,
-    RESET_ENTITY,
-    UPDATE_ENTITY,
-    DELETE_ENTITY,
-} from '../action-types';
+'use strict';
 
-export const resetEntity = makeActionCreator(RESET_ENTITY, 'entity', 'lastUpdated');
-export const deleteEntity = makeActionCreator(DELETE_ENTITY, 'entity');
+const ACTION_TYPES = require('./action-types');
 
 /**
- * To reduce boilerplate code, we can utilize generic function to generate
- * action creators based on input arguments. The first argument is always
+ * Generate action creators based on input arguments. The first argument is always
  * treated as the Redux action type; all other passed arguments are treated
  * as property on the action object itself.
  *
@@ -20,7 +11,7 @@ export const deleteEntity = makeActionCreator(DELETE_ENTITY, 'entity');
  *            const doItAction = makeActionCreator(myActionType, 'data');
  *            doItAction(123); --> { type: "DO_IT", data: 123 }
  */
-export function makeActionCreator(type, ...keys) {
+function makeActionCreator(type, ...keys) {
     if (!type) throw new Error('Type cannot be null/undefined');
     return function(...args) {
         let action = { type };
@@ -40,7 +31,7 @@ export function makeActionCreator(type, ...keys) {
  * @param  {string} ...keys     Keys to be used in the action object
  * @return {function}           Action creator that contains an entity key
  */
-export function makeEntityActionCreator(type, entity, ...keys) {
+function makeEntityActionCreator(type, entity, ...keys) {
     if (!type) throw new Error('Type cannot be null/undefined');
     if (!entity) throw new Error('Entity cannot be null/undefined');
     return function(...args) {
@@ -52,42 +43,44 @@ export function makeEntityActionCreator(type, entity, ...keys) {
     }
 }
 
-/**
- * Action creator for fetch requests
- * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
- * @return {function}           Action creator
- */
-export const fetchRequest = (entity) => {
-    return makeEntityActionCreator(
-        FETCH_REQUEST,
-        entity
-    );
-};
-
-/**
- * Action creator for API fetch successes
- * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
- * @return {function}           Action creator
- */
-export const fetchSuccess = (entity) => {
-    return makeEntityActionCreator(
-        FETCH_SUCCESS,
-        entity,
-        'data',
-        'lastUpdated'
-    );
-};
-
-/**
- * Action creator for API fetch failures
- * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
- * @return {function}           Action creator
- */
-export const fetchFailure = (entity) => {
-    return makeEntityActionCreator(
-        FETCH_FAILURE,
-        entity,
-        'error',
-        'lastUpdated'
-    );
+module.exports = {
+    resetEntity: makeActionCreator(ACTION_TYPES.RESET_ENTITY, 'entity', 'lastUpdated'),
+    deleteEntity: makeActionCreator(ACTION_TYPES.DELETE_ENTITY, 'entity'),
+    /**
+     * Action creator for fetch requests
+     * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
+     * @return {function}           Action creator
+     */
+    fetchRequest: (entity) => {
+        return makeEntityActionCreator(
+            ACTION_TYPES.FETCH_REQUEST,
+            entity
+        )
+    },
+    /**
+     * Action creator for API fetch successes
+     * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
+     * @return {function}           Action creator
+     */
+    fetchSuccess: (entity) => {
+        return makeEntityActionCreator(
+            ACTION_TYPES.FETCH_SUCCESS,
+            entity,
+            'data',
+            'lastUpdated'
+        );
+    },
+    /**
+     * Action creator for API fetch failures
+     * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
+     * @return {function}           Action creator
+     */
+    fetchFailure: (entity) => {
+        return makeEntityActionCreator(
+            ACTION_TYPES.FETCH_FAILURE,
+            entity,
+            'error',
+            'lastUpdated'
+        );
+    }
 };

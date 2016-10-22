@@ -1,8 +1,11 @@
-import {
+'use strict';
+
+const actionCreators = require('./action-creators');
+const {
     fetchRequest,
     fetchSuccess,
     fetchFailure
-} from './action-creators';
+} = actionCreators;
 
 /**
  * Redux thunk action creator for making asynchronous API calls. This thunk
@@ -17,11 +20,11 @@ import {
  * @param  {boolean}    silent      Disable the FETCH_REQUEST action,
  * @return {function}               A function that loads data from an external source, and dispatches actions
  */
-export const loadEntity = (
+module.exports = function loadEntity(
     name,
     promise,
     silent = false
-) => {
+) {
     if (!promise || !promise.then)
         throw new Error('promise must be a Promise, and cannot be null/undefined');
 
