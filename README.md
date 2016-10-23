@@ -7,7 +7,7 @@
 - [Thunk](#thunk)
 
 
-### Getting Started<a name="redux-entity#getting-started"/>
+## Getting Started<a name="redux-entity#getting-started"/>
 **Configure the reducer**: Import the reducer from `redux-entity`, and use it with `combineReducers()`:
 ```javascript
 // root-reducer.js
@@ -90,7 +90,7 @@ export default connect(
 )(Orders);
 ```
 
-### Reducer<a name="redux-entity#reducer"/>
+## Reducer <a name="redux-entity#reducer"/>
 - The reducer allocates itself in the store as `state.model`.
 - Each entity you load is stored on `model` with a key of your choice (e.g. `orders`), and automatically wrapped with the properties below:
 
@@ -101,7 +101,7 @@ export default connect(
 | `lastUpdated`| The date/time that the entity was last modified |
 | `isFetching` | Whether or not the data promise is pending      |
 
-#### Example redux store
+### Example redux store
 ```javascript
 const state = {
     model: {
@@ -118,7 +118,7 @@ const state = {
     ...
 }
 ```
-#### `model` reducer
+### `model` reducer
 - Every action dispatched by the **thunk** will be consumed by the `model` reducer. 
 - Most actions will also be piped through the `entity` reducer, which handles individual entities (e.g. `orders`) on `model`:
 ```javascript
@@ -145,7 +145,7 @@ function model(state = INITIAL_STATE, action) {
     }
 };
 ```
-#### `entity` reducer
+### `entity` reducer
 Handles the state of a single entity (e.g. `orders`):
 ```javascript
 function entity(state = INITIAL_ENTITY_STATE, action) {
@@ -184,7 +184,7 @@ function entity(state = INITIAL_ENTITY_STATE, action) {
 }
 ```
 <a name="redux-entity#thunk"/>
-#### Thunk
+## Thunk
 - At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)` as arguments.
 - A third arugment `silent` ([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)), determines whether or not to dispatch the FETCH_REQUEST action. If true, the action is not dispatched.
 
@@ -194,8 +194,8 @@ function loadEntity(
     promise,
     silent = false
 ) {
-    if (!promise || !promise.then)
-        throw new Error('promise must be a Promise, and cannot be null/undefined');
+    if (!name) throw new Error('name is required');
+    if (!promise || !promise.then) throw new Error('promise must be a Promise');
 
     return (dispatch) => {
 
