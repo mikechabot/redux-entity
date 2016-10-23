@@ -8,14 +8,12 @@
 
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
-
-**Installation**: 
-
+###Installation
 - ```$ yarn add redux-entity```
    or
 - ```$ npm -i -S redux-entity```
-
-**Configure the reducer**: Import the reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
+###Configure the reducer
+Import the reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
 import { combineReducers } from 'redux';
@@ -26,7 +24,8 @@ export default combineReducers({
     model
 });
 ```
-**Create a custom thunk**: Import `loadEntity()` from `redux-entity` along with your domain service, and define an entity key (e.g. `orders`) that will be associated with the given promise.
+###Create a custom thunk
+Import `loadEntity()` from `redux-entity` along with your domain service, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 // thunks.js
 import { loadEntity } from 'redux-entity';
@@ -39,7 +38,7 @@ export function loadOrders() {
     );
 }
 ```
-**Create a React component**:
+###Create a React component
    1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
