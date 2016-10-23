@@ -163,6 +163,42 @@ describe('Thunk Action Creators', () => {
             });
         });
         describe('when loadEntity() is passed invalid arguments', () => {
+            it ('should throw an error when passed no arguments', () => {
+                expect(() => {
+                    store.dispatch(
+                        loadEntity()
+                    )
+                }).toThrow('name is required and must be a String');
+            });
+            it ('should throw an error when entity name is null/undefined', () => {
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(null)
+                    )
+                }).toThrow('name is required and must be a String');
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(undefined)
+                    )
+                }).toThrow('name is required and must be a String');
+            });
+            it ('should throw an error when entity name not passed a String', () => {
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(123)
+                    )
+                }).toThrow('name is required and must be a String');
+                expect(() => {
+                    store.dispatch(
+                        loadEntity({})
+                    )
+                }).toThrow('name is required and must be a String');
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(new Date())
+                    )
+                }).toThrow('name is required and must be a String');
+            });
             it ('should throw an error with an undefined data promise', () => {
                 expect(() => {
                     store.dispatch(
@@ -170,7 +206,7 @@ describe('Thunk Action Creators', () => {
                             entity, undefined
                         )
                     )
-                }).toThrow('promise must be a Promise, and cannot be null/undefined');
+                }).toThrow('promise is required and must be a Promise');
             });
             it ('should throw an error when a promise is not passed', () => {
                 expect(() => {
@@ -179,7 +215,7 @@ describe('Thunk Action Creators', () => {
                             entity, {}
                         )
                     )
-                }).toThrow('promise must be a Promise, and cannot be null/undefined');
+                }).toThrow('promise is required and must be a Promise');
             });
         });
     });

@@ -24,8 +24,8 @@ module.exports = function loadEntity(
     promise,
     silent = false
 ) {
-    if (!name) throw new Error('name is required');
-    if (!promise || !promise.then) throw new Error('promise must be a Promise');
+    if (!name || typeof name !== 'string') throw new Error('name is required and must be a String');
+    if (!promise || !promise.then) throw new Error('promise is required and must be a Promise');
 
     return (dispatch) => {
 
