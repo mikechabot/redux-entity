@@ -1,13 +1,12 @@
 'use strict';
 
-const ACTION_TYPES = require('./action-types');
 const {
     FETCH_REQUEST,
     FETCH_SUCCESS,
     FETCH_FAILURE,
     RESET_ENTITY,
     DELETE_ENTITY
-} = ACTION_TYPES;
+} = require('./action-types');
 
 module.exports = function model(state = {}, action) {
     switch(action.type) {

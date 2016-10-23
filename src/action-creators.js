@@ -1,6 +1,12 @@
 'use strict';
 
-const ACTION_TYPES = require('./action-types');
+const {
+    FETCH_REQUEST,
+    FETCH_SUCCESS,
+    FETCH_FAILURE,
+    RESET_ENTITY,
+    DELETE_ENTITY
+} = require('./action-types');
 
 /**
  * Generate action creators based on input arguments. The first argument is always
@@ -44,8 +50,8 @@ function makeEntityActionCreator(type, entity, ...keys) {
 }
 
 module.exports = {
-    resetEntity: makeActionCreator(ACTION_TYPES.RESET_ENTITY, 'entity', 'lastUpdated'),
-    deleteEntity: makeActionCreator(ACTION_TYPES.DELETE_ENTITY, 'entity'),
+    resetEntity: makeActionCreator(RESET_ENTITY, 'entity', 'lastUpdated'),
+    deleteEntity: makeActionCreator(DELETE_ENTITY, 'entity'),
     /**
      * Action creator for fetch requests
      * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
@@ -53,7 +59,7 @@ module.exports = {
      */
     fetchRequest: (entity) => {
         return makeEntityActionCreator(
-            ACTION_TYPES.FETCH_REQUEST,
+            FETCH_REQUEST,
             entity
         )
     },
@@ -64,7 +70,7 @@ module.exports = {
      */
     fetchSuccess: (entity) => {
         return makeEntityActionCreator(
-            ACTION_TYPES.FETCH_SUCCESS,
+            FETCH_SUCCESS,
             entity,
             'data',
             'lastUpdated'
@@ -77,10 +83,12 @@ module.exports = {
      */
     fetchFailure: (entity) => {
         return makeEntityActionCreator(
-            ACTION_TYPES.FETCH_FAILURE,
+            FETCH_FAILURE,
             entity,
             'error',
             'lastUpdated'
         );
-    }
+    },
+    makeActionCreator: makeActionCreator,
+    makeEntityActionCreator: makeEntityActionCreator
 };

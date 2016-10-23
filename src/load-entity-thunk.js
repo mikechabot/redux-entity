@@ -1,11 +1,10 @@
 'use strict';
 
-const actionCreators = require('./action-creators');
 const {
     fetchRequest,
     fetchSuccess,
     fetchFailure
-} = actionCreators;
+} = require('./action-creators');
 
 /**
  * Redux thunk action creator for making asynchronous API calls. This thunk
