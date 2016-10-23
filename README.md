@@ -7,7 +7,7 @@
 - [Thunk](#thunk)
 
 
-## Getting Started<a name="redux-entity#getting-started"/>
+## <a name="redux-entity#getting-started">Getting Started</a>
 **Configure the reducer**: Import the reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
@@ -90,7 +90,7 @@ export default connect(
 )(Orders);
 ```
 
-## Reducer <a name="redux-entity#reducer"/>
+## <a name="redux-entity#reducer">Reducer</a>
 - The reducer allocates itself in the Redux store as `state.model`.
 - Each entity you load is stored on `model` with a key of your choice (e.g. `orders`), and automatically wrapped with the properties below:
 
@@ -184,7 +184,7 @@ function entity(state = INITIAL_ENTITY_STATE, action) {
 }
 ```
 
-## Thunk <a name="redux-entity#thunk"/>
+## <a name="redux-entity#thunk">Thunk</a> 
 - At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)` as arguments.
 - A third arugment `silent` ([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)) determines whether or not to dispatch the FETCH_REQUEST action. If true, the action is not dispatched.
 
