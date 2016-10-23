@@ -1,6 +1,6 @@
 {
   "name": "redux-entity",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A reducer and set of redux-thunk action creators for dispatching CRUD operations",
   "main": "index.js",
   "scripts": {
@@ -29,5 +29,6 @@
     "redux": "^3.6.0",
     "redux-mock-store": "^1.2.1",
     "redux-thunk": "^2.1.0"
-  }
+  },
+  "tonicExampleFilename": "example.js"
 }
