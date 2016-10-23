@@ -9,7 +9,7 @@
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
 
-**Installation `redux-entity`**: 
+**Installation**: 
 
 - ```$ yarn add redux-entity```
    or
