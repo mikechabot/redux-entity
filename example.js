@@ -1,8 +1,7 @@
 'use strict';
 
 // NOTE: Run me on Node 6+!
-
-const { loadEntity, reducer } = require('./index');
+const { loadEntity, reducer } = require('redux-entity');
 
 // Simulate Redux (with a logger)
 let state = {};
