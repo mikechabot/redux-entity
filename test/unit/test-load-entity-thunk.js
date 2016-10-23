@@ -3,12 +3,12 @@
 const expect = require('expect');
 const configureStore = require('redux-mock-store').default;
 const thunk = require('redux-thunk').default;
-const loadEntity = require('../../src/load-entity-thunk');
+const loadEntity = require('../../src/thunk');
 const {
     FETCH_REQUEST,
     FETCH_SUCCESS,
     FETCH_FAILURE
-} = require('../../src/action-types');
+} = require('../../src/common/action-types');
 
 // Set up mock Redux store
 const middlewares = [thunk];

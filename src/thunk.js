@@ -4,7 +4,7 @@ const {
     fetchRequest,
     fetchSuccess,
     fetchFailure
-} = require('./action-creators');
+} = require('./common/action-creators');
 
 /**
  * Redux thunk action creator for making asynchronous API calls. This thunk

@@ -1,6 +1,6 @@
 # redux-entity
 
-`redux-entity` seeks to provide a scalable, predictable approach to maintaing domain entities in the Redux store. It's comprised of a **reducer** and a **thunk**.
+`redux-entity` seeks to provide a scalable, predictable approach to maintaining domain entities in Redux. It's comprised of a **reducer** and a **thunk**.
 
 - [Getting Started](#getting-started)
 - [Reducer](#reducer)
@@ -12,11 +12,11 @@
 ```javascript
 // root-reducer.js
 import { combineReducers } from 'redux';
-import { reducer } from 'redux-entity';
+import { model } from 'redux-entity';
 
 export default combineReducers({
     ...<your other reducers>,
-    model: reducer
+    model
 });
 ```
 **Create a custom thunk**: Import `loadEntity()` from `redux-entity` along with your domain service, and define an entity key (e.g. `orders`) that will be associated with the given promise.
@@ -128,7 +128,7 @@ function model(state = INITIAL_STATE, action) {
         case FETCH_SUCCESS: // fall through
         case FETCH_FAILURE: // fall through
         case FETCH_REQUEST: {
-            return Object.assign(state, {
+            return Object.assign({}, state, {
                 [action.entity]: entity(
                     state[action.entity],
                     action
@@ -151,13 +151,13 @@ Handles the state of a single entity (e.g. `orders`):
 function entity(state = INITIAL_ENTITY_STATE, action) {
     switch(action.type) {
         case FETCH_REQUEST: {
-            return Object.assign(state, {
+            return Object.assign({}, state, {
                 isFetching: true,
                 error: null
             });
         }
         case FETCH_SUCCESS: {
-            return Object.assign(state, {
+            return Object.assign({}, state, {
                 isFetching: false,
                 lastUpdated: action.lastUpdated,
                 data: action.data,
@@ -165,7 +165,7 @@ function entity(state = INITIAL_ENTITY_STATE, action) {
             });
         }
         case FETCH_FAILURE: {
-            return Object.assign(state, {
+            return Object.assign({}, state, {
                 isFetching: false,
                 lastUpdated: action.lastUpdated,
                 data: null,
@@ -173,7 +173,7 @@ function entity(state = INITIAL_ENTITY_STATE, action) {
             });
         }
         case RESET_ENTITY: {
-            return Object.assign(INITIAL_ENTITY_STATE, {
+            return Object.assign({}, INITIAL_ENTITY_STATE, {
                 lastUpdated: action.lastUpdated
             });
         }

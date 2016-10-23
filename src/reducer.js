@@ -6,7 +6,7 @@ const {
     FETCH_FAILURE,
     RESET_ENTITY,
     DELETE_ENTITY
-} = require('./action-types');
+} = require('./common/action-types');
 
 const INITIAL_STATE = {};
 const INITIAL_ENTITY_STATE = {
@@ -15,7 +15,7 @@ const INITIAL_ENTITY_STATE = {
     data        : {}
 };
 
-module.exports = function reducer(state = INITIAL_STATE, action) {
+module.exports = function model(state = INITIAL_STATE, action) {
     switch(action.type) {
         case RESET_ENTITY:  // fall through
         case FETCH_SUCCESS: // fall through
