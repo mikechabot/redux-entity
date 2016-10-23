@@ -183,8 +183,8 @@ function entity(state = INITIAL_ENTITY_STATE, action) {
     }
 }
 ```
-<a name="redux-entity#thunk"/>
-## Thunk
+
+## Thunk <a name="redux-entity#thunk"/>
 - At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)` as arguments.
 - A third arugment `silent` ([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)) determines whether or not to dispatch the FETCH_REQUEST action. If true, the action is not dispatched.
 
