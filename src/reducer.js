@@ -8,17 +8,25 @@ const {
     DELETE_ENTITY
 } = require('./action-types');
 
-module.exports = function model(state = {}, action) {
+const INITIAL_STATE = {};
+const INITIAL_ENTITY_STATE = {
+    isFetching  : false,
+    lastUpdated : undefined,
+    data        : {}
+};
+
+module.exports = function reducer(state = INITIAL_STATE, action) {
     switch(action.type) {
         case RESET_ENTITY:  // fall through
         case FETCH_SUCCESS: // fall through
         case FETCH_FAILURE: // fall through
         case FETCH_REQUEST: {
-            state[action.entity] = entity(
-                state[action.entity],
-                action
-            );
-            return Object.assign({}, state);
+            return Object.assign(state, {
+                [action.entity]: entity(
+                    state[action.entity],
+                    action
+                )
+            });
         }
         case DELETE_ENTITY: {
             delete state[action.entity];
@@ -30,37 +38,34 @@ module.exports = function model(state = {}, action) {
     }
 };
 
-const INITIAL_ENTITY_STATE = {
-    isFetching: false,
-    lastUpdated: undefined,
-    data: {}
-};
-
 function entity(state = INITIAL_ENTITY_STATE, action) {
     switch(action.type) {
         case FETCH_REQUEST: {
-            state.isFetching = true;
-            state.error = undefined;
-            return Object.assign({}, state);
+            return Object.assign(state, {
+                isFetching: true,
+                error: null
+            });
         }
         case FETCH_SUCCESS: {
-            state.isFetching = false;
-            state.lastUpdated = action.lastUpdated;
-            state.data = action.data;
-            state.error = undefined;
-            return Object.assign({}, state);
+            return Object.assign(state, {
+                isFetching: false,
+                lastUpdated: action.lastUpdated,
+                data: action.data,
+                error: null
+            });
         }
         case FETCH_FAILURE: {
-            state.isFetching = false;
-            state.lastUpdated = action.lastUpdated;
-            state.data = undefined;
-            state.error = action.error;
-            return Object.assign({}, state);
+            return Object.assign(state, {
+                isFetching: false,
+                lastUpdated: action.lastUpdated,
+                data: null,
+                error: action.error
+            });
         }
         case RESET_ENTITY: {
-            state = INITIAL_ENTITY_STATE;
-            state.lastUpdated = action.lastUpdated;
-            return Object.assign({}, state);
+            return Object.assign(INITIAL_ENTITY_STATE, {
+                lastUpdated: action.lastUpdated
+            });
         }
         default: {
             return state;

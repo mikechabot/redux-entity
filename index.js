@@ -1,6 +1,9 @@
 'use strict';
 
+const reducer = require('./src/reducer')
+const loadEntity = require('./src/load-entity-thunk');
+
 module.exports = {
-    reducer: require('./src/reducer'),
-    loadEntity: require('./src/load-entity-thunk')
+    reducer: reducer,
+    loadEntity: loadEntity
 };
