@@ -1,7 +1,7 @@
 'use strict';
 
 // NOTE: Run me on Node 6+!
-const { loadEntity, reducer } = require('redux-entity');
+const { loadEntity, model } = require('redux-entity');
 
 // Redux state
 let state = {};
@@ -26,7 +26,7 @@ function fetchFoobar() {
  */
 function dispatch(action) {
     _logDetails(action);
-    state = reducer(state, action);
+    state = model(state, action);
     _logDetails();
 }
 

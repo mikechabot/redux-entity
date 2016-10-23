@@ -1,11 +1,12 @@
 {
   "name": "redux-entity",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "description": "A scalable, predictable approach to managing domain entities in Redux.",
   "main": "index.js",
   "scripts": {
     "test": "mocha \"test/unit/**/*.js\" ",
-    "test:coverage": "istanbul cover node_modules/mocha/bin/_mocha"
+    "test:coverage": "istanbul cover node_modules/mocha/bin/_mocha",
+    "example": "node runKitExample.js"
   },
   "repository": {
     "type": "git",
@@ -30,5 +31,5 @@
     "redux-mock-store": "^1.2.1",
     "redux-thunk": "^2.1.0"
   },
-  "tonicExampleFilename": "example.js"
+  "tonicExampleFilename": "runKitExample.js"
 }
