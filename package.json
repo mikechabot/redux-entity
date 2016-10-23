@@ -1,6 +1,6 @@
 {
   "name": "redux-entity",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A reducer and set of redux-thunk action creators for dispatching CRUD operations",
   "main": "index.js",
   "scripts": {

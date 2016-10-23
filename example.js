@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * NOTE: Run me on Node 6+!
+ */
+
 const loadEntity = require('./index').loadEntity;
 const reducer = require('./index').reducer;
 
