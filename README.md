@@ -8,6 +8,13 @@
 
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
+
+**Installation `redux-entity`**: 
+
+- ```$ yarn add redux-entity```
+   or
+- ```$ npm -i -S redux-entity```
+
 **Configure the reducer**: Import the reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
