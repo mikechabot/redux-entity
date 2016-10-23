@@ -250,7 +250,7 @@ For synchronous actions, we can use the following action creators:
 | Action creator | Description                                                           |
 |---------------:|:----------------------------------------------------------------------|
 | `resetEntity`  | Set the `data` property on the entity to `null`. Update `lastUpdated` |
-| `deleteEntity` | Delete the enity entirely from `state.model`                          |
+| `deleteEntity` | Delete the entity from `state.model`                                  |
 
 ### Example usage
    1. `connect()` your component to Redux.
