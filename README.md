@@ -1,5 +1,103 @@
 # redux-entity
 
+`redux-entity` seeks to provide a scalable and predictable approach to maintaing domain entities in the Redux store. It's comprised of a reducer and a thunk:
+
+### Reducer
+- The reducer allocates itself in the store as `state.model`.
+- Each entity you load is stored on `model` with a key of your choice (e.g. `orders`), and automatically wrapped with the properties below:
+
+| Property     | Description                                     |
+|-------------:|:------------------------------------------------|
+| `data`       | The result of the promise, if successful        |
+| `error`      | The result of the promise, if rejected          |
+| `lastUpdated`| The date/time that the entity was last modified |
+| `isFetching` | Whether or not the data promise is pending      |
+
+#### Example redux store
+```javascript
+const state = {
+    model: {
+        orders: {
+            isFetching: false,
+            lastUpdated: 1477198033629,
+            data: [
+                { id: 0, name: 'Oreos' }, 
+                { id: 2, name: 'Doritos' }, 
+                ...
+            ]
+        }
+    },
+    ...
+}
+```
+#### `model` reducer
+Every action dispatched by the thunk will be consumed by the `model` reducer. Most actions will also be piped through the `entity` reducer which handles the individual entity (e.g. `orders`) on `model`:
+```javascript
+function model(state = INITIAL_STATE, action) {
+    switch(action.type) {
+        case RESET_ENTITY:  // fall through
+        case FETCH_SUCCESS: // fall through
+        case FETCH_FAILURE: // fall through
+        case FETCH_REQUEST: {
+            return Object.assign(state, {
+                [action.entity]: entity(
+                    state[action.entity],
+                    action
+                )
+            });
+        }
+        case DELETE_ENTITY: {
+            delete state[action.entity];
+            return Object.assign({}, state);
+        }
+        default: {
+            return state;
+        }
+    }
+};
+```
+#### `entity` reducer
+Handles the state of a single entity (e.g. `orders`):
+```javascript
+function entity(state = INITIAL_ENTITY_STATE, action) {
+    switch(action.type) {
+        case FETCH_REQUEST: {
+            return Object.assign(state, {
+                isFetching: true,
+                error: null
+            });
+        }
+        case FETCH_SUCCESS: {
+            return Object.assign(state, {
+                isFetching: false,
+                lastUpdated: action.lastUpdated,
+                data: action.data,
+                error: null
+            });
+        }
+        case FETCH_FAILURE: {
+            return Object.assign(state, {
+                isFetching: false,
+                lastUpdated: action.lastUpdated,
+                data: null,
+                error: action.error
+            });
+        }
+        case RESET_ENTITY: {
+            return Object.assign(INITIAL_ENTITY_STATE, {
+                lastUpdated: action.lastUpdated
+            });
+        }
+        default: {
+            return state;
+        }
+    }
+}
+```
+
+#### Thunk
+- The thunk (`loadEntity(entityName, promise)`) accepts your entity key name and your data promise (e.g. `MyService.getOrders()`)
+
 ## Using `redux-entity`
 **Configure the reducer**: Import the reducer from `redux-entity`, and use it with `combineReducers()`:
 ```javascript
@@ -81,84 +179,4 @@ export default connect(
     state => ({orders: state.model && state.model.orders}),
     { loadOrders }
 )(Orders);
-```
-
-## Reducers
-- Store data on `state.model` associated to a key of your choice.
-- Each entity is automatically wrapped with the properties below:
-
-| Property     | Description                                     |
-|-------------:|:------------------------------------------------|
-| `data`       | The result of the promise, if successful        |
-| `error`      | The result of the promise, if rejected          |
-| `lastUpdated`| The date/time that the entity was last modified |
-| `isFetching` | Whether or not the data promise is pending      |
-
-
-### Model reducer
-Every action dispatched by `loadEntity` is piped through the `model` reducer. And using reducer composition, the action is further piped to the `entity()` reducer, which handles a single entity (e.g. `orders`, `products`).
-- The only action not passed along to the `entity()` reducer is `DELETE_ENTITY`.
-- `DELETE_ENTITY` deletes the object from `state.model`.
-
-```javascript
-function model(state = INITIAL_STATE, action) {
-    switch(action.type) {
-        case RESET_ENTITY:  // fall through
-        case FETCH_SUCCESS: // fall through
-        case FETCH_FAILURE: // fall through
-        case FETCH_REQUEST: {
-            return Object.assign(state, {
-                [action.entity]: entity(
-                    state[action.entity],
-                    action
-                )
-            });
-        }
-        case DELETE_ENTITY: {
-            delete state[action.entity];
-            return Object.assign({}, state);
-        }
-        default: {
-            return state;
-        }
-    }
-};
-```
-### Entity reducer
-Each action that is piped through `entity()` will affect only a single entity on `state.model`:
-```javascript
-function entity(state = INITIAL_ENTITY_STATE, action) {
-    switch(action.type) {
-        case FETCH_REQUEST: {
-            return Object.assign(state, {
-                isFetching: true,
-                error: null
-            });
-        }
-        case FETCH_SUCCESS: {
-            return Object.assign(state, {
-                isFetching: false,
-                lastUpdated: action.lastUpdated,
-                data: action.data,
-                error: null
-            });
-        }
-        case FETCH_FAILURE: {
-            return Object.assign(state, {
-                isFetching: false,
-                lastUpdated: action.lastUpdated,
-                data: null,
-                error: action.error
-            });
-        }
-        case RESET_ENTITY: {
-            return Object.assign(INITIAL_ENTITY_STATE, {
-                lastUpdated: action.lastUpdated
-            });
-        }
-        default: {
-            return state;
-        }
-    }
-}
 ```
