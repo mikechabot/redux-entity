@@ -98,7 +98,7 @@ export default connect(
 |-------------:|:------------------------------------------------|
 | `data`       | The result of the promise, if successful        |
 | `error`      | The result of the promise, if rejected          |
-| `lastUpdated`| The date/time that the entity was last modified |
+| `lastUpdated`| The date/time that the entity was last modified; updates automatically. |
 | `isFetching` | Whether or not the data promise is pending      |
 
 ### Example redux store
