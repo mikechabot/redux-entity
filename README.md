@@ -31,7 +31,8 @@ const state = {
 }
 ```
 #### `model` reducer
-Every action dispatched by the thunk will be consumed by the `model` reducer. Most actions will also be piped through the `entity` reducer which handles the individual entity (e.g. `orders`) on `model`:
+- Every action dispatched by the **thunk** will be consumed by the `model` reducer. 
+- Most actions will also be piped through the `entity` reducer which handles the individual entity (e.g. `orders`) on `model`:
 ```javascript
 function model(state = INITIAL_STATE, action) {
     switch(action.type) {
