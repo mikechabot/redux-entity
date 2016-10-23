@@ -33,7 +33,7 @@ export function loadOrders() {
 }
 ```
 **Create a React component**:
-   1. Import your thunk, and `connect()` your component to `redux`.
+   1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
    4. Invoke your thunk in `componentDidMount`.
@@ -91,7 +91,7 @@ export default connect(
 ```
 
 ## Reducer <a name="redux-entity#reducer"/>
-- The reducer allocates itself in the store as `state.model`.
+- The reducer allocates itself in the Redux store as `state.model`.
 - Each entity you load is stored on `model` with a key of your choice (e.g. `orders`), and automatically wrapped with the properties below:
 
 | Property     | Description                                     |
@@ -101,7 +101,7 @@ export default connect(
 | `lastUpdated`| The date/time that the entity was last modified; updates automatically. |
 | `isFetching` | Whether or not the data promise is pending      |
 
-### Example redux store
+### Example Redux store
 ```javascript
 const state = {
     model: {
