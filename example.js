@@ -1,9 +1,8 @@
 'use strict';
 
-const loadEntity = require('./index').loadEntity;
-const reducer = require('./index').reducer;
-
 // NOTE: Run me on Node 6+!
+
+const { loadEntity, reducer } = require('redux-entity');
 
 // Simulate Redux (with a logger)
 let state = {};
@@ -13,6 +12,9 @@ function dispatch(action) {
     _logDetails();
 }
 
+// Typically, you'd invoke this in "componentDidMount()". As you're
+// already mapping "state.model.foobar" to your Component as well, it
+// will refresh appropriately, given you'd configured "componentWillReceiveProps"
 fetchFoobar()(dispatch);
 
 /**
