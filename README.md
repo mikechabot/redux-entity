@@ -97,7 +97,7 @@ export default connect(
 
 
 ### Model reducer
-Every action dispatched by `loadEntity` is piped through the `model` reducer. And using reducer composition, the action is further piped to the `entity()` reducer to handle the state of the individual entity (i.e. `orders`, `products`, etc). 
+Every action dispatched by `loadEntity` is piped through the `model` reducer. And using reducer composition, the action is further piped to the `entity()` reducer, which handles a single entity (e.g. `orders`, `products`).
 - The only action not passed along to the `entity()` reducer is `DELETE_ENTITY`.
 - `DELETE_ENTITY` deletes the object from `state.model`.
 
@@ -126,4 +126,40 @@ function model(state = INITIAL_STATE, action) {
 };
 ```
 ### Entity reducer
-
+Each action that is piped through `entity()` will affect only a single entity on `state.model`:
+```javascript
+function entity(state = INITIAL_ENTITY_STATE, action) {
+    switch(action.type) {
+        case FETCH_REQUEST: {
+            return Object.assign(state, {
+                isFetching: true,
+                error: null
+            });
+        }
+        case FETCH_SUCCESS: {
+            return Object.assign(state, {
+                isFetching: false,
+                lastUpdated: action.lastUpdated,
+                data: action.data,
+                error: null
+            });
+        }
+        case FETCH_FAILURE: {
+            return Object.assign(state, {
+                isFetching: false,
+                lastUpdated: action.lastUpdated,
+                data: null,
+                error: action.error
+            });
+        }
+        case RESET_ENTITY: {
+            return Object.assign(INITIAL_ENTITY_STATE, {
+                lastUpdated: action.lastUpdated
+            });
+        }
+        default: {
+            return state;
+        }
+    }
+}
+```
