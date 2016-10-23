@@ -24,16 +24,16 @@ module.exports = function loadEntity(
     promise,
     silent = false
 ) {
-    if (!promise || !promise.then)
-        throw new Error('promise must be a Promise, and cannot be null/undefined');
+    if (!name) throw new Error('name is required');
+    if (!promise || !promise.then) throw new Error('promise must be a Promise');
 
     return (dispatch) => {
 
         if (!silent) {
             /**
-             * Set the `isFetching` property on the entity to `true`.
-             * The UI can hook into the store to obtain this property
-             * from the entity, and optionally display a spinner or loading
+             * When fetchRequest is dispatched, the `isFetching` property
+             * on the entity is set to `true`. The UI can hook into this
+             * property, and optionally display a spinner or loading
              * indicator to the end-user.
              *
              * A reason to pass `silent` as true would be to
@@ -41,10 +41,6 @@ module.exports = function loadEntity(
              * perhaps only the spinner should show when the component is
              * mounting, but subsequent updates to the entity are done
              * silently in the background.
-             *
-             * Regardless of whether the promise resolves or rejects,
-             * `isFetching` is always set back to false in the reducer
-             * via apiSuccess or apiFailure.
              */
             dispatch(fetchRequest(name)());
         }
