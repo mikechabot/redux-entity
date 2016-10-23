@@ -3,53 +3,62 @@
 // NOTE: Run me on Node 6+!
 const { loadEntity, reducer } = require('redux-entity');
 
-// Simulate Redux (with a logger)
+// Redux state
 let state = {};
+
+// Invoke your custom thunk
+fetchFoobar()(dispatch);
+
+/**
+ * Define custom thunk
+ * @returns {*}
+ */
+function fetchFoobar() {
+    return loadEntity(
+        'foobar',
+        _getFakePromise()
+    );
+}
+
+/**
+ * Simulate Redux's dispatch, with a logger
+ * @param action
+ */
 function dispatch(action) {
     _logDetails(action);
     state = reducer(state, action);
     _logDetails();
 }
 
-// Typically, you'd invoke this in "componentDidMount()"
-fetchFoobar()(dispatch);
-
 /**
- * Custom thunk that utilizes "loadEntity". Export this thunk,
- * and connect() it to your Components with redux-thunk.
- *
- *    'foobar'          The name of our fake entity. This will be stored in
- *                      redux as "state.model.foobar". All entities you load
- *                      with "loadEntity" will be stored on "state.model" using
- *                      the entity name you choose.
- *    'fakePromise()'   Promise that loads data from an external source
- *
- *
- * @param entityName
- * @returns {*}
+ * Generate a promise that resolves randomly between 1-3 seconds
+  * @returns {Promise}
+ * @private
  */
-function fetchFoobar() {
-    return loadEntity(
-        'foobar',
-        fakePromise()
-    );
-}
-
-function fakePromise() {
+function _getFakePromise() {
     return new Promise((resolve) => {
-        const delay = _getShortDelay();
+        const delay = _getRandomDelayBetween(1, 3, 2);
         setTimeout(() => resolve({delay}), delay * 1000);
     });
 }
 
-function _getShortDelay() {
-    return _getRandomDelayBetween(1, 3, 2);
-}
-
+/**
+ * Generate a random number in a given range, and round to a given value
+ * @param min
+ * @param max
+ * @param roundTo
+ * @returns {string}
+ * @private
+ */
 function _getRandomDelayBetween(min, max, roundTo) {
     return Number(Math.random() * (max - min) + min).toFixed(roundTo);
 }
 
+/**
+ * Log Redux actions
+ * @param action
+ * @private
+ */
 function _logDetails(action) {
     if (action) {
         console.log(`PREV STATE: ${_format(state)}`);
@@ -59,6 +68,11 @@ function _logDetails(action) {
     }
 }
 
+/**
+ * Format objects to a JSON string, and indent with 2 spaces
+ * @param obj
+ * @private
+ */
 function _format(obj) {
     return JSON.stringify(obj, null, 2)
 }
