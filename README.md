@@ -1,6 +1,6 @@
 # redux-entity
 
-`redux-entity` seeks to provide a scalable and predictable approach to maintaing domain entities in the Redux store. It's comprised of a **reducer** and a **thunk**.
+`redux-entity` seeks to provide a scalable, predictable approach to maintaing domain entities in the Redux store. It's comprised of a **reducer** and a **thunk**.
 
 - [Getting Started](#getting-started)
 - [Reducer](#reducer)
