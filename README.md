@@ -3,8 +3,7 @@ A redux reducer (model), and a thunk action creator (loadEntity).
 
 ## Using `redux-entity`
 
-1. **Configure the reducer**: Import the reducer from `redux-entity`, and use it with `combineReducers()`:
-
+**Configure the reducer**: Import the reducer from `redux-entity`, and use it with `combineReducers()`:
 ```javascript
 import { combineReducers } from 'redux';
 import { reducer } from 'redux-entity';
@@ -14,8 +13,7 @@ export default combineReducers({
     model: reducer
 });
 ```
-2. **Create a custom thunk**: Import `loadEntity()` from `redux-entity` along with your domain service, and define a key (e.g. `orders`) that will be associated with the given promise.
-
+**Create a custom thunk**: Import `loadEntity()` from `redux-entity` along with your domain service, and define a key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 import { loadEntity } from 'redux-entity';
 import MyService from './services/my-service';
@@ -27,14 +25,12 @@ export function loadOrders() {
     );
 }
 ```
-
-2. **Create a React component**:
+**Create a React component**:
    1. Import your thunk, and `connect()` your component to `redux`.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
    4. Invoke your thunk in `componentDidMount`.
-   5. Configure `componentWillReceiveProps` to take advantage of `state` changes.
-   
+   5. Configure `componentWillReceiveProps` to take advantage of `state` changes.   
 ```javascript
 import React from 'react';
 import { loadOrders } from '../redux/thunks';
@@ -127,5 +123,5 @@ function model(state = INITIAL_STATE, action) {
     }
 };
 ```
-#### Reducer (mode
+#### Entity reducer
 
