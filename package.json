@@ -1,6 +1,6 @@
 {
   "name": "redux-entity",
-  "version": "1.1.22",
+  "version": "1.1.23",
   "description": "A scalable, predictable approach to managing domain entities in Redux.",
   "main": "index.js",
   "scripts": {
@@ -31,5 +31,5 @@
     "redux-mock-store": "^1.2.1",
     "redux-thunk": "^2.1.0"
   },
-  "tonicExampleFilename": "runKitExample.js"
+  "tonicExampleFilename": "example.js"
 }
