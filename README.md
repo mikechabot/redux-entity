@@ -2,9 +2,9 @@
 A redux reducer (model), and a thunk action creator (loadEntity).
 
 ## Using `redux-entity`
-
 **Configure the reducer**: Import the reducer from `redux-entity`, and use it with `combineReducers()`:
 ```javascript
+// root-reducer.js
 import { combineReducers } from 'redux';
 import { reducer } from 'redux-entity';
 
@@ -15,6 +15,7 @@ export default combineReducers({
 ```
 **Create a custom thunk**: Import `loadEntity()` from `redux-entity` along with your domain service, and define a key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
+// thunks.js
 import { loadEntity } from 'redux-entity';
 import MyService from './services/my-service';
 
@@ -32,6 +33,7 @@ export function loadOrders() {
    4. Invoke your thunk in `componentDidMount`.
    5. Configure `componentWillReceiveProps` to take advantage of `state` changes.   
 ```javascript
+// Orders.jsx
 import React from 'react';
 import { loadOrders } from '../redux/thunks';
 import { connect } from 'react-redux';
@@ -123,5 +125,5 @@ function model(state = INITIAL_STATE, action) {
     }
 };
 ```
-#### Entity reducer
+### Entity reducer
 
