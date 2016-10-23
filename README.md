@@ -1,5 +1,4 @@
 # redux-entity
-A redux reducer (model), and a thunk action creator (loadEntity).
 
 ## Using `redux-entity`
 **Configure the reducer**: Import the reducer from `redux-entity`, and use it with `combineReducers()`:
@@ -84,7 +83,7 @@ export default connect(
 )(Orders);
 ```
 
-## Reducer
+## Reducers
 - Store data on `state.model` associated to a key of your choice.
 - Each entity is automatically wrapped with the properties below:
 
