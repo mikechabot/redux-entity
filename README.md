@@ -2,10 +2,14 @@
 
 `redux-entity` seeks to provide a scalable, predictable approach to maintaining domain entities in Redux. It's comprised of a **reducer** and a **thunk**.
 
+- [Live Demo](#live-demo)
 - [Getting Started](#getting-started)
 - [Reducer](#reducer)
 - [Thunk](#thunk)
+- [Additional Action Creators](#additional-action-creators)
 
+## Live Demo
+http://mikechabot.github.io/react-boilerplate/
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
 ###Installation
@@ -191,7 +195,8 @@ function entity(state = INITIAL_ENTITY_STATE, action) {
 }
 ```
 
-## <a name="redux-entity#thunk">Thunk</a> 
+## <a name="redux-entity#thunk">Thunk</a>
+
 - At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)` as arguments.
 - A third arugment `silent` ([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)) determines whether or not to dispatch the FETCH_REQUEST action. If true, the action is not dispatched.
 
@@ -237,4 +242,71 @@ function loadEntity(
             })
     }
 };
+```
+
+## <a name="redux-entity#additional-action-creators">Additional Action Creators</a> 
+For synchronous actions, we can use the following action creators:
+
+| Action creator | Description                                                           |
+|---------------:|:----------------------------------------------------------------------|
+| `resetEntity`  | Set the `data` property on the entity to `null`. Update `lastUpdated` |
+| `deleteEntity` | Delete the enity entirely from `state.model`                          |
+
+### Example usage
+   1. `connect()` your component to Redux.
+   2. Map the action creators (`resetEntity`, `deleteEntity`) in `mapDispatchToProps`.
+   3. Pass your `entity` name, and the current time to either action creator.
+```javascript
+import React from 'react';
+import { connect } from 'react-redux';
+import { resetEntity, deleteEntity } from 'redux-entity';
+
+function Entity({
+    entityName,
+    entity,
+    resetEntity,
+    deleteEntity
+}) {
+
+    if (!entity) return <span />;
+    const { error, data, isFetching } = entity;
+
+    if (isFetching) {
+        return <span>Loading!</span>;
+    } else if (error) {
+        return <span>{ error.message }</span>
+    }
+
+    return (
+        <div>
+            <ul>
+                { data.map((value, index) =>
+                    <li key={index}> {value.label}</li>
+                )}
+            </ul>
+            <button onClick={() => resetEntity(entityName, Date.now())}>Reset</button>
+            <button onClick={() => deleteEntity(entityName, Date.now())}>Delete</button>
+        </div>
+    )
+}
+
+Entity.propTypes  = {
+    entityName: React.PropTypes.string.isRequired,
+    entity: React.PropTypes.shape({
+        isFetching: React.PropTypes.bool,
+        lastUpdated: React.PropTypes.number,
+        data: React.PropTypes.object,
+        error: React.PropTypes.oneOfType([
+            React.PropTypes.object,
+            React.PropTypes.string
+        ])
+    }),
+    resetEntity: React.PropTypes.func.isRequired,
+    deleteEntity: React.PropTypes.func.isRequired
+};
+
+export default connect (null, {
+    resetEntity,
+    deleteEntity
+})(Entity);
 ```
