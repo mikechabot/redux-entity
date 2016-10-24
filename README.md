@@ -29,6 +29,23 @@ export default combineReducers({
     model
 });
 ```
+###Configure the Redux store
+Ensure `redux-thunk` middelware is applied:
+
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import rootReducer from '../reducers/root-reducer';
+
+```javascript
+export default function configureStore(initialState) {
+    return createStore(
+        rootReducer,
+        initialState,
+        applyMiddleware(thunk)
+    );
+};
+```
+
 ###Create a custom thunk
 Import `loadEntity()` from `redux-entity` along with your domain service, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
