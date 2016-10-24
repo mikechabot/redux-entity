@@ -1,7 +1,7 @@
 'use strict';
 
 // NOTE: Run me on Node 6+!
-const reduxEntity = require('./index');
+const reduxEntity = require('redux-entity');
 const model = reduxEntity.model;
 const loadEntity = reduxEntity.loadEntity;
 
