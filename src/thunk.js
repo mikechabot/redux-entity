@@ -1,10 +1,6 @@
 'use strict';
 
-const {
-    fetchRequest,
-    fetchSuccess,
-    fetchFailure
-} = require('./common/action-creators');
+const actionCreators = require('./common/action-creators');
 
 /**
  * Redux thunk action creator for making asynchronous API calls. This thunk
@@ -22,7 +18,7 @@ const {
 module.exports = function loadEntity(
     name,
     promise,
-    silent = false
+    silent
 ) {
     if (!name || typeof name !== 'string') throw new Error('name is required and must be a String');
     if (!promise || !promise.then) throw new Error('promise is required and must be a Promise');
@@ -42,20 +38,20 @@ module.exports = function loadEntity(
              * mounting, but subsequent updates to the entity are done
              * silently in the background.
              */
-            dispatch(fetchRequest(name)());
+            dispatch(actionCreators.fetchRequest(name)());
         }
 
         return promise
             .then(data => {
                 // Dispatch success to update model state
                 dispatch(
-                    fetchSuccess(name)(data, Date.now())
+                    actionCreators.fetchSuccess(name)(data, Date.now())
                 )
             })
             .catch(error => {
                 // Dispatch failure to notify UI
                 dispatch(
-                    fetchFailure(name)(error, Date.now())
+                    actionCreators.fetchFailure(name)(error, Date.now())
                 )
             })
     }

@@ -4,11 +4,7 @@ const expect = require('expect');
 const configureStore = require('redux-mock-store').default;
 const thunk = require('redux-thunk').default;
 const loadEntity = require('../../src/thunk');
-const {
-    FETCH_REQUEST,
-    FETCH_SUCCESS,
-    FETCH_FAILURE
-} = require('../../src/common/action-types');
+const ACTION_TYPE = require('../../src/common/action-type');
 
 // Set up mock Redux store
 const middlewares = [thunk];
@@ -31,12 +27,12 @@ describe('Thunk Action Creators', () => {
                 const promise = Promise.resolve(data);
 
                 const expectedFetch = {
-                    type: FETCH_REQUEST,
+                    type: ACTION_TYPE.FETCH_REQUEST,
                     entity
                 };
 
                 const expectedSuccess = {
-                    type: FETCH_SUCCESS,
+                    type: ACTION_TYPE.FETCH_SUCCESS,
                     lastUpdated: undefined,         // Overwrite this in assertion
                     entity,
                     data
@@ -78,12 +74,12 @@ describe('Thunk Action Creators', () => {
                 const promise = Promise.reject(error);
 
                 const expectedRequest = {
-                    type: FETCH_REQUEST,
+                    type: ACTION_TYPE.FETCH_REQUEST,
                     entity
                 };
 
                 const expectedFailure = {
-                    type: FETCH_FAILURE,
+                    type: ACTION_TYPE.FETCH_FAILURE,
                     lastUpdated: undefined,         // Overwrite this in assertion
                     entity,
                     error
@@ -128,7 +124,7 @@ describe('Thunk Action Creators', () => {
                 const promise = Promise.resolve(data);
 
                 const expectedSuccess = {
-                    type: FETCH_SUCCESS,
+                    type: ACTION_TYPE.FETCH_SUCCESS,
                     lastUpdated: undefined,         // Overwrite this in assertion
                     entity,
                     data

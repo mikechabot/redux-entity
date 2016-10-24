@@ -4,11 +4,7 @@ const expect = require('expect');
 const configureStore = require('redux-mock-store').default;
 const thunk = require('redux-thunk').default;
 const actionCreators = require('../../src/common/action-creators');
-const {
-    FETCH_REQUEST,
-    FETCH_SUCCESS,
-    FETCH_FAILURE
-} = require('../../src/common/action-types');
+const ACTION_TYPE = require('../../src/common/action-type');
 
 // Set up mock Redux store
 const middlewares = [thunk];
@@ -123,7 +119,7 @@ describe('Action Creators', () => {
             it('should create a FETCH_REQUEST action', () => {
 
                 const fetchRequestAction = {
-                    type: FETCH_REQUEST,
+                    type: ACTION_TYPE.FETCH_REQUEST,
                     entity: mockEntity
                 };
 
@@ -148,7 +144,7 @@ describe('Action Creators', () => {
             it('should create a FETCH_SUCCESS action', () => {
 
                 const fetchSuccessAction = {
-                    type: FETCH_SUCCESS,
+                    type: ACTION_TYPE.FETCH_SUCCESS,
                     entity: mockEntity,
                     data: mockData,
                     lastUpdated: now
@@ -176,7 +172,7 @@ describe('Action Creators', () => {
 
                 const fetchFailureAction = {
                     entity: mockEntity,
-                    type: FETCH_FAILURE,
+                    type: ACTION_TYPE.FETCH_FAILURE,
                     error: mockError,
                     lastUpdated: now
                 };
