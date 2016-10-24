@@ -32,11 +32,11 @@ export default combineReducers({
 ###Configure the Redux store
 Ensure `redux-thunk` middelware is applied:
 
+```javascript
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers/root-reducer';
 
-```javascript
 export default function configureStore(initialState) {
     return createStore(
         rootReducer,
