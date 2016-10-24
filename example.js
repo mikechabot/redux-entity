@@ -1,9 +1,7 @@
 'use strict';
 
-// NOTE: Run me on Node 6+!
-const reduxEntity = require('redux-entity');
-const model = reduxEntity.model;
-const loadEntity = reduxEntity.loadEntity;
+const model = require('redux-entity').model;
+const loadEntity = require('redux-entity').loadEntity;
 
 // Redux state
 let state = {};
