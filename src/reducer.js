@@ -10,7 +10,7 @@ const INITIAL_ENTITY_STATE = {
 };
 
 module.exports = function model(state, action) {
-    if (!state) state = INITIAL_STATE;
+    if (!state) state = Object.assign({}, INITIAL_STATE);
     switch(action.type) {
         case ACTION_TYPE.RESET_ENTITY:  // fall through
         case ACTION_TYPE.FETCH_SUCCESS: // fall through
@@ -34,7 +34,7 @@ module.exports = function model(state, action) {
 };
 
 function entity(state, action) {
-    if (!state) state = INITIAL_ENTITY_STATE;
+    if (!state) state = Object.assign({}, INITIAL_ENTITY_STATE);
     switch(action.type) {
         case ACTION_TYPE.FETCH_REQUEST: {
             return Object.assign({}, state, {
