@@ -34,7 +34,7 @@ Import `loadEntity()` from `redux-entity` along with your domain service, and de
 ```javascript
 // thunks.js
 import { loadEntity } from 'redux-entity';
-import OrderService from './services/my-service';
+import OrderService from './services/order-service';
 
 export function loadOrders() {
     return loadEntity(
