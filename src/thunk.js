@@ -12,18 +12,23 @@ const actionCreators = require('./common/action-creators');
  *
  * @param  {string}     name        Entity name
  * @param  {Promise}    promise     Promise that loads data from an external source (e.g. OrderService.getOrders())
- * @param  {boolean}    silent      Disable the FETCH_REQUEST action,
+ * @param  {boolean}    silent      Disable the FETCH_REQUEST action
+ * @param  {object}     processors  Holds functions that manipulates entity data
  * @return {function}               A function that loads data from an external source, and dispatches actions
  */
 module.exports = function loadEntity(
     name,
     promise,
+    processors,
     silent
 ) {
     if (!name || typeof name !== 'string') throw new Error('name is required and must be a String');
     if (!promise || !promise.then) throw new Error('promise is required and must be a Promise');
+    if (processors && typeof processors !== 'object') throw new Error('processors must be an object');
 
     return (dispatch) => {
+
+        _processStage = _processStage.bind(this, processors, dispatch);
 
         if (!silent) {
             /**
@@ -43,16 +48,40 @@ module.exports = function loadEntity(
 
         return promise
             .then(data => {
-                // Dispatch success to update model state
-                dispatch(
-                    actionCreators.fetchSuccess(name)(data, Date.now())
-                )
+                _processStage(STAGE.BEFORE_SUCCESS, data);
+                dispatch(actionCreators.fetchSuccess(name)(data), Date.now());
+                _processStage(STAGE.AFTER_SUCCESS, data);
             })
             .catch(error => {
-                // Dispatch failure to notify UI
-                dispatch(
-                    actionCreators.fetchFailure(name)(error, Date.now())
-                )
+                _processStage(STAGE.BEFORE_FAILURE, error);
+                dispatch(actionCreators.fetchFailure(name)(error, Date.now()));
+                _processStage(STAGE.AFTER_FAILURE, error);
             })
     }
 };
+
+/**
+ * Processor types
+ * @type {{BEFORE_SUCCESS: string, AFTER_SUCCESS: string, BEFORE_FAILURE: string, AFTER_FAILURE: string}}
+ */
+const STAGE = {
+    BEFORE_SUCCESS  : 'beforeSuccess',
+    AFTER_SUCCESS   : 'afterSuccess',
+    BEFORE_FAILURE  : 'beforeFailure',
+    AFTER_FAILURE   : 'afterFailure'
+};
+
+/**
+ * Execute a processor of a given type if it exists
+ * @param processors
+ * @param dispatch
+ * @param data
+ * @param type
+ * @returns {*}
+ * @private
+ */
+function _processStage(processors, dispatch, type, data) {
+    if (processors[type]) {
+        return processors[type](dispatch, data);
+    }
+}

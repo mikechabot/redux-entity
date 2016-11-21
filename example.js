@@ -16,7 +16,15 @@ fetchFoobar()(dispatch);
 function fetchFoobar() {
     return loadEntity(
         'foobar',
-        _getFakePromise()
+        _getFakePromise(),
+        {
+            beforeSuccess: (dispatch, data) => {
+                console.log('Processing data before success!');
+            },
+            afterSuccess: (dispatch, data) => {
+                console.log('Processing data after success!');
+            }
+        }
     );
 }
 
