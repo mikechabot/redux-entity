@@ -81,7 +81,7 @@ const STAGE = {
  * @private
  */
 function _processStage(processors, dispatch, type, data) {
-    if (processors[type]) {
+    if (processors && processors[type]) {
         return processors[type](dispatch, data);
     }
 }
