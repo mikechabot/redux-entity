@@ -13,7 +13,6 @@ const mockStore = configureStore(middlewares);
 describe('Action Creators', () => {
     describe('Generic', () => {
         describe('invoking the makeActionCreator thunk', () => {
-
             let type, key1, key2, data1, data2;
             beforeEach(() => {
                 type = 'FooType';
@@ -31,13 +30,12 @@ describe('Action Creators', () => {
 
             it('should throw an error if a type is not passed', () => {
                 expect(() => {
-                        actionCreators.makeActionCreator()
+                    actionCreators.makeActionCreator();
                 }).toThrow('Type cannot be null/undefined');
             });
 
             describe('invoking the returned action creator', () => {
                 it('should return an action containing the correct type and keys', () => {
-
                     const expectedAction = {
                         type,
                         key1: data1,
@@ -51,10 +49,8 @@ describe('Action Creators', () => {
                     ).toEqual(expectedAction);
                 });
             });
-
         });
         describe('invoking the makeEntityActionCreator thunk', () => {
-
             let type, entity, key1, key2, data1, data2;
             beforeEach(() => {
                 type = 'FooType';
@@ -75,19 +71,18 @@ describe('Action Creators', () => {
 
             it('should throw an error if a type is not passed', () => {
                 expect(() => {
-                        actionCreators.makeEntityActionCreator()
+                    actionCreators.makeEntityActionCreator();
                 }).toThrow('Type cannot be null/undefined');
             });
 
             it('should throw an error if an entity is not passed', () => {
                 expect(() => {
-                        actionCreators.makeEntityActionCreator(type)
+                    actionCreators.makeEntityActionCreator(type);
                 }).toThrow('Entity cannot be null/undefined');
             });
 
             describe('invoking the returned action creator', () => {
                 it('should return an action containing the correct type and keys', () => {
-
                     const expectedAction = {
                         type,
                         entity,
@@ -107,7 +102,6 @@ describe('Action Creators', () => {
         });
     });
     describe('API', () => {
-
         let store, getState, mockEntity;
         beforeEach(() => {
             mockEntity = 'mockEntity';
@@ -117,9 +111,8 @@ describe('Action Creators', () => {
 
         describe('invoking the fetchRequest action creator', () => {
             it('should create a FETCH_REQUEST action', () => {
-
                 const fetchRequestAction = {
-                    type: ACTION_TYPE.FETCH_REQUEST,
+                    type  : ACTION_TYPE.FETCH_REQUEST,
                     entity: mockEntity
                 };
 
@@ -137,16 +130,14 @@ describe('Action Creators', () => {
         });
 
         describe('invoking the fetchSuccess action creator', () => {
-
             const mockData = { foo: 'bar' };
             const now = Date.now();
 
             it('should create a FETCH_SUCCESS action', () => {
-
                 const fetchSuccessAction = {
-                    type: ACTION_TYPE.FETCH_SUCCESS,
-                    entity: mockEntity,
-                    data: mockData,
+                    type       : ACTION_TYPE.FETCH_SUCCESS,
+                    entity     : mockEntity,
+                    data       : mockData,
                     lastUpdated: now
                 };
 
@@ -164,16 +155,14 @@ describe('Action Creators', () => {
         });
 
         describe('invoking the fetchFailure action creator', () => {
-
             const mockError = { foo: 'bar' };
             const now = Date.now();
 
             it('should create a FETCH_FAILURE action', () => {
-
                 const fetchFailureAction = {
-                    entity: mockEntity,
-                    type: ACTION_TYPE.FETCH_FAILURE,
-                    error: mockError,
+                    entity     : mockEntity,
+                    type       : ACTION_TYPE.FETCH_FAILURE,
+                    error      : mockError,
                     lastUpdated: now
                 };
 

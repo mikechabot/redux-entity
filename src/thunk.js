@@ -16,7 +16,7 @@ const actionCreators = require('./common/action-creators');
  * @param  {object}     processors  Holds functions that manipulates entity data
  * @return {function}               A function that loads data from an external source, and dispatches actions
  */
-module.exports = function loadEntity(
+module.exports = function loadEntity (
     name,
     promise,
     processors,
@@ -27,7 +27,6 @@ module.exports = function loadEntity(
     if (processors && typeof processors !== 'object') throw new Error('processors must be an object');
 
     return (dispatch) => {
-
         _processStage = _processStage.bind(this, processors, dispatch);
 
         if (!silent) {
@@ -49,15 +48,15 @@ module.exports = function loadEntity(
         return promise
             .then(data => {
                 _processStage(STAGE.BEFORE_SUCCESS, data);
-                dispatch(actionCreators.fetchSuccess(name)(data), Date.now());
+                dispatch(actionCreators.fetchSuccess(name)(data, Date.now()));
                 _processStage(STAGE.AFTER_SUCCESS, data);
             })
             .catch(error => {
                 _processStage(STAGE.BEFORE_FAILURE, error);
                 dispatch(actionCreators.fetchFailure(name)(error, Date.now()));
                 _processStage(STAGE.AFTER_FAILURE, error);
-            })
-    }
+            });
+    };
 };
 
 /**
@@ -65,10 +64,10 @@ module.exports = function loadEntity(
  * @type {{BEFORE_SUCCESS: string, AFTER_SUCCESS: string, BEFORE_FAILURE: string, AFTER_FAILURE: string}}
  */
 const STAGE = {
-    BEFORE_SUCCESS  : 'beforeSuccess',
-    AFTER_SUCCESS   : 'afterSuccess',
-    BEFORE_FAILURE  : 'beforeFailure',
-    AFTER_FAILURE   : 'afterFailure'
+    BEFORE_SUCCESS: 'beforeSuccess',
+    AFTER_SUCCESS : 'afterSuccess',
+    BEFORE_FAILURE: 'beforeFailure',
+    AFTER_FAILURE : 'afterFailure'
 };
 
 /**
@@ -80,7 +79,7 @@ const STAGE = {
  * @returns {*}
  * @private
  */
-function _processStage(processors, dispatch, type, data) {
+function _processStage (processors, dispatch, type, data) {
     if (processors && processors[type]) {
         return processors[type](dispatch, data);
     }
