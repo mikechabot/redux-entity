@@ -1,7 +1,7 @@
 'use strict';
 
-// NOTE: Run me on Node 6+!
-const { loadEntity, model } = require('redux-entity');
+const model = require('redux-entity').model;
+const loadEntity = require('redux-entity').loadEntity;
 
 // Redux state
 let state = {};
@@ -16,7 +16,15 @@ fetchFoobar()(dispatch);
 function fetchFoobar() {
     return loadEntity(
         'foobar',
-        _getFakePromise()
+        _getFakePromise(),
+        {
+            beforeSuccess: (dispatch, data) => {
+                console.log('Processing data before success!');
+            },
+            afterSuccess: (dispatch, data) => {
+                console.log('Processing data after success!');
+            }
+        }
     );
 }
 

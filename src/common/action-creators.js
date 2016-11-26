@@ -1,12 +1,6 @@
 'use strict';
 
-const {
-    FETCH_REQUEST,
-    FETCH_SUCCESS,
-    FETCH_FAILURE,
-    RESET_ENTITY,
-    DELETE_ENTITY
-} = require('./action-types');
+const ACTION = require('./action-type');
 
 /**
  * Generate action creators based on input arguments. The first argument is always
@@ -16,42 +10,69 @@ const {
  *   Example: const myActionType = 'DO_IT';
  *            const doItAction = makeActionCreator(myActionType, 'data');
  *            doItAction(123); --> { type: "DO_IT", data: 123 }
+ *
+ * @param type
+ * @returns {Function}
  */
-function makeActionCreator(type, ...keys) {
+function makeActionCreator(type) {
     if (!type) throw new Error('Type cannot be null/undefined');
-    return function(...args) {
-        let action = { type };
-        keys.forEach((arg, index) => {
-            action[keys[index]] = args[index]
-        });
-        return action;
+    const keys = _getArgumentKeysAtIndex(arguments, 1);
+    return function() {
+        return _generateAction({ type }, keys, arguments);
     }
 }
 
 /**
  * Identical to makeActionCreator(), however this function expects the second
  * argument to be the name of an entity.
- *
- * @param  {string} type        Redux action type
- * @param  {string} entity      Model entity name (e.g 'users', 'orders', 'foobar')
- * @param  {string} ...keys     Keys to be used in the action object
- * @return {function}           Action creator that contains an entity key
+ * @param type              Redux action type
+ * @param entity            Model entity name (e.g 'users', 'orders', 'foobar')
+ * @returns {Function}      Action creator that contains an entity key
  */
-function makeEntityActionCreator(type, entity, ...keys) {
+function makeEntityActionCreator(type, entity) {
     if (!type) throw new Error('Type cannot be null/undefined');
     if (!entity) throw new Error('Entity cannot be null/undefined');
-    return function(...args) {
-        let action = { type, entity };
-        keys.forEach((arg, index) => {
-            action[keys[index]] = args[index]
-        });
-        return action;
+    const keys = _getArgumentKeysAtIndex(arguments, 2);
+    return function() {
+        return _generateAction({ type, entity }, keys, arguments);
     }
 }
 
+/**
+ * Build an array of Strings using argument keys
+ * @param args
+ * @param index
+ * @returns {Array}
+ * @private
+ */
+function _getArgumentKeysAtIndex(args, index) {
+    let keys = [];
+    for (let i=index; i < args.length; i++) {
+        keys.push(args[i]);
+    }
+    return keys;
+}
+
+/**
+ * Generation a Redux action object
+ * @param action
+ * @param keys
+ * @param args
+ * @returns {*}
+ * @private
+ */
+function _generateAction(action, keys, args) {
+    keys.forEach((arg, index) => {
+        action[keys[index]] = args[index]
+    });
+    return action;
+}
+
 module.exports = {
-    resetEntity: makeActionCreator(RESET_ENTITY, 'entity', 'lastUpdated'),
-    deleteEntity: makeActionCreator(DELETE_ENTITY, 'entity'),
+    resetEntity: makeActionCreator(ACTION.RESET_ENTITY, 'entity', 'lastUpdated'),
+    deleteEntity: makeActionCreator(ACTION.DELETE_ENTITY, 'entity'),
+    makeActionCreator: makeActionCreator,
+    makeEntityActionCreator: makeEntityActionCreator,
     /**
      * Action creator for fetch requests
      * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
@@ -59,7 +80,7 @@ module.exports = {
      */
     fetchRequest: (entity) => {
         return makeEntityActionCreator(
-            FETCH_REQUEST,
+            ACTION.FETCH_REQUEST,
             entity
         )
     },
@@ -70,7 +91,7 @@ module.exports = {
      */
     fetchSuccess: (entity) => {
         return makeEntityActionCreator(
-            FETCH_SUCCESS,
+            ACTION.FETCH_SUCCESS,
             entity,
             'data',
             'lastUpdated'
@@ -83,12 +104,10 @@ module.exports = {
      */
     fetchFailure: (entity) => {
         return makeEntityActionCreator(
-            FETCH_FAILURE,
+            ACTION.FETCH_FAILURE,
             entity,
             'error',
             'lastUpdated'
         );
-    },
-    makeActionCreator: makeActionCreator,
-    makeEntityActionCreator: makeEntityActionCreator
+    }
 };
