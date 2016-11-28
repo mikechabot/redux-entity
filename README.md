@@ -332,4 +332,3 @@ export default connect (null, {
     deleteEntity
 })(Entity);
 ```
-test
