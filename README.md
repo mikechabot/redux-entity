@@ -9,7 +9,7 @@
 
 - [Live Demo](#live-demo)
 - [Getting Started](#getting-started)
-- [Configuration](#configuration)
+- [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
 
 ## Live Demo
@@ -155,7 +155,7 @@ export default connect(
     { loadOrders }
 )(Orders);
 ```
-## <a name="redux-entity#configuration">Configuration</a>
+## <a name="redux-entity#configuration-options">Configuration Options</a>
 A configuration object can be passed to [`loadEntity`](#reducer) as the third argument, and the following properties are available for use: 
 ```javascript
 {
