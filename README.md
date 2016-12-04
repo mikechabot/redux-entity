@@ -233,7 +233,7 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
     ```
 
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
-The following action creators are synchonrous. Use them to reset or delete your entity:
+The following action creators are synchonrous, and can be used to reset or delete your entity. Check out the [Live Demo](#live-demo) to see these in action.
 
 | Action creator | Description                                                           |
 |---------------:|:----------------------------------------------------------------------|
