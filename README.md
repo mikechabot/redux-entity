@@ -155,14 +155,75 @@ The following properties are available for configuration:
     silent: true,  // default: false,
     // If append is true, do not overwrite the data property on the entity when FETCH_SUCCESS
     // is dispatched, but rather append any new data to whatever already exists on the entity.
-    //     - If your promise returns an array, the existing array is concatentated with the new one.
-    //     - If your promise returns an object, it is pushed onto the data array.
     append: true   // default: false
 }
 ```
 
-## <a name="redux-entity#thunk">Thunk</a>
+**NOTE**: When configuring `append` to true, consider the following examples:
+1. When the data promise retuns an `object`, it will be pushed onto an array. Merging does NOT occur:
 
+```javascript
+function fetchFoo () {
+    return loadEntity(
+        'foobar',
+        Promise.resolve({ randomNum: Math.random() }),
+        { append: true }
+    );
+}
+
+fetchFoo()(dispatch);  // Call once
+fetchFoo()(dispatch);  // Call twice
+```
+
+**Resulting State (two objects in a single array)**
+```json
+{
+   "foobar":{
+      "isFetching":false,
+      "lastUpdated":1480807317751,
+      "data":[
+         {
+            "randomNum":0.99437688223453
+         },
+         {
+            "randomNum":0.02760231206535746
+         }
+      ],
+      "error":null
+   }
+}
+```
+2. When the data promise retuns an `array`, it will be concatenated with any existing data:
+```javascript
+function fetchFoo () {
+    return loadEntity(
+        'foobar',
+        Promise.resolve([Math.random(), Math.random()]),
+        { append: true }
+    );
+}
+
+fetchFoo()(dispatch);  // Call once
+fetchFoo()(dispatch);  // Call twice
+```
+
+**Resulting State (four entries in a single array)**
+{
+   "foobar":{
+      "isFetching":false,
+      "lastUpdated":1480807969474,
+      "data":[
+         0.3740764599842803,
+         0.46176137669506945,
+         0.9866826383932925,
+         0.7325032000955436
+      ],
+      "error":null
+   }
+}
+
+
+## <a name="redux-entity#thunk">Thunk</a>
 - At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)`.
 - A third argument (`options`) can be provided, which contains additionl configuration options. See [Configuration](#configuration).
 
