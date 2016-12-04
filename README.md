@@ -161,13 +161,35 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
 {
     // If true, do NOT dispatch the FETCH_REQUEST action, which sets the "isFetching" 
     // property on the entity to true. Do this to inhibit any UI hooks on "isFetching".
-    silent: true,  // default: false (i.e. always dispatch FETCH_REQUEST)
+    silent: true,  // default: false
 
     // If true, do NOT overwrite the data property whenever FETCH_SUCCESS is dispatched,
     // but rather append any new data to whatever already exists on the entity.
-    append: true   // default: false (i.e. always overwrite)
+    append: true   // default: false
+    
+    // Processors grant you access to various stages in the "loadEntity" lifecycle.
+    // All processors get access to Redux dispatch along with either the data object
+    // if the promise resolves, or the error object if the promise rejects.
+    processors: {
+        beforeSuccess: null,                         // default: null
+        afterSuccess : null,                         // default: null
+        beforeFailure: null,                         // default: null
+        afterFailure : function (dispatch, error) {  // default: null
+            dispatch({ type: 'MY_CUSTOM_ERROR', error })
+        }
+    }
 }
 ```
+
+### When configuring `processors`, consider the following:
+Be careful with processors, they have direct access to Redux dispatch!
+
+| Processor        | Description                              |When to use                                                |
+|-----------------:|:-----------------------------------------|-----------------------------------------------------------|
+| `beforeSuccess`  | Fired immediately before `FETCH_SUCCESS` | Preprocess the data object before its dispatched to Redux |
+| `afterSuccess`   | Fired immediately after `FETCH_SUCCESS`  | Take action after the entity's state changes              |
+| `beforeFailure`  | Fired immediately before `FETCH_FAILURE` | Preprocess the error before its disppatched to Redux      |
+| `afterFailure`   | Fired immediately after `FETCH_FAILURE`  | Take action after the error is dispatched                 |
 
 ### When configuring `append` to `true`, consider the following examples:
 
