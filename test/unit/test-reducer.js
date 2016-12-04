@@ -1,3 +1,5 @@
+'use strict';
+
 const expect = require('expect');
 const reducer = require('../../src/reducer');
 const CONST = require('../../src/common/const');
@@ -49,7 +51,7 @@ describe('Reducer', () => {
                     // Under test
                     const state = reducer(existingState, { entity, lastUpdated, type: action });
 
-                    expect(state).toEqual({[entity]: expectedState });
+                    expect(state).toEqual({ [entity]: expectedState });
                 });
             });
             describe('FETCH_SUCCESS', () => {
