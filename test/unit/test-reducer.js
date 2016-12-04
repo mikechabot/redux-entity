@@ -71,7 +71,7 @@ describe('Reducer', () => {
                     const state = reducer(existingState, { entity, data, lastUpdated, type: action });
                     expect(state[entity]).toEqual(expectedState);
                 });
-                it('if append is true, then data should be concatenated (objects)', () => {
+                it('if append is true, then new data should be pushed onto the existing array (objects)', () => {
                     existingState[entity].data = [{ baz: 'bar' }];
                     const data = { foo: 'bar' };
 
@@ -88,7 +88,7 @@ describe('Reducer', () => {
                     const state = reducer(existingState, { entity, data, lastUpdated, type: action, append: true });
                     expect(state[entity]).toEqual(expectedState);
                 });
-                it('if append is true, then data should be concatenated (array)', () => {
+                it('if append is true, then new data should be concatenated with the existing array (array)', () => {
                     existingState[entity].data = [123, 456];
                     const data = [789, 101112];
 
