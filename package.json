@@ -1,7 +1,7 @@
 {
   "name": "redux-entity",
   "version": "3.0.0-alpha.1",
-  "description": "A scalable, predictable approach to managing domain entities in Redux.",
+  "description": "A predictable approach to managing domain entities in Redux.",
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
