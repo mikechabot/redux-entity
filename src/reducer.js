@@ -4,7 +4,7 @@ const ACTION_TYPES = require('./common/const').ACTION_TYPES;
 const CONST = require('./common/const');
 
 module.exports = function model (state, action) {
-    if (!state) state = Object.assign({}, CONST.INITIAL_STATE);
+    if (!state) state = Object.assign({}, CONST.INITIAL_MODEL_STATE);
     switch (action.type) {
         case ACTION_TYPES.RESET_ENTITY:  // fall through
         case ACTION_TYPES.FETCH_SUCCESS: // fall through
@@ -40,11 +40,11 @@ function entity (state, action) {
             return Object.assign({}, state, {
                 isFetching : false,
                 lastUpdated: action.lastUpdated,
-                data       : !action.append
-                                ? action.data
-                                : state.data
-                                    ? state.data.concat(__toArray(action.data))
-                                    : __toArray(action.data),
+                data       : action.append
+                                ? !state.data
+                                    ? __toArray(action.data)
+                                    : state.data.concat(__toArray(action.data))
+                                : action.data,
                 error: null
             });
         }

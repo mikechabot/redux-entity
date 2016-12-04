@@ -1,9 +1,10 @@
 module.exports = {
-    INITIAL_STATE       : {},
+    INITIAL_MODEL_STATE : {},
     INITIAL_ENTITY_STATE: {
         isFetching : false,
-        lastUpdated: undefined,
-        data       : null
+        lastUpdated: null,
+        data       : null,
+        error      : null
     },
     DEFAULT_OPTIONS: {
         silent: false,
