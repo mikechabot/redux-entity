@@ -10,9 +10,10 @@
 - [Live Demo](#live-demo)
 - [Getting Started](#getting-started)
 - [Configuration](#configuration)
-- [Thunk](#thunk)
-- [Reducer](#reducer)
 - [Additional Actions](#additional-actions)
+- [Under The Hood](#under-the-hood)
+  - [Thunk](#thunk)
+  - [Reducer](#reducer)
 
 ## Live Demo
 http://mikechabot.github.io/react-boilerplate/
@@ -233,7 +234,76 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
        }
     }
     ```
-    
+
+## <a name="redux-entity#additional-actions">Additional Actions</a> 
+The following action creators are synchonrous. Use them to reset or delete your entity:
+
+| Action creator | Description                                                           |
+|---------------:|:----------------------------------------------------------------------|
+| `resetEntity`  | Set the `data` property on the entity to `null`. Update `lastUpdated` |
+| `deleteEntity` | Delete the entity from `state.model`                                  |
+
+### Example usage
+   1. `connect()` your component to Redux.
+   2. Map the action creators (`resetEntity`, `deleteEntity`) in `mapDispatchToProps`.
+   3. Pass your `entity` name, and the current time to either action creator.
+```javascript
+import React from 'react';
+import { connect } from 'react-redux';
+import { resetEntity, deleteEntity } from 'redux-entity';
+
+function Entity({
+    entityName,
+    entity,
+    resetEntity,
+    deleteEntity
+}) {
+
+    if (!entity) return <span />;
+    const { error, data, isFetching } = entity;
+
+    if (isFetching) {
+        return <span>Loading!</span>;
+    } else if (error) {
+        return <span>{ error.message }</span>
+    }
+
+    return (
+        <div>
+            <ul>
+                { data.map((value, index) =>
+                    <li key={index}> {value.label}</li>
+                )}
+            </ul>
+            <button onClick={() => resetEntity(entityName, Date.now())}>Reset</button>
+            <button onClick={() => deleteEntity(entityName, Date.now())}>Delete</button>
+        </div>
+    )
+}
+
+Entity.propTypes  = {
+    entityName: React.PropTypes.string.isRequired,
+    entity: React.PropTypes.shape({
+        isFetching: React.PropTypes.bool,
+        lastUpdated: React.PropTypes.number,
+        data: React.PropTypes.object,
+        error: React.PropTypes.oneOfType([
+            React.PropTypes.object,
+            React.PropTypes.string
+        ])
+    }),
+    resetEntity: React.PropTypes.func.isRequired,
+    deleteEntity: React.PropTypes.func.isRequired
+};
+
+export default connect (null, {
+    resetEntity,
+    deleteEntity
+})(Entity);
+```
+
+# <a name="redux-entity#under-the-hood">Under The Hood</a>
+
 ## <a name="redux-entity#thunk">Thunk</a>
 - At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)`.
 - A third argument (`options`) can be provided, which contains additional configuration options. See [Configuration](#configuration).
@@ -366,70 +436,3 @@ function entity (state, action) {
     }
 }
 ```
-## <a name="redux-entity#additional-actions">Additional Actions</a> 
-The following action creators are synchonrous. Use them to reset or delete your entity:
-
-| Action creator | Description                                                           |
-|---------------:|:----------------------------------------------------------------------|
-| `resetEntity`  | Set the `data` property on the entity to `null`. Update `lastUpdated` |
-| `deleteEntity` | Delete the entity from `state.model`                                  |
-
-### Example usage
-   1. `connect()` your component to Redux.
-   2. Map the action creators (`resetEntity`, `deleteEntity`) in `mapDispatchToProps`.
-   3. Pass your `entity` name, and the current time to either action creator.
-```javascript
-import React from 'react';
-import { connect } from 'react-redux';
-import { resetEntity, deleteEntity } from 'redux-entity';
-
-function Entity({
-    entityName,
-    entity,
-    resetEntity,
-    deleteEntity
-}) {
-
-    if (!entity) return <span />;
-    const { error, data, isFetching } = entity;
-
-    if (isFetching) {
-        return <span>Loading!</span>;
-    } else if (error) {
-        return <span>{ error.message }</span>
-    }
-
-    return (
-        <div>
-            <ul>
-                { data.map((value, index) =>
-                    <li key={index}> {value.label}</li>
-                )}
-            </ul>
-            <button onClick={() => resetEntity(entityName, Date.now())}>Reset</button>
-            <button onClick={() => deleteEntity(entityName, Date.now())}>Delete</button>
-        </div>
-    )
-}
-
-Entity.propTypes  = {
-    entityName: React.PropTypes.string.isRequired,
-    entity: React.PropTypes.shape({
-        isFetching: React.PropTypes.bool,
-        lastUpdated: React.PropTypes.number,
-        data: React.PropTypes.object,
-        error: React.PropTypes.oneOfType([
-            React.PropTypes.object,
-            React.PropTypes.string
-        ])
-    }),
-    resetEntity: React.PropTypes.func.isRequired,
-    deleteEntity: React.PropTypes.func.isRequired
-};
-
-export default connect (null, {
-    resetEntity,
-    deleteEntity
-})(Entity);
-```
-
