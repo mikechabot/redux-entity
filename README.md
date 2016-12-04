@@ -153,6 +153,7 @@ The following properties are available for configuration:
     // If silent is true, do not dispatch the FETCH_REQUEST action, which sets the 
     // "isFetching" property on the entity to true.
     silent: true,  // default: false,
+
     // If append is true, do not overwrite the data property on the entity when FETCH_SUCCESS
     // is dispatched, but rather append any new data to whatever already exists on the entity.
     append: true   // default: false
