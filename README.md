@@ -78,7 +78,18 @@ export function loadOrders() {
 }
 ```
 
-To dynamically pass options to your thunk (see [Configuration](#configuration)): 
+Pass options to your thunk (see [Configuration](#configuration)): 
+```javascript`
+export function loadOrders() {
+    return loadEntity(
+        'orders',
+        OrderService.getOrders(),
+        { silent: true, append: true }
+    );
+}
+```
+
+Dynamically pass options to your thunk: 
 ```javascript`
 export function loadOrders(options) {
     return loadEntity(
