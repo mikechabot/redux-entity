@@ -1,21 +1,15 @@
 'use strict';
 
-const ACTION_TYPE = require('./common/action-type');
+const ACTION_TYPES = require('./common/const').ACTION_TYPES;
+const CONST = require('./common/const');
 
-const INITIAL_STATE = {};
-const INITIAL_ENTITY_STATE = {
-    isFetching  : false,
-    lastUpdated : undefined,
-    data        : {}
-};
-
-module.exports = function model(state, action) {
-    if (!state) state = Object.assign({}, INITIAL_STATE);
-    switch(action.type) {
-        case ACTION_TYPE.RESET_ENTITY:  // fall through
-        case ACTION_TYPE.FETCH_SUCCESS: // fall through
-        case ACTION_TYPE.FETCH_FAILURE: // fall through
-        case ACTION_TYPE.FETCH_REQUEST: {
+module.exports = function model (state, action) {
+    if (!state) state = Object.assign({}, CONST.INITIAL_STATE);
+    switch (action.type) {
+        case ACTION_TYPES.RESET_ENTITY:  // fall through
+        case ACTION_TYPES.FETCH_SUCCESS: // fall through
+        case ACTION_TYPES.FETCH_FAILURE: // fall through
+        case ACTION_TYPES.FETCH_REQUEST: {
             return Object.assign({}, state, {
                 [action.entity]: entity(
                     state[action.entity],
@@ -23,7 +17,7 @@ module.exports = function model(state, action) {
                 )
             });
         }
-        case ACTION_TYPE.DELETE_ENTITY: {
+        case ACTION_TYPES.DELETE_ENTITY: {
             delete state[action.entity];
             return Object.assign({}, state);
         }
@@ -33,33 +27,37 @@ module.exports = function model(state, action) {
     }
 };
 
-function entity(state, action) {
-    if (!state) state = Object.assign({}, INITIAL_ENTITY_STATE);
-    switch(action.type) {
-        case ACTION_TYPE.FETCH_REQUEST: {
+function entity (state, action) {
+    if (!state) state = Object.assign({}, CONST.INITIAL_ENTITY_STATE);
+    switch (action.type) {
+        case ACTION_TYPES.FETCH_REQUEST: {
             return Object.assign({}, state, {
                 isFetching: true,
+                error     : null
+            });
+        }
+        case ACTION_TYPES.FETCH_SUCCESS: {
+            return Object.assign({}, state, {
+                isFetching : false,
+                lastUpdated: action.lastUpdated,
+                data       : !action.append
+                                ? action.data
+                                : state.data
+                                    ? state.data.concat(__toArray(action.data))
+                                    : __toArray(action.data),
                 error: null
             });
         }
-        case ACTION_TYPE.FETCH_SUCCESS: {
+        case ACTION_TYPES.FETCH_FAILURE: {
             return Object.assign({}, state, {
-                isFetching: false,
+                isFetching : false,
                 lastUpdated: action.lastUpdated,
-                data: action.data,
-                error: null
+                data       : null,
+                error      : action.error
             });
         }
-        case ACTION_TYPE.FETCH_FAILURE: {
-            return Object.assign({}, state, {
-                isFetching: false,
-                lastUpdated: action.lastUpdated,
-                data: null,
-                error: action.error
-            });
-        }
-        case ACTION_TYPE.RESET_ENTITY: {
-            return Object.assign({}, INITIAL_ENTITY_STATE, {
+        case ACTION_TYPES.RESET_ENTITY: {
+            return Object.assign({}, CONST.INITIAL_ENTITY_STATE, {
                 lastUpdated: action.lastUpdated
             });
         }
@@ -67,4 +65,7 @@ function entity(state, action) {
             return state;
         }
     }
+}
+function __toArray (obj) {
+    return Array.isArray(obj) ? obj : [obj];
 }

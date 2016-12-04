@@ -1,7 +1,8 @@
 'use strict';
 
-const model = require('redux-entity').model;
-const loadEntity = require('redux-entity').loadEntity;
+const model = require('./src/reducer');
+const loadEntity = require('./src/thunk');
+const chalk = require('chalk');
 
 // Redux state
 let state = {};
@@ -13,18 +14,11 @@ fetchFoobar()(dispatch);
  * Define custom thunk
  * @returns {*}
  */
-function fetchFoobar() {
+function fetchFoobar () {
     return loadEntity(
         'foobar',
         _getFakePromise(),
-        {
-            beforeSuccess: (dispatch, data) => {
-                console.log('Processing data before success!');
-            },
-            afterSuccess: (dispatch, data) => {
-                console.log('Processing data after success!');
-            }
-        }
+        null
     );
 }
 
@@ -32,7 +26,7 @@ function fetchFoobar() {
  * Simulate Redux's dispatch, with a logger
  * @param action
  */
-function dispatch(action) {
+function dispatch (action) {
     _logDetails(action);
     state = model(state, action);
     _logDetails();
@@ -43,7 +37,7 @@ function dispatch(action) {
   * @returns {Promise}
  * @private
  */
-function _getFakePromise() {
+function _getFakePromise () {
     return new Promise((resolve) => {
         const delay = _getRandomDelayBetween(1, 3, 2);
         setTimeout(() => resolve({delay}), delay * 1000);
@@ -58,7 +52,7 @@ function _getFakePromise() {
  * @returns {string}
  * @private
  */
-function _getRandomDelayBetween(min, max, roundTo) {
+function _getRandomDelayBetween (min, max, roundTo) {
     return Number(Math.random() * (max - min) + min).toFixed(roundTo);
 }
 
@@ -67,12 +61,16 @@ function _getRandomDelayBetween(min, max, roundTo) {
  * @param action
  * @private
  */
-function _logDetails(action) {
+function _logDetails (action) {
     if (action) {
-        console.log(`PREV STATE: ${_format(state)}`);
-        console.log(`    ACTION: ${_format(action)}`);
+        console.log(`${chalk.white.bgRed('  Prev State:')} 
+        ${__toString(state)}`);
+        console.log(`${chalk.white.bgBlue('      Action:')} 
+        ${__toString(action)}`);
     } else {
-        console.log(`NEXT STATE: ${_format(state)}`);
+        console.log(`${chalk.white.bgGreen('  Next State:')}
+        ${__toString(state)}`);
+        console.log('\n');
     }
 }
 
@@ -81,6 +79,6 @@ function _logDetails(action) {
  * @param obj
  * @private
  */
-function _format(obj) {
-    return JSON.stringify(obj, null, 2)
+function __toString (obj) {
+    return JSON.stringify(obj, null);
 }

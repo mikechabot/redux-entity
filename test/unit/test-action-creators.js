@@ -4,7 +4,7 @@ const expect = require('expect');
 const configureStore = require('redux-mock-store').default;
 const thunk = require('redux-thunk').default;
 const actionCreators = require('../../src/common/action-creators');
-const ACTION_TYPE = require('../../src/common/action-type');
+const ACTION_TYPE = require('../../src/common/const').ACTION_TYPES;
 
 // Set up mock Redux store
 const middlewares = [thunk];
@@ -138,12 +138,13 @@ describe('Action Creators', () => {
                     type       : ACTION_TYPE.FETCH_SUCCESS,
                     entity     : mockEntity,
                     data       : mockData,
-                    lastUpdated: now
+                    lastUpdated: now,
+                    append     : false
                 };
 
                 // Under test
                 store.dispatch(
-                    actionCreators.fetchSuccess(mockEntity)(mockData, now)
+                    actionCreators.fetchSuccess(mockEntity)(mockData, now, false)
                 );
 
                 expect(

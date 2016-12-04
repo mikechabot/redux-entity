@@ -1,6 +1,6 @@
 'use strict';
 
-const ACTION = require('./action-type');
+const ACTION_TYPES = require('./const').ACTION_TYPES;
 
 /**
  * Generate action creators based on input arguments. The first argument is always
@@ -14,12 +14,12 @@ const ACTION = require('./action-type');
  * @param type
  * @returns {Function}
  */
-function makeActionCreator(type) {
+function makeActionCreator (type) {
     if (!type) throw new Error('Type cannot be null/undefined');
     const keys = _getArgumentKeysAtIndex(arguments, 1);
-    return function() {
+    return function () {
         return _generateAction({ type }, keys, arguments);
-    }
+    };
 }
 
 /**
@@ -29,13 +29,13 @@ function makeActionCreator(type) {
  * @param entity            Model entity name (e.g 'users', 'orders', 'foobar')
  * @returns {Function}      Action creator that contains an entity key
  */
-function makeEntityActionCreator(type, entity) {
+function makeEntityActionCreator (type, entity) {
     if (!type) throw new Error('Type cannot be null/undefined');
     if (!entity) throw new Error('Entity cannot be null/undefined');
     const keys = _getArgumentKeysAtIndex(arguments, 2);
-    return function() {
+    return function () {
         return _generateAction({ type, entity }, keys, arguments);
-    }
+    };
 }
 
 /**
@@ -45,9 +45,9 @@ function makeEntityActionCreator(type, entity) {
  * @returns {Array}
  * @private
  */
-function _getArgumentKeysAtIndex(args, index) {
+function _getArgumentKeysAtIndex (args, index) {
     let keys = [];
-    for (let i=index; i < args.length; i++) {
+    for (let i = index; i < args.length; i++) {
         keys.push(args[i]);
     }
     return keys;
@@ -61,28 +61,28 @@ function _getArgumentKeysAtIndex(args, index) {
  * @returns {*}
  * @private
  */
-function _generateAction(action, keys, args) {
+function _generateAction (action, keys, args) {
     keys.forEach((arg, index) => {
-        action[keys[index]] = args[index]
+        action[keys[index]] = args[index];
     });
     return action;
 }
 
 module.exports = {
-    resetEntity: makeActionCreator(ACTION.RESET_ENTITY, 'entity', 'lastUpdated'),
-    deleteEntity: makeActionCreator(ACTION.DELETE_ENTITY, 'entity'),
-    makeActionCreator: makeActionCreator,
+    resetEntity            : makeActionCreator(ACTION_TYPES.RESET_ENTITY, 'entity', 'lastUpdated'),
+    deleteEntity           : makeActionCreator(ACTION_TYPES.DELETE_ENTITY, 'entity'),
+    makeActionCreator      : makeActionCreator,
     makeEntityActionCreator: makeEntityActionCreator,
     /**
      * Action creator for fetch requests
      * @param  {string} entity      Entity name (e.g. 'users', 'orders', 'foobar')
      * @return {function}           Action creator
      */
-    fetchRequest: (entity) => {
+    fetchRequest           : (entity) => {
         return makeEntityActionCreator(
-            ACTION.FETCH_REQUEST,
+            ACTION_TYPES.FETCH_REQUEST,
             entity
-        )
+        );
     },
     /**
      * Action creator for API fetch successes
@@ -91,10 +91,11 @@ module.exports = {
      */
     fetchSuccess: (entity) => {
         return makeEntityActionCreator(
-            ACTION.FETCH_SUCCESS,
+            ACTION_TYPES.FETCH_SUCCESS,
             entity,
             'data',
-            'lastUpdated'
+            'lastUpdated',
+            'append'
         );
     },
     /**
@@ -104,7 +105,7 @@ module.exports = {
      */
     fetchFailure: (entity) => {
         return makeEntityActionCreator(
-            ACTION.FETCH_FAILURE,
+            ACTION_TYPES.FETCH_FAILURE,
             entity,
             'error',
             'lastUpdated'

@@ -4,7 +4,7 @@ const expect = require('expect');
 const configureStore = require('redux-mock-store').default;
 const thunk = require('redux-thunk').default;
 const loadEntity = require('../../src/thunk');
-const ACTION_TYPE = require('../../src/common/action-type');
+const ACTION_TYPES = require('../../src/common/const').ACTION_TYPES;
 
 // Set up mock Redux store
 const middlewares = [thunk];
@@ -25,20 +25,21 @@ describe('Thunk Action Creators', () => {
                 const promise = Promise.resolve(data);
 
                 const expectedFetch = {
-                    type: ACTION_TYPE.FETCH_REQUEST,
+                    type: ACTION_TYPES.FETCH_REQUEST,
                     entity
                 };
 
                 const expectedSuccess = {
-                    type       : ACTION_TYPE.FETCH_SUCCESS,
+                    type       : ACTION_TYPES.FETCH_SUCCESS,
                     lastUpdated: undefined,         // Overwrite this in assertion
                     entity,
-                    data
+                    data,
+                    append     : false
                 };
 
                 // Under test
                 store.dispatch(
-                    loadEntity(entity, promise, false)
+                    loadEntity(entity, promise, null)
                 )
                 .then(() => {
                     // Assert 2 actions were invoked
@@ -71,12 +72,12 @@ describe('Thunk Action Creators', () => {
                 const promise = Promise.reject(error);
 
                 const expectedRequest = {
-                    type: ACTION_TYPE.FETCH_REQUEST,
+                    type: ACTION_TYPES.FETCH_REQUEST,
                     entity
                 };
 
                 const expectedFailure = {
-                    type       : ACTION_TYPE.FETCH_FAILURE,
+                    type       : ACTION_TYPES.FETCH_FAILURE,
                     lastUpdated: undefined,         // Overwrite this in assertion
                     entity,
                     error
@@ -112,23 +113,24 @@ describe('Thunk Action Creators', () => {
                 .catch(done);
             });
         });
-        describe('when loadEntity() is invoked silently', () => {
+        describe('when loadEntity() is configured to be silent', () => {
             it('should not dispatch a FETCH_REQUEST action', (done) => {
                 const data = {foo: 'bar'};
                 const promise = Promise.resolve(data);
 
                 const expectedSuccess = {
-                    type       : ACTION_TYPE.FETCH_SUCCESS,
+                    type       : ACTION_TYPES.FETCH_SUCCESS,
                     lastUpdated: undefined,         // Overwrite this in assertion
                     entity,
-                    data
+                    data,
+                    append     : false
                 };
+
+                const configOptions = { silent: true };
 
                 // Under test
                 store.dispatch(
-                    loadEntity(
-                        entity, promise, null, true
-                    )
+                    loadEntity(entity, promise, configOptions)
                 )
                 .then(() => {
                     // Assert 1 action was invoked
@@ -156,54 +158,72 @@ describe('Thunk Action Creators', () => {
                     store.dispatch(
                         loadEntity()
                     );
-                }).toThrow('name is required and must be a String');
+                }).toThrow('name is required, and must be a String');
             });
             it('should throw an error when entity name is null/undefined', () => {
                 expect(() => {
                     store.dispatch(
                         loadEntity(null)
                     );
-                }).toThrow('name is required and must be a String');
+                }).toThrow('name is required, and must be a String');
                 expect(() => {
                     store.dispatch(
                         loadEntity(undefined)
                     );
-                }).toThrow('name is required and must be a String');
+                }).toThrow('name is required, and must be a String');
             });
             it('should throw an error when entity name not passed a String', () => {
                 expect(() => {
                     store.dispatch(
                         loadEntity(123)
                     );
-                }).toThrow('name is required and must be a String');
+                }).toThrow('name is required, and must be a String');
                 expect(() => {
                     store.dispatch(
                         loadEntity({})
                     );
-                }).toThrow('name is required and must be a String');
+                }).toThrow('name is required, and must be a String');
                 expect(() => {
                     store.dispatch(
                         loadEntity(new Date())
                     );
-                }).toThrow('name is required and must be a String');
+                }).toThrow('name is required, and must be a String');
             });
             it('should throw an error with an undefined data promise', () => {
                 expect(() => {
                     store.dispatch(
-                        loadEntity(
-                            entity, undefined
-                        )
+                        loadEntity(entity)
                     );
-                }).toThrow('promise is required and must be a Promise');
+                }).toThrow('promise is required, and must be a Promise');
             });
             it('should throw an error when a promise is not passed', () => {
                 expect(() => {
                     store.dispatch(
-                        loadEntity(
-                            entity, {}
-                        )
+                        loadEntity(entity, {})
                     );
-                }).toThrow('promise is required and must be a Promise');
+                }).toThrow('promise is required, and must be a Promise');
+            });
+            it('should throw an error when invalid options are passed', () => {
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(entity, Promise.resolve(), 'foo')
+                    );
+                }).toThrow('options must be an Object');
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(entity, Promise.resolve(), 123)
+                    );
+                }).toThrow('options must be an Object');
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(entity, Promise.resolve(), [])
+                    );
+                }).toThrow('options must be an Object');
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(entity, Promise.resolve(), function () {})
+                    );
+                }).toThrow('options must be an Object');
             });
         });
     });
