@@ -247,12 +247,12 @@ An `options` object can be passed to [`loadEntity`](#reducer) as the third argum
 * All processors have access to Redux dispatch (be careful!) along with either the data object, if the promise resolves, or the error object if the promise rejects.
 * Use of `processors` is optional, but should be considered for advanced use-cases.
 
-| Processor        | Description                              | When to use                                               | Type
-|-----------------:|:-----------------------------------------|-----------------------------------------------------------|------------|
-| `beforeSuccess`  | Invoked before `FETCH_SUCCESS` | Preprocess the data object before its dispatched to Redux | `Function` |
-| `afterSuccess`   | Invoked after `FETCH_SUCCESS`  | Take action after the entity's state changes              | `Function` |
-| `beforeFailure`  | Invoked before `FETCH_FAILURE` | Preprocess the error before its disppatched to Redux      | `Function` |
-| `afterFailure`   | Invoked after `FETCH_FAILURE`  | Take action after the error is dispatched                 | `Function` |
+| Processor        | Description                    | When to use                                     | Type       |
+|-----------------:|:-------------------------------|-------------------------------------------------|------------|
+| `beforeSuccess`  | Invoked before `FETCH_SUCCESS` | Process the data before its dispatched to Redux | `Function` |
+| `afterSuccess`   | Invoked after `FETCH_SUCCESS`  | Take action after the entity's state changes    | `Function` |
+| `beforeFailure`  | Invoked before `FETCH_FAILURE` | Process the error before its dispatched to Redux| `Function` |
+| `afterFailure`   | Invoked after `FETCH_FAILURE`  | Take action after the error is dispatched       | `Function` |
 
 **Note**: [See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`.
 
