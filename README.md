@@ -52,7 +52,7 @@ export default function configureStore(initialState) {
     );
 };
 ```
-###4. Configure the Redux store within React 
+###4. Create the Redux store
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
