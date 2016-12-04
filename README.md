@@ -9,9 +9,9 @@
 
 - [Live Demo](#live-demo)
 - [Getting Started](#getting-started)
+- [Configuration](#configuration)
 - [Thunk](#thunk)
 - [Reducer](#reducer)
-- [Configuration](#configuration)
 - [Additional Actions](#additional-actions)
 
 ## Live Demo
