@@ -1,7 +1,7 @@
 'use strict';
 
-const model = require('./src/reducer');
-const loadEntity = require('./src/thunk');
+const model = require('redux-entity').model;
+const loadEntity = require('redux-entity').loadEntity;
 const chalk = require('chalk');
 
 // Redux state
