@@ -23,7 +23,7 @@ Using `npm` or `yarn`:
 - ```$ npm -i -S redux-entity```
 
 ###2. Configure the root reducer
-Import the reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
+Import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
 import { combineReducers } from 'redux';
