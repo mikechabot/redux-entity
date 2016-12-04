@@ -309,9 +309,14 @@ function Entity({
 Entity.propTypes  = {
     entityName: React.PropTypes.string.isRequired,
     entity: React.PropTypes.shape({
-        isFetching: React.PropTypes.bool,
+        isFetching : React.PropTypes.bool,
         lastUpdated: React.PropTypes.number,
-        data: React.PropTypes.object,
+        data       : React.PropTypes.oneOfType([
+            React.PropTypes.string,
+            React.PropTypes.number,
+            React.PropTypes.object,
+            React.PropTypes.array
+        ]),
         error: React.PropTypes.oneOfType([
             React.PropTypes.object,
             React.PropTypes.string
