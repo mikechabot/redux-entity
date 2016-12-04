@@ -26,12 +26,9 @@ module.exports = function loadEntity (
     if (options && options.constructor !== Object) throw new Error('options must be an Object');
 
     return (dispatch) => {
-        const {
-            silent,
-            append
-        } = __mergeWithDefaultOptions(options);
+        options = __mergeWithDefaultOptions(options);
 
-        if (!silent) {
+        if (!options.silent) {
             dispatch(
                 actionCreators.fetchRequest(name)()
             );
@@ -40,7 +37,7 @@ module.exports = function loadEntity (
         return promise
             .then(data => {
                 dispatch(
-                    actionCreators.fetchSuccess(name)(data, __now(), append)
+                    actionCreators.fetchSuccess(name)(data, __now(), options.append)
                 );
             })
             .catch(error => {
