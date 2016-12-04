@@ -22,7 +22,7 @@ Using `npm` or `yarn`:
 - ```$ npm -i -S redux-entity```
 
 ###2. Configure the root reducer
-Import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
+In your root reducer, import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
 import { combineReducers } from 'redux';
@@ -34,7 +34,7 @@ export default combineReducers({
 });
 ```
 ###3. Configure the Redux store
-Ensure `redux-thunk` middelware is applied, along with the root reducer from Step #1:
+Ensure `redux-thunk` middelware is applied, along with your root reducer:
 
 ```javascript
 import { createStore, applyMiddleware } from 'redux';
@@ -49,7 +49,7 @@ export default function configureStore(initialState) {
     );
 };
 ```
-###4. Create the Redux store
+###4. Create and inject the Redux store
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
