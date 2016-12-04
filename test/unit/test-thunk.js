@@ -4,7 +4,10 @@ const expect = require('expect');
 const configureStore = require('redux-mock-store').default;
 const thunk = require('redux-thunk').default;
 const loadEntity = require('../../src/thunk');
-const ACTION_TYPES = require('../../src/common/const').ACTION_TYPES;
+const CONST = require('../../src/common/const');
+
+const ACTION_TYPES = CONST.ACTION_TYPES;
+const STAGES = CONST.STAGES;
 
 // Set up mock Redux store
 const middlewares = [thunk];
@@ -150,6 +153,105 @@ describe('Thunk Action Creators', () => {
                 })
                 .then(done)
                 .catch(done);
+            });
+        });
+        describe('when loadEntity() is configured with stage processors', () => {
+            it('Stage BEFORE_SUCCESS', (done) => {
+                const beforeSuccess = {
+                    beforeSuccess: function (dispatch, data) {
+                        console.log(dispatch, data);
+                        return dispatch({ type: 'foo', data });
+                    }
+                };
+
+                const spy = expect.spyOn(beforeSuccess, 'beforeSuccess');
+
+                const configOptions = {
+                    processors: {
+                        [STAGES.BEFORE_SUCCESS]: beforeSuccess.beforeSuccess
+                    }
+                };
+
+                // Under test
+                store
+                    .dispatch(loadEntity(entity, Promise.resolve({}), configOptions))
+                    .then(() => {
+                        expect(spy).toHaveBeenCalled();
+                    })
+                    .then(done)
+                    .catch(done);
+            });
+            it('Stage AFTER_SUCCESS', (done) => {
+                const afterSuccess = {
+                    afterSuccess: function (dispatch, data) {
+                        return dispatch({ type: 'foo', data });
+                    }
+                };
+
+                const spy = expect.spyOn(afterSuccess, 'afterSuccess');
+
+                const configOptions = {
+                    processors: {
+                        [STAGES.AFTER_SUCCESS]: afterSuccess.afterSuccess
+                    }
+                };
+
+                // Under test
+                store
+                    .dispatch(loadEntity(entity, Promise.resolve({}), configOptions))
+                    .then(() => {
+                        expect(spy).toHaveBeenCalled();
+                    })
+                    .then(done)
+                    .catch(done);
+            });
+            it('Stage BEFORE_FAILURE', (done) => {
+                const beforeFailure = {
+                    beforeFailure: function (dispatch, data) {
+                        return dispatch({ type: 'foo', data });
+                    }
+                };
+
+                const spy = expect.spyOn(beforeFailure, 'beforeFailure');
+
+                const configOptions = {
+                    processors: {
+                        [STAGES.BEFORE_FAILURE]: beforeFailure.beforeFailure
+                    }
+                };
+
+                // Under test
+                store
+                    .dispatch(loadEntity(entity, Promise.reject({}), configOptions))
+                    .then(() => {
+                        expect(spy).toHaveBeenCalled();
+                    })
+                    .then(done)
+                    .catch(done);
+            });
+            it('Stage AFTER_FAILURE', (done) => {
+                const afterFailure = {
+                    afterFailure: function (dispatch, data) {
+                        return dispatch({ type: 'foo', data });
+                    }
+                };
+
+                const spy = expect.spyOn(afterFailure, 'afterFailure');
+
+                const configOptions = {
+                    processors: {
+                        [STAGES.BEFORE_FAILURE]: afterFailure.afterFailure
+                    }
+                };
+
+                // Under test
+                store
+                    .dispatch(loadEntity(entity, Promise.reject({}), configOptions))
+                    .then(() => {
+                        expect(spy).toHaveBeenCalled();
+                    })
+                    .then(done)
+                    .catch(done);
             });
         });
         describe('when loadEntity() is passed invalid arguments', () => {

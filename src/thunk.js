@@ -1,7 +1,10 @@
 'use strict';
 
 const actionCreators = require('./common/action-creators');
-const DEFAULT_OPTIONS = require('./common/const').DEFAULT_OPTIONS;
+const CONST = require('./common/const');
+
+const DEFAULT_OPTIONS = CONST.DEFAULT_OPTIONS;
+const STAGES = CONST.STAGES;
 
 /**
  * Redux thunk action creator for making asynchronous API calls. This thunk
@@ -34,16 +37,23 @@ module.exports = function loadEntity (
             );
         }
 
+        function __processStage (stage, object) {
+            const processor = options.processors[stage];
+            if (processor) {
+                processor(dispatch, object);
+            }
+        }
+
         return promise
             .then(data => {
-                dispatch(
-                    actionCreators.fetchSuccess(name)(data, __now(), options.append)
-                );
+                __processStage(STAGES.BEFORE_SUCCESS, data);
+                dispatch(actionCreators.fetchSuccess(name)(data, __now(), options.append));
+                __processStage(STAGES.AFTER_SUCCESS, data);
             })
             .catch(error => {
-                dispatch(
-                    actionCreators.fetchFailure(name)(error, __now())
-                );
+                __processStage(STAGES.BEFORE_FAILURE, error);
+                dispatch(actionCreators.fetchFailure(name)(error, __now()));
+                __processStage(STAGES.AFTER_FAILURE, error);
             });
     };
 };
