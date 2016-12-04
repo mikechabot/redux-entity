@@ -169,7 +169,7 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
 }
 ```
 
-**NOTE**: When configuring `append` to `true`, consider the following examples:
+#### When configuring `append` to `true`, consider the following examples:
 
 1. When the data promise retuns an `object`, it will be pushed onto an array. Merging does NOT occur:
     ```javascript
