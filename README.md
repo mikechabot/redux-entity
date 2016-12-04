@@ -157,6 +157,8 @@ export default connect(
 ```
 ## <a name="redux-entity#configuration-options">Configuration Options</a>
 An `options` object can be passed to [`loadEntity`](#reducer) as the third argument, and the following properties are available for configuration: 
+
+#### Example Configuration
 ```javascript
 {
     silent: true,
