@@ -39,7 +39,7 @@ module.exports = function loadEntity (
 
         function __processStage (stage, object) {
             const processor = options.processors[stage];
-            if (processor) {
+            if (processor && typeof processor === 'function') {
                 processor(dispatch, object);
             }
         }
