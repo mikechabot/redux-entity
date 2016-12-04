@@ -191,6 +191,8 @@ Be careful with processors, they have direct access to Redux dispatch!
 | `beforeFailure`  | Fired immediately before `FETCH_FAILURE` | Preprocess the error before its disppatched to Redux      |
 | `afterFailure`   | Fired immediately after `FETCH_FAILURE`  | Take action after the error is dispatched                 |
 
+[See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`
+
 ### When configuring `append` to `true`, consider the following examples:
 
 1. When the data promise retuns an `object`, it will be pushed onto an array. Merging does NOT occur:
