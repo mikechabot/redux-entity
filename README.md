@@ -156,7 +156,7 @@ export default connect(
 )(Orders);
 ```
 ## <a name="redux-entity#configuration-options">Configuration Options</a>
-A configuration object can be passed to [`loadEntity`](#reducer) as the third argument, and the following properties are available for use: 
+An `options` object can be passed to [`loadEntity`](#reducer) as the third argument, and the following properties are available for configuration: 
 ```javascript
 {
     silent: true,
@@ -172,11 +172,11 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
     }
 }
 ```
-### `silent` (default: `false`)
+### `silent` (default: `false`, type: `Boolean`)
 * If true, do not dispatch the `FETCH_REQUEST` action, which sets the `isFetching` property on the entity to true. 
 * Set `silent` to `true` to inhibit any UI hooks that are listenting for `isFetching` to be `true`, for instance, to show a loading indicator. 
 
-### `append` (default: `false`)
+### `append` (default: `false`, type: `Boolean`)
 * By default, each time you invoke your custom thunk (e.g. `loadOrders()`), it will overwrite the entity's `data` property with fresh data. 
 * If `append` is set to `true`, new data will be appended to the entity's existing data. 
 * Keep in mind, if `append` is set to `true`, the `data` object on your entity will **always** be an [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), regardless of the type of data your promise returns. See below:
@@ -242,17 +242,17 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
     }
     ```
 
-### `processors` (default: `null`)
+### `processors` (default: `null`, type: `Object`)
 * `processors` grant you access to various stages in the `loadEntity` lifecycle. 
 * All processors have access to Redux dispatch (be careful!) along with either the data object, if the promise resolves, or the error object if the promise rejects.
 * Use of `processors` is optional, but should be considered for advanced use-cases.
 
-| Processor        | Description                              |When to use                                                |
-|-----------------:|:-----------------------------------------|-----------------------------------------------------------|
-| `beforeSuccess`  | Fired immediately before `FETCH_SUCCESS` | Preprocess the data object before its dispatched to Redux |
-| `afterSuccess`   | Fired immediately after `FETCH_SUCCESS`  | Take action after the entity's state changes              |
-| `beforeFailure`  | Fired immediately before `FETCH_FAILURE` | Preprocess the error before its disppatched to Redux      |
-| `afterFailure`   | Fired immediately after `FETCH_FAILURE`  | Take action after the error is dispatched                 |
+| Processor        | Description                              | When to use                                               | Type
+|-----------------:|:-----------------------------------------|-----------------------------------------------------------|------------|
+| `beforeSuccess`  | Invoked before `FETCH_SUCCESS` | Preprocess the data object before its dispatched to Redux | `Function` |
+| `afterSuccess`   | Invoked after `FETCH_SUCCESS`  | Take action after the entity's state changes              | `Function` |
+| `beforeFailure`  | Invoked before `FETCH_FAILURE` | Preprocess the error before its disppatched to Redux      | `Function` |
+| `afterFailure`   | Invoked after `FETCH_FAILURE`  | Take action after the error is dispatched                 | `Function` |
 
 **Note**: [See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`.
 
