@@ -77,6 +77,18 @@ export function loadOrders() {
     );
 }
 ```
+
+To dynamically pass options to your thunk (see [Configuration](#configuration)): 
+```javascript`
+export function loadOrders(options) {
+    return loadEntity(
+        'orders',
+        OrderService.getOrders(),
+        options
+    );
+}
+```
+
 ###6. Create a React component
    1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
@@ -134,6 +146,21 @@ export default connect(
     { loadOrders }
 )(Orders);
 ```
+## <a name="redux-entity#configuration">Configuration</a>
+The following properties are available for configuration: 
+```javascript
+{
+    // If silent is true, do not dispatch the FETCH_REQUEST action, which sets the 
+    // "isFetching" property on the entity to true.
+    silent: true,  // default: false,
+    // If append is true, do not overwrite the data property on the entity when FETCH_SUCCESS
+    // is dispatched, but rather append any new data to whatever already exists on the entity.
+    //     - If your promise returns an array, the existing array is concatentated with the new one.
+    //     - If your promise returns an object, it is pushed onto the data array.
+    append: true   // default: false
+}
+```
+
 ## <a name="redux-entity#thunk">Thunk</a>
 
 - At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)`.
@@ -267,9 +294,6 @@ function entity (state, action) {
     }
 }
 ```
-## <a name="redux-entity#configuration">Configuration</a>
-
-
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
 The following action creators are synchonrous. Use them to reset or delete your entity:
 
@@ -336,3 +360,4 @@ export default connect (null, {
     deleteEntity
 })(Entity);
 ```
+
