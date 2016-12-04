@@ -61,9 +61,6 @@ function entity (state, action) {
                 lastUpdated: action.lastUpdated
             });
         }
-        default: {
-            return state;
-        }
     }
 }
 function __toArray (obj) {
