@@ -22,7 +22,7 @@ Using `npm` or `yarn`:
 - ```$ yarn add redux-entity```
 - ```$ npm -i -S redux-entity```
 
-###Configure the reducer
+###1. Configure the root reducer
 Import the reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
@@ -34,8 +34,8 @@ export default combineReducers({
     model
 });
 ```
-###Configure the Redux store
-Ensure `redux-thunk` middelware is applied:
+###2. Configure the Redux store
+Ensure `redux-thunk` middelware is applied, along with the root reducer from Step #1:
 
 ```javascript
 import { createStore, applyMiddleware } from 'redux';
@@ -51,7 +51,7 @@ export default function configureStore(initialState) {
 };
 ```
 
-###Create a custom thunk
+###3. Create a custom thunk
 Import `loadEntity()` from `redux-entity` along with your domain service, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 // thunks.js
@@ -65,7 +65,7 @@ export function loadOrders() {
     );
 }
 ```
-###Create a React component
+###4. Create a React component
    1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
@@ -155,8 +155,9 @@ const state = {
 - Every action dispatched by the **thunk** will be consumed by the `model` reducer. 
 - Most actions will also be piped through the `entity` reducer, which handles individual entities (e.g. `orders`) on `model`:
 ```javascript
-function model(state = INITIAL_STATE, action) {
-    switch(action.type) {
+function model (state, action) {
+    if (!state) state = Object.assign({}, INITIAL_MODEL_STATE);
+    switch (action.type) {
         case RESET_ENTITY:  // fall through
         case FETCH_SUCCESS: // fall through
         case FETCH_FAILURE: // fall through
@@ -176,42 +177,44 @@ function model(state = INITIAL_STATE, action) {
             return state;
         }
     }
-};
+}
 ```
 ### `entity` reducer
 Handles the state of a single entity (e.g. `orders`):
 ```javascript
-function entity(state = INITIAL_ENTITY_STATE, action) {
-    switch(action.type) {
+function entity (state, action) {
+    if (!state) state = Object.assign({}, INITIAL_ENTITY_STATE);
+    switch (action.type) {
         case FETCH_REQUEST: {
             return Object.assign({}, state, {
                 isFetching: true,
-                error: null
+                error     : null
             });
         }
         case FETCH_SUCCESS: {
             return Object.assign({}, state, {
-                isFetching: false,
+                isFetching : false,
                 lastUpdated: action.lastUpdated,
-                data: action.data,
+                data       : action.append
+                                ? !state.data
+                                    ? __toArray(action.data)
+                                    : state.data.concat(__toArray(action.data))
+                                : action.data,
                 error: null
             });
         }
         case FETCH_FAILURE: {
             return Object.assign({}, state, {
-                isFetching: false,
+                isFetching : false,
                 lastUpdated: action.lastUpdated,
-                data: null,
-                error: action.error
+                data       : null,
+                error      : action.error
             });
         }
         case RESET_ENTITY: {
             return Object.assign({}, INITIAL_ENTITY_STATE, {
                 lastUpdated: action.lastUpdated
             });
-        }
-        default: {
-            return state;
         }
     }
 }
@@ -223,47 +226,37 @@ function entity(state = INITIAL_ENTITY_STATE, action) {
 - A third arugment `silent` ([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)) determines whether or not to dispatch the FETCH_REQUEST action. If true, the action is not dispatched.
 
 ```javascript
-function loadEntity(
+function loadEntity (
     name,
     promise,
-    silent = false
+    options
 ) {
-    if (!name) throw new Error('name is required');
-    if (!promise || !promise.then) throw new Error('promise must be a Promise');
+    if (!name || typeof name !== 'string') throw new Error('name is required, and must be a String');
+    if (!promise || !promise.then) throw new Error('promise is required, and must be a Promise');
+    if (options && options.constructor !== Object) throw new Error('options must be an Object');
 
     return (dispatch) => {
+        options = __mergeWithDefaultOptions(options);
 
-        if (!silent) {
-            /**
-             * When fetchRequest is dispatched, the `isFetching` property
-             * on the entity is set to `true`. The UI can hook into this
-             * property, and optionally display a spinner or loading
-             * indicator to the end-user.
-             *
-             * A reason to pass `silent` as true would be to
-             * inhibit this loading indicator, if configured. For instance,
-             * perhaps only the spinner should show when the component is
-             * mounting, but subsequent updates to the entity are done
-             * silently in the background.
-             */
-            dispatch(fetchRequest(name)());
+        if (!options.silent) {
+            dispatch(
+                actionCreators.fetchRequest(name)()
+            );
         }
 
         return promise
             .then(data => {
-                // Dispatch success to update model state
                 dispatch(
-                    fetchSuccess(name)(data, Date.now())
-                )
+                    actionCreators.fetchSuccess(name)(data, __now(), options.append)
+                );
             })
             .catch(error => {
-                // Dispatch failure to notify UI
                 dispatch(
-                    fetchFailure(name)(error, Date.now())
-                )
-            })
-    }
-};
+                    actionCreators.fetchFailure(name)(error, __now())
+                );
+            });
+    };
+}
 ```
 
 ## <a name="redux-entity#additional-action-creators">Additional Action Creators</a> 
