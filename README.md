@@ -5,13 +5,13 @@
 
 # redux-entity
 
-`redux-entity` seeks to provide a scalable, predictable approach to maintaining domain entities in Redux. It's comprised of a **reducer** and a **thunk**.
+`redux-entity` seeks to provide a scalable, predictable approach to maintaining domain entities in Redux. It's comprised of a **[thunk](https://github.com/gaearon/redux-thunk#whats-a-thunk)** and a **[reducer](http://redux.js.org/docs/basics/Reducers.html)**.
 
 - [Live Demo](#live-demo)
 - [Getting Started](#getting-started)
-- [Reducer](#reducer)
 - [Thunk](#thunk)
-- [Additional Action Creators](#additional-action-creators)
+- [Reducer](#reducer)
+- [Additional Actions](#additional-actions)
 
 ## Live Demo
 http://mikechabot.github.io/react-boilerplate/
@@ -122,10 +122,46 @@ export default connect(
     { loadOrders }
 )(Orders);
 ```
+## <a name="redux-entity#thunk">Thunk</a>
 
+- At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)` as arguments.
+- A third arugment `silent` ([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)) determines whether or not to dispatch the FETCH_REQUEST action. If true, the action is not dispatched.
+
+```javascript
+function loadEntity (
+    name,
+    promise,
+    options
+) {
+    if (!name || typeof name !== 'string') throw new Error('name is required, and must be a String');
+    if (!promise || !promise.then) throw new Error('promise is required, and must be a Promise');
+    if (options && options.constructor !== Object) throw new Error('options must be an Object');
+
+    return (dispatch) => {
+        options = __mergeWithDefaultOptions(options);
+
+        if (!options.silent) {
+            dispatch(
+                actionCreators.fetchRequest(name)()
+            );
+        }
+
+        return promise
+            .then(data => {
+                dispatch(
+                    actionCreators.fetchSuccess(name)(data, __now(), options.append)
+                );
+            })
+            .catch(error => {
+                dispatch(
+                    actionCreators.fetchFailure(name)(error, __now())
+                );
+            });
+    };
+}
+```
 ## <a name="redux-entity#reducer">Reducer</a>
-- The reducer allocates itself in the Redux store as `state.model`.
-- Each entity you load is stored on `model` with a key of your choice (e.g. `orders`), and automatically wrapped with the properties below:
+- Each entity you load is stored on `state.model` (per Step #1 in [Getting Started](#getting-started)) with a key of your choice (e.g. `orders`), and automatically wrapped with the properties below:
 
 | Property     | Description                                     |
 |-------------:|:------------------------------------------------|
@@ -152,7 +188,7 @@ const state = {
 }
 ```
 ### `model` reducer
-- Every action dispatched by the **thunk** will be consumed by the `model` reducer. 
+- Every action dispatched by the **thunk** (`loadEntity`) will be consumed by the `model` reducer. 
 - Most actions will also be piped through the `entity` reducer, which handles individual entities (e.g. `orders`) on `model`:
 ```javascript
 function model (state, action) {
@@ -219,48 +255,8 @@ function entity (state, action) {
     }
 }
 ```
-
-## <a name="redux-entity#thunk">Thunk</a>
-
-- At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)` as arguments.
-- A third arugment `silent` ([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)) determines whether or not to dispatch the FETCH_REQUEST action. If true, the action is not dispatched.
-
-```javascript
-function loadEntity (
-    name,
-    promise,
-    options
-) {
-    if (!name || typeof name !== 'string') throw new Error('name is required, and must be a String');
-    if (!promise || !promise.then) throw new Error('promise is required, and must be a Promise');
-    if (options && options.constructor !== Object) throw new Error('options must be an Object');
-
-    return (dispatch) => {
-        options = __mergeWithDefaultOptions(options);
-
-        if (!options.silent) {
-            dispatch(
-                actionCreators.fetchRequest(name)()
-            );
-        }
-
-        return promise
-            .then(data => {
-                dispatch(
-                    actionCreators.fetchSuccess(name)(data, __now(), options.append)
-                );
-            })
-            .catch(error => {
-                dispatch(
-                    actionCreators.fetchFailure(name)(error, __now())
-                );
-            });
-    };
-}
-```
-
-## <a name="redux-entity#additional-action-creators">Additional Action Creators</a> 
-For synchronous actions, we can use the following action creators:
+## <a name="redux-entity#additional-actions">Additional Actions</a> 
+The following action creators are synchonrous. Use them to reset or delete your entity:
 
 | Action creator | Description                                                           |
 |---------------:|:----------------------------------------------------------------------|
