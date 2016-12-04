@@ -11,6 +11,7 @@
 - [Getting Started](#getting-started)
 - [Thunk](#thunk)
 - [Reducer](#reducer)
+- [Configuration](#configuration)
 - [Additional Actions](#additional-actions)
 
 ## Live Demo
@@ -50,8 +51,19 @@ export default function configureStore(initialState) {
     );
 };
 ```
+###4. Configure the Redux store within React 
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Root from './Root';
+import configureStore from './redux/store/configure-store';
 
-###4. Create a custom thunk
+ReactDOM.render(
+    <Root store={configureStore()} />,
+    document.getElementById('example-app')
+);
+```
+###5. Create a custom thunk
 Import `loadEntity()` from `redux-entity` along with your domain service, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 // thunks.js
@@ -65,7 +77,7 @@ export function loadOrders() {
     );
 }
 ```
-###5. Create a React component
+###6. Create a React component
    1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
@@ -124,8 +136,8 @@ export default connect(
 ```
 ## <a name="redux-entity#thunk">Thunk</a>
 
-- At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)` as arguments.
-- A third arugment `silent` ([Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)) determines whether or not to dispatch the FETCH_REQUEST action. If true, the action is not dispatched.
+- At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)`.
+- A third argument (`options`) can be provided, which contains additionl configuration options. See [Configuration](#configuration).
 
 ```javascript
 function loadEntity (
@@ -255,6 +267,9 @@ function entity (state, action) {
     }
 }
 ```
+## <a name="redux-entity#configuration">Configuration</a>
+
+
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
 The following action creators are synchonrous. Use them to reset or delete your entity:
 
