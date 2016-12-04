@@ -243,8 +243,9 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
     ```
 
 ### `processors` (default: `null`)
-* Processors grant you access to various stages in the `loadEntity` lifecycle. 
-* All processors have access to Redux dispatch (careful!) along with either the data object, if the promise resolves, or the error object if the promise rejects.
+* `processors` grant you access to various stages in the `loadEntity` lifecycle. 
+* All processors have access to Redux dispatch (be careful!) along with either the data object, if the promise resolves, or the error object if the promise rejects.
+* Use of `processors` is optional, but should be considered for advanced use-cases.
 
 | Processor        | Description                              |When to use                                                |
 |-----------------:|:-----------------------------------------|-----------------------------------------------------------|
@@ -253,7 +254,9 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
 | `beforeFailure`  | Fired immediately before `FETCH_FAILURE` | Preprocess the error before its disppatched to Redux      |
 | `afterFailure`   | Fired immediately after `FETCH_FAILURE`  | Take action after the error is dispatched                 |
 
-[See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`
+**Note**: [See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`.
+
+**Note**: Use of `beforeSuccess` is not entirely necessary. Business logic to maniuplate the promise data can occur within your domain service. However, all `processors` do get access to `dispatch`, which may be helpful.
 
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
 The following action creators are synchonrous, and can be used to reset or delete your entity. Check out the [Live Demo](#live-demo) to see these in action.
