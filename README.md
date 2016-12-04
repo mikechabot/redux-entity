@@ -17,12 +17,12 @@
 http://mikechabot.github.io/react-boilerplate/
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
-###Installation
+###1. Installation
 Using `npm` or `yarn`:
 - ```$ yarn add redux-entity```
 - ```$ npm -i -S redux-entity```
 
-###1. Configure the root reducer
+###2. Configure the root reducer
 Import the reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
@@ -34,7 +34,7 @@ export default combineReducers({
     model
 });
 ```
-###2. Configure the Redux store
+###3. Configure the Redux store
 Ensure `redux-thunk` middelware is applied, along with the root reducer from Step #1:
 
 ```javascript
@@ -51,7 +51,7 @@ export default function configureStore(initialState) {
 };
 ```
 
-###3. Create a custom thunk
+###4. Create a custom thunk
 Import `loadEntity()` from `redux-entity` along with your domain service, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 // thunks.js
@@ -65,7 +65,7 @@ export function loadOrders() {
     );
 }
 ```
-###4. Create a React component
+###5. Create a React component
    1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
