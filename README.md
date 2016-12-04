@@ -233,6 +233,7 @@ A configuration object can be passed to [`loadEntity`](#reducer) as the third ar
        }
     }
     ```
+    
 ## <a name="redux-entity#thunk">Thunk</a>
 - At minimum, `loadEntity` accepts a [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for the entity name (e.g. `orders`) and a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) (e.g. `OrderService.getOrders)`.
 - A third argument (`options`) can be provided, which contains additionl configuration options. See [Configuration](#configuration).
