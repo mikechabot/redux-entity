@@ -147,16 +147,16 @@ export default connect(
 )(Orders);
 ```
 ## <a name="redux-entity#configuration">Configuration</a>
-A configuration object can be passed as the third argument to [`loadEntity`](#reducer) The following properties are available for configuration: 
+A configuration object can be passed to [`loadEntity`](#reducer) as the third argument, and the following properties are available for use: 
 ```javascript
 {
-    // If silent is true, do not dispatch the FETCH_REQUEST action, which sets the "isFetching" 
+    // If true, do NOT dispatch the FETCH_REQUEST action, which sets the "isFetching" 
     // property on the entity to true. Do this to inhibit any UI hooks on "isFetching".
-    silent: true,  // default: false,
+    silent: true,  // default: false (always dispatch FETCH_REQUEST)
 
-    // If append is true, do not overwrite the data property on the entity when FETCH_SUCCESS
-    // is dispatched, but rather append any new data to whatever already exists on the entity.
-    append: true   // default: false
+    // If true, do NOT overwrite the data property whenever FETCH_SUCCESS is dispatched,
+    // but rather append any new data to whatever already exists on the entity.
+    append: true   // default: false (always overwrite)
 }
 ```
 
