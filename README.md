@@ -159,43 +159,29 @@ export default connect(
 A configuration object can be passed to [`loadEntity`](#reducer) as the third argument, and the following properties are available for use: 
 ```javascript
 {
-    // If true, do NOT dispatch the FETCH_REQUEST action, which sets the "isFetching" 
-    // property on the entity to true. Do this to inhibit any UI hooks on "isFetching".
-    silent: true,  // default: false
-
-    // If true, do NOT overwrite the data property whenever FETCH_SUCCESS is dispatched,
-    // but rather append any new data to whatever already exists on the entity.
-    append: true   // default: false
-    
-    // Processors grant you access to various stages in the "loadEntity" lifecycle.
-    // All processors get access to Redux dispatch along with either the data object
-    // if the promise resolves, or the error object if the promise rejects.
+    silent: true,
+    append: true,
     processors: {
-        beforeSuccess: null,                         // default: null
-        afterSuccess : null,                         // default: null
-        beforeFailure: null,                         // default: null
-        afterFailure : function (dispatch, error) {  // default: null
-            dispatch({ type: 'MY_CUSTOM_ERROR', error })
+        beforeSuccess: function (dispatch, data) {
+            dispatch({ type: 'SOME_ACTION' });
+            return _.map(data, 'stuff');
+        },
+        afterFailure : function (dispatch, error) {
+            dispatch({ type: 'SOME_ERROR', error })
         }
     }
 }
 ```
+### `silent` (default: `false`)
+* If true, do not dispatch the `FETCH_REQUEST` action, which sets the `isFetching` property on the entity to true. 
+* Do this to inhibit any UI hooks that are listenting for `isFetching` to be `true`, for instance, to show a loading indicator. 
 
-### When configuring `processors`, consider the following:
-Be careful with processors, they have direct access to Redux dispatch!
+### `append` (default: `false`)
+* By default, each time you invoke your custom thunk (e.g. `loadOrders()`), it will overwrite the entity's `data` property with fresh data. 
+* If `append` is set to `true`, new data will be appended to the entity's existing data. 
+* If `append` is set to `true`, the `data` object on your entity will **always** be an [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), regardless the data type of your promise result. See below:
 
-| Processor        | Description                              |When to use                                                |
-|-----------------:|:-----------------------------------------|-----------------------------------------------------------|
-| `beforeSuccess`  | Fired immediately before `FETCH_SUCCESS` | Preprocess the data object before its dispatched to Redux |
-| `afterSuccess`   | Fired immediately after `FETCH_SUCCESS`  | Take action after the entity's state changes              |
-| `beforeFailure`  | Fired immediately before `FETCH_FAILURE` | Preprocess the error before its disppatched to Redux      |
-| `afterFailure`   | Fired immediately after `FETCH_FAILURE`  | Take action after the error is dispatched                 |
-
-[See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`
-
-### When configuring `append` to `true`, consider the following examples:
-
-1. When the data promise retuns an `object`, it will be pushed onto an array. Merging does NOT occur:
+1. When your data promise returns an `object`, it will be pushed onto an array. Merging does NOT occur:
     ```javascript
     function fetchFoo () {
         return loadEntity(
@@ -226,7 +212,7 @@ Be careful with processors, they have direct access to Redux dispatch!
        }
     }
     ```
-2. When the data promise retuns an `array`, it will be concatenated with any existing data:
+2. When your data promise retuns an `array`, it will be concatenated with any existing data:
     ```javascript
     function fetchFoo () {
         return loadEntity(
@@ -255,6 +241,19 @@ Be careful with processors, they have direct access to Redux dispatch!
        }
     }
     ```
+
+### `processors` (default: `null`)
+* Processors grant you access to various stages in the `loadEntity` lifecycle. 
+* All processors have access to Redux dispatch (careful!) along with either the data object, if the promise resolves, or the error object if the promise rejects.
+
+| Processor        | Description                              |When to use                                                |
+|-----------------:|:-----------------------------------------|-----------------------------------------------------------|
+| `beforeSuccess`  | Fired immediately before `FETCH_SUCCESS` | Preprocess the data object before its dispatched to Redux |
+| `afterSuccess`   | Fired immediately after `FETCH_SUCCESS`  | Take action after the entity's state changes              |
+| `beforeFailure`  | Fired immediately before `FETCH_FAILURE` | Preprocess the error before its disppatched to Redux      |
+| `afterFailure`   | Fired immediately after `FETCH_FAILURE`  | Take action after the error is dispatched                 |
+
+[See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`
 
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
 The following action creators are synchonrous, and can be used to reset or delete your entity. Check out the [Live Demo](#live-demo) to see these in action.
