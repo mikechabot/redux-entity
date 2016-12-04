@@ -5,7 +5,7 @@
 
 # redux-entity
 
-`redux-entity` seeks to provide a scalable, predictable approach to maintaining domain entities in Redux. It's comprised of a **[thunk](https://github.com/gaearon/redux-thunk#whats-a-thunk)** and a **[reducer](http://redux.js.org/docs/basics/Reducers.html)**.
+`redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux. It's comprised of a **[thunk](https://github.com/gaearon/redux-thunk#whats-a-thunk)** and a **[reducer](http://redux.js.org/docs/basics/Reducers.html)**.
 
 - [Live Demo](#live-demo)
 - [Getting Started](#getting-started)
