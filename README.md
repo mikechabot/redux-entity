@@ -181,7 +181,8 @@ An `options` object can be passed to [`loadEntity`](#reducer) as the third argum
 ### `append` (default: `false`, type: `Boolean`)
 * By default, each time you invoke your custom thunk (e.g. `loadOrders()`), it will overwrite the entity's `data` property with fresh data. 
 * If `append` is set to `true`, new data will be appended to the entity's existing data. 
-* Keep in mind, if `append` is set to `true`, the `data` object on your entity will **always** be an [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), regardless of the type of data your promise returns. See below:
+
+Keep in mind, if `append` is set to `true`, the `data` object on your entity will **always** be an [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), regardless of the type of data your promise returns. See below:
 
 1. When your data promise returns an `object`, it will be pushed onto an array. Merging does NOT occur:
     ```javascript
