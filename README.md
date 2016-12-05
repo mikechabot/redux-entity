@@ -195,7 +195,7 @@ An `options` object can be passed to [`loadEntity`](#reducer) as the third argum
 | `beforeFailure`  | Invoked before `FETCH_FAILURE` | Process the error before its dispatched to Redux| `Function` |
 | `afterFailure`   | Invoked after `FETCH_FAILURE`  | Take action after the error is dispatched       | `Function` |
 
-**Note**: [See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`.
+**Note**: [See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how `processors` are implemented in `loadEntity`.
 
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
 The following action creators are synchonrous, and can be used to reset or delete your entity. Check out the [Live Demo](#live-demo) to see these in action.
