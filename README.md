@@ -197,8 +197,6 @@ An `options` object can be passed to [`loadEntity`](#reducer) as the third argum
 
 **Note**: [See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how processors are implemented in `loadEntity`.
 
-**Note**: Use of `beforeSuccess` is not entirely necessary. Business logic to maniuplate data from the API call can occur within your domain service. However, all `processors` do get access to `dispatch`, which may be helpful.
-
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
 The following action creators are synchonrous, and can be used to reset or delete your entity. Check out the [Live Demo](#live-demo) to see these in action.
 
