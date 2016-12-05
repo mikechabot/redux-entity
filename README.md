@@ -187,6 +187,7 @@ An `options` object can be passed to [`loadEntity`](#reducer) as the third argum
 * All processors have access to Redux dispatch (be careful!) along with either the data object, if the promise resolves, or the error object if the promise rejects.
 * Use of `processors` is optional, but should be considered for advanced use-cases.
 
+####Available processors
 | Processor        | Description                    | When to use                                     | Type       |
 |-----------------:|:-------------------------------|-------------------------------------------------|------------|
 | `beforeSuccess`  | Invoked before `FETCH_SUCCESS` | Process the data before its dispatched to Redux | `Function` |
