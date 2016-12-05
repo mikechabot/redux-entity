@@ -180,70 +180,7 @@ An `options` object can be passed to [`loadEntity`](#reducer) as the third argum
 
 ### `append` (default: `false`, type: `Boolean`)
 * By default, each time you invoke your custom thunk (e.g. `loadOrders()`), it will overwrite the entity's `data` property with fresh data. 
-* If `append` is set to `true`, new data will be appended to the entity's existing data. 
-
-Keep in mind, if `append` is set to `true`, the `data` object on your entity will **always** be an [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), regardless of the type of data your promise returns. See below:
-
-1. When your data promise returns an `object`, it will be pushed onto an array. Merging does NOT occur:
-    ```javascript
-    function fetchFoo () {
-        return loadEntity(
-            'foobar',
-            Promise.resolve({ randomNum: Math.random() }),
-            { append: true }
-        );
-    }
-
-    fetchFoo()(dispatch);  // Call once
-    fetchFoo()(dispatch);  // Call twice
-    ```
-    **Resulting State (two objects in a single array)**
-    ```json
-    {
-       "foobar":{
-          "isFetching":false,
-          "lastUpdated":1480807317751,
-          "data":[
-             {
-                "randomNum":0.99437688223453
-             },
-             {
-                "randomNum":0.02760231206535746
-             }
-          ],
-          "error":null
-       }
-    }
-    ```
-2. When your data promise retuns an `array`, it will be concatenated with any existing data:
-    ```javascript
-    function fetchFoo () {
-        return loadEntity(
-            'foobar',
-            Promise.resolve([Math.random(), Math.random()]),
-            { append: true }
-        );
-    }
-
-    fetchFoo()(dispatch);  // Call once
-    fetchFoo()(dispatch);  // Call twice
-    ```
-    **Resulting State (four entries in a single array)**
-    ```json
-    {
-       "foobar":{
-          "isFetching":false,
-          "lastUpdated":1480807969474,
-          "data":[
-             0.3740764599842803,
-             0.46176137669506945,
-             0.9866826383932925,
-             0.7325032000955436
-          ],
-          "error":null
-       }
-    }
-    ```
+* If `append` is set to `true`, new data will be appended to the entity's existing data.
 
 ### `processors` (default: `null`, type: `Object`)
 * `processors` grant you access to various stages in the `loadEntity` lifecycle. 
