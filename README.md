@@ -77,7 +77,7 @@ export function loadOrders() {
 ```
 
 Optionally pass a configuration to your thunk (see [Configuration](#configuration)): 
-```javascript`
+```javascript
 export function loadOrders() {
     return loadEntity(
         'orders',
@@ -88,7 +88,7 @@ export function loadOrders() {
 ```
 
 Dynamically pass a configuration: 
-```javascript`
+```javascript
 export function loadOrders(options) {
     return loadEntity(
         'orders',
