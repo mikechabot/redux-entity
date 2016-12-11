@@ -62,7 +62,7 @@ ReactDOM.render(
 );
 ```
 ###5. Create a custom thunk
-Import `loadEntity()` from `redux-entity` along with your domain service, and define an entity key (e.g. `orders`) that will be associated with the given promise.
+Import `loadEntity()` from `redux-entity` along with **your domain service**, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 // thunks.js
 import { loadEntity } from 'redux-entity';
