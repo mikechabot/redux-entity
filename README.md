@@ -76,7 +76,7 @@ export function loadOrders() {
 }
 ```
 
-Optionally pass a configuration to your thunk (see [Configuration](#configuration)): 
+Optionally pass a configuration to your thunk (see [Configuration](#configuration-options)): 
 ```javascript
 export function loadOrders() {
     return loadEntity(
