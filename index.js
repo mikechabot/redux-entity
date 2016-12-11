@@ -2,7 +2,7 @@
 
 const model = require('./src/reducer');
 const loadEntity = require('./src/thunk');
-const actionCreators = require('./src/common/action-creators');
+const actionCreators = require('./src/action-creators/index');
 
 module.exports = {
     model: model,

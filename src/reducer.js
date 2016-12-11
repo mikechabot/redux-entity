@@ -1,7 +1,7 @@
 'use strict';
 
-const ACTION_TYPES = require('./common/const').ACTION_TYPES;
 const CONST = require('./common/const');
+const ACTION_TYPES = CONST.ACTION_TYPES;
 
 module.exports = function model (state, action) {
     if (!state) state = Object.assign({}, CONST.INITIAL_MODEL_STATE);
