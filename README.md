@@ -158,22 +158,6 @@ export default connect(
 ## <a name="redux-entity#configuration-options">Configuration Options</a>
 An `options` object can be passed to [`loadEntity`](#reducer) as the third argument, and the following properties are available for configuration: 
 
-#### Example Configuration
-```javascript
-{
-    silent: true,
-    append: true,
-    processors: {
-        beforeSuccess: function (dispatch, data) {
-            dispatch({ type: 'SOME_ACTION' });
-            return _.map(data, 'stuff');
-        },
-        afterFailure : function (dispatch, error) {
-            dispatch({ type: 'SOME_ERROR', error })
-        }
-    }
-}
-```
 ### `silent` (default: `false`, type: `Boolean`)
 * If true, do not dispatch the `FETCH_REQUEST` action, which sets the `isFetching` property on the entity to true. 
 * Set `silent` to `true` to inhibit any UI hooks that are listenting for `isFetching` to be `true`, for instance, to show a loading indicator. 
@@ -196,6 +180,23 @@ An `options` object can be passed to [`loadEntity`](#reducer) as the third argum
 | `afterFailure`   | Invoked after `FETCH_FAILURE`  | Take action after the error is dispatched       | `Function` |
 
 **Note**: [See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how `processors` are implemented in `loadEntity`.
+
+#### Example Configuration
+```javascript
+{
+    silent: true,
+    append: true,
+    processors: {
+        beforeSuccess: function (dispatch, data) {
+            dispatch({ type: 'SOME_ACTION' });
+            return _.map(data, 'stuff');
+        },
+        afterFailure : function (dispatch, error) {
+            dispatch({ type: 'SOME_ERROR', error })
+        }
+    }
+}
+```
 
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
 The following action creators are synchonrous, and can be used to reset or delete your entity. Check out the [Live Demo](#live-demo) to see these in action.
