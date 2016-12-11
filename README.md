@@ -11,6 +11,7 @@
 - [Getting Started](#getting-started)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
+- [Lifecycle](#lifecycle)
 
 ## Live Demo
 http://mikechabot.github.io/react-boilerplate/
@@ -269,3 +270,5 @@ export default connect (null, {
     deleteEntity
 })(Entity);
 ```
+## Lifecycle
+![Lifecycle](http://i.imgur.com/J5K3eUr.png)
