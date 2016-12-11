@@ -271,4 +271,5 @@ export default connect (null, {
 })(Entity);
 ```
 ## Lifecycle
+[See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L29) for the lifecycle's implementation
 ![Lifecycle](http://i.imgur.com/J5K3eUr.png)
