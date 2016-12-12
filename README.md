@@ -11,7 +11,6 @@
 - [Getting Started](#getting-started)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
-- [Lifecycle](#lifecycle)
 
 ## Live Demo
 http://mikechabot.github.io/react-boilerplate/
@@ -270,6 +269,3 @@ export default connect (null, {
     deleteEntity
 })(Entity);
 ```
-## Lifecycle
-[See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L29) for the lifecycle's implementation
-![Lifecycle](http://i.imgur.com/J5K3eUr.png)
