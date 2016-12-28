@@ -1,6 +1,6 @@
 'use strict';
 
-const ACTION_TYPES = require('../common/const').ACTION_TYPES;
+const ACTION_TYPES = require('./const').ACTION_TYPES;
 
 /**
  * Generate action creators based on input arguments. The first argument is always

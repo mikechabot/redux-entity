@@ -4,7 +4,7 @@ const expect = require('expect');
 const configureStore = require('redux-mock-store').default;
 const thunk = require('redux-thunk').default;
 const loadEntity = require('../../src/thunk');
-const CONST = require('../../src/common/const');
+const CONST = require('../../src/const');
 
 const ACTION_TYPES = CONST.ACTION_TYPES;
 const STAGES = CONST.STAGES;

@@ -2,7 +2,7 @@
 
 const expect = require('expect');
 const reducer = require('../../src/reducer');
-const CONST = require('../../src/common/const');
+const CONST = require('../../src/const');
 
 const ACTION_TYPES = CONST.ACTION_TYPES;
 

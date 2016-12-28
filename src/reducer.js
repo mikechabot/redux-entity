@@ -1,6 +1,6 @@
 'use strict';
 
-const CONST = require('./common/const');
+const CONST = require('./const');
 const ACTION_TYPES = CONST.ACTION_TYPES;
 
 module.exports = function model (state, action) {
