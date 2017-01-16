@@ -19,7 +19,7 @@ http://mikechabot.github.io/react-boilerplate/
 ###1. Installation
 Using `npm` or `yarn`:
 - ```$ yarn add redux-entity```
-- ```$ npm -i -S redux-entity```
+- ```$ npm i -S redux-entity```
 
 ###2. Configure the root reducer
 In your root reducer, import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
