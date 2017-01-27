@@ -4,7 +4,7 @@ const expect = require('expect');
 const configureStore = require('redux-mock-store').default;
 const thunk = require('redux-thunk').default;
 const actionCreators = require('../../src/action-creators');
-const ACTION_TYPE = require('../../src/const').ACTION_TYPES;
+const ACTION_TYPE = require('../../src/common/entity-const').ACTION_TYPES;
 
 // Set up mock Redux store
 const middlewares = [thunk];

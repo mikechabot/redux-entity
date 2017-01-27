@@ -4,6 +4,7 @@
   "description": "A predictable approach to managing domain entities in Redux.",
   "main": "index.js",
   "scripts": {
+    "build": "babel src -d lib",
     "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "example": "node example.js"
   },
@@ -23,6 +24,8 @@
   },
   "homepage": "https://github.com/mikechabot/redux-entity#readme",
   "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-preset-es2015": "^6.22.0",
     "chalk": "^1.1.3",
     "coveralls": "^2.11.15",
     "eslint": "^3.10.2",
