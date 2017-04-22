@@ -1,9 +1,10 @@
+# redux-entity
+
+[![npm version](https://badge.fury.io/js/redux-entity.svg)](https://badge.fury.io/js/redux-entity)
 [![Build Status](https://travis-ci.org/mikechabot/redux-entity.svg?branch=master)](https://travis-ci.org/mikechabot/redux-entity)
 [![Dependency Status](https://david-dm.org/mikechabot/redux-entity.svg)](https://david-dm.org/mikechabot/redux-entity)
 [![Dev Dependency Status](https://david-dm.org/mikechabot/redux-entity/dev-status.svg)](https://david-dm.org/mikechabot/redux-entity?type=dev)
 [![Coverage Status](https://coveralls.io/repos/github/mikechabot/redux-entity/badge.svg?branch=master)](https://coveralls.io/github/mikechabot/redux-entity?branch=master)
-
-# redux-entity
 
 `redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux. It's comprised of a **[thunk](https://github.com/gaearon/redux-thunk#whats-a-thunk)** and a **[reducer](http://redux.js.org/docs/basics/Reducers.html)**.
 
@@ -16,12 +17,12 @@
 http://mikechabot.github.io/react-boilerplate/
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
-###1. Installation
+### 1. Installation
 Using `npm` or `yarn`:
 - ```$ yarn add redux-entity```
 - ```$ npm i -S redux-entity```
 
-###2. Configure the root reducer
+### 2. Configure the root reducer
 In your root reducer, import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
@@ -33,7 +34,7 @@ export default combineReducers({
     model
 });
 ```
-###3. Configure the Redux store
+### 3. Configure the Redux store
 Ensure `redux-thunk` middelware is applied, along with your root reducer:
 
 ```javascript
@@ -49,7 +50,7 @@ export default function configureStore(initialState) {
     );
 };
 ```
-###4. Create and inject the Redux store
+### 4. Create and inject the Redux store
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -61,7 +62,7 @@ ReactDOM.render(
     document.getElementById('example-app')
 );
 ```
-###5. Create a custom thunk
+### 5. Create a custom thunk
 Import `loadEntity()` from `redux-entity` along with **your domain service**, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 // thunks.js
@@ -98,7 +99,7 @@ export function loadOrders(options) {
 }
 ```
 
-###6. Create a React component
+### 6. Create a React component
    1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
@@ -171,7 +172,7 @@ An `options` object can be passed to [`loadEntity`](#reducer) as the third argum
 * All processors have access to Redux dispatch (be careful!) along with either the data object, if the promise resolves, or the error object if the promise rejects.
 * Use of `processors` is optional, but should be considered for advanced use-cases.
 
-####Available processors
+#### Available processors
 | Processor        | Description                    | When to use                                     | Type       |
 |-----------------:|:-------------------------------|-------------------------------------------------|------------|
 | `beforeSuccess`  | Invoked before `FETCH_SUCCESS` | Process the data before its dispatched to Redux | `Function` |
