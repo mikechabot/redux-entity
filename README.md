@@ -85,7 +85,7 @@ If `loadOrders` succeeds, the results are stamped on `entities.orders.data` and 
 }
 ```
 
-If `loadOrders` fails, the results are stamped on `entities.order.error` and `lastUpdated` is updated:
+If `loadOrders` fails, the results are stamped on `entities.orders.error` and `lastUpdated` is updated:
 
 ```
 {
