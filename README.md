@@ -265,7 +265,7 @@ class Orders extends React.Component {
 }
 
 export default connect(
-    state => ({orders: state.model && state.model.orders}),
+    state => ({orders: state.entities && state.entities.orders}),
     { loadOrders }
 )(Orders);
 ```
@@ -318,7 +318,7 @@ The following action creators are synchonrous, and can be used to reset or delet
 | Action creator | Description                                                           |
 |---------------:|:----------------------------------------------------------------------|
 | `resetEntity`  | Set the `data` property on the entity to `null`. Update `lastUpdated` |
-| `deleteEntity` | Delete the entity from `state.model`                                  |
+| `deleteEntity` | Delete the entity from `state.entities`                                  |
 
 ### Example usage
    1. `connect()` your component to Redux.
