@@ -1,6 +1,6 @@
 'use strict';
 
-const model = require('redux-entity').model;
+const entities = require('redux-entity').entities;
 const loadEntity = require('redux-entity').loadEntity;
 const chalk = require('chalk');
 
@@ -28,7 +28,7 @@ function fetchFoobar () {
  */
 function dispatch (action) {
     _logDetails(action);
-    state = model(state, action);
+    state = entities(state, action);
     _logDetails();
 }
 
