@@ -20,7 +20,7 @@
 - [Additional Actions](#additional-actions)
 
 ## <a name="redux-entity#installation">Live Demo</a>
-[Click here](http://mikechabot.github.io/react-boilerplate/dist/) to see `redux-entity` as utilized in [react-boilerplate](https://github.com/mikechabot/react-boilerplate). 
+[Click here](http://mikechabot.github.io/react-boilerplate/dist/) to see `redux-entity` in action at [react-boilerplate](https://github.com/mikechabot/react-boilerplate). 
 
 ## <a name="redux-entity#installation">Installation</a>
 Yarn: or npm:
@@ -31,7 +31,7 @@ Yarn: or npm:
 
 Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability:
 
-### <a name="redux-entity#load-entity">`loadEntity(string, Promise, object)`</a>
+### <a name="redux-entity#load-entity">loadEntity(name, promise, object)</a>
 
 Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
 
