@@ -11,7 +11,7 @@
 - [Live Demo](#live-demo)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
-  - [loadEntity](#loadEntity)
+  - [loadEntity](#load-entity)
   - [Entity Properties](#entity-properties)
   - [Redux State](#redux-state)
 - [Detailed Usage](#detailed-usage)
