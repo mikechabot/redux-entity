@@ -22,6 +22,11 @@
 ## <a name="redux-entity#installation">Live Demo</a>
 [Click here](http://mikechabot.github.io/react-boilerplate/dist/) to see `redux-entity` as utilized in [react-boilerplate](https://github.com/mikechabot/react-boilerplate). 
 
+## <a name="redux-entity#installation">Installation</a>
+Yarn: or npm:
+- ```$ yarn add redux-entity```
+- ```$ npm i -S redux-entity```
+
 ## <a name="redux-entity#usage">Usage</a> 
 
 Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability.
@@ -98,11 +103,6 @@ If `loadOrders` fails, the results are stamped on `order.error` and `lastUpdated
   }
 }
 ```
-
-## <a name="redux-entity#installation">Installation</a>
-Yarn: or npm:
-- ```$ yarn add redux-entity```
-- ```$ npm i -S redux-entity```
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
 
