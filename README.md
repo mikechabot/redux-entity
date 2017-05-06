@@ -66,11 +66,11 @@ Each thunk you create is associated with a specific set of properties to ensure 
 
 ### <a name="redux-entity#redux-state">Redux State</a>
 
-If `loadOrders` succeeds, the results are stamped on `model.orders.data` and `lastUpdated` is updated:
+If `loadOrders` succeeds, the results are stamped on `entities.orders.data` and `lastUpdated` is updated:
 
 ```
 {
-  "model": {
+  "entities": {
     "orders": {
       "isFetching": false,
       "data": [
@@ -85,11 +85,11 @@ If `loadOrders` succeeds, the results are stamped on `model.orders.data` and `la
 }
 ```
 
-If `loadOrders` fails, the results are stamped on `model.order.error` and `lastUpdated` is updated:
+If `loadOrders` fails, the results are stamped on `entities.order.error` and `lastUpdated` is updated:
 
 ```
 {
-  "model": {
+  "entities": {
     "orders": {
       "isFetching": false,
       "error": {
@@ -106,7 +106,7 @@ If `loadOrders` is pending, `isFetching` is set to true:
 
 ```
 {
-  "model": {
+  "entities": {
     "orders": {
       "isFetching": true,
       ...
@@ -115,11 +115,11 @@ If `loadOrders` is pending, `isFetching` is set to true:
 }
 ```
 
-Stamp additional entities on `model` by creating more thunks:
+Stamp additional entities on `entities` by creating more thunks:
 
 ```
 {
-  "model": {
+  "entities": {
     "orders": {
       ...
     },
