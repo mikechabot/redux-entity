@@ -31,7 +31,7 @@ Yarn: or npm:
 
 Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability:
 
-### <a name="redux-entity#load-entity">loadEntity(name, promise, object)</a>
+### <a name="redux-entity#load-entity">`loadEntity(name, promise, options)`</a>
 
 Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
 
