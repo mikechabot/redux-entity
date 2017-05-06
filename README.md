@@ -13,7 +13,6 @@
 - [Getting Started](#getting-started)
   - [loadEntity](#load-entity)
   - [Entity Properties](#entity-properties)
-  - [Custom Thunk Example](#custom-thunk-example)
   - [Redux State](#redux-state)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
@@ -29,30 +28,7 @@ Yarn: or npm:
 
 ## <a name="redux-entity#getting-started">Getting Started</a> 
 
-Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability:
-
-### <a name="redux-entity#load-entity">`loadEntity(name, promise, options)`</a>
-
-Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
-
-| Argument | Description | Type | Required | 
-| -------- | ----------- | ---- | ---------|
-| `name` | Entity name | string | Yes |
-| `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
-| `options` | See [configuration options](#configuration-options) | object | No |
-
-### <a name="redux-entity#entity-properties">Entity Properties</a>
-
-Each thunk is attached to the following properties:
-
-| Property | Description |
-| -------- | ----------- |
-| `data` | The results of a resolved promise |
-| `error` | The results of the rejected promise |
-| `isFetching` | Whether the entity's promise is pending |
-| `lastUpdated` | Timestamp of the entity's last update |
-
-### <a name="redux-entity#custom-thunk-example">Custom Thunk Example</a>
+Create custom thunks with `loadEntity`. Here's an example of a `loadOrders` thunk. We can create as many of these as we want as long as the entity's `name` is unique (e.g. `orders`).
 
 ```javascript
 // thunks.js
@@ -66,6 +42,27 @@ export function loadOrders() {
     );
 }
 ```
+
+### <a name="redux-entity#load-entity">`loadEntity(name, promise, options)`</a>
+
+Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
+
+| Argument | Description | Type | Required | 
+| -------- | ----------- | ---- | ---------|
+| `name` | Entity name | string | Yes |
+| `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
+| `options` | See [configuration options](#configuration-options) | object | No |
+
+### <a name="redux-entity#entity-properties">Entity Properties</a>
+
+Each thunk you create is associated with a specific set of properties to ensure predictability:
+
+| Property | Description |
+| -------- | ----------- |
+| `data` | The results of a resolved promise |
+| `error` | The results of the rejected promise |
+| `isFetching` | Whether the entity's promise is pending |
+| `lastUpdated` | Timestamp of the entity's last update |
 
 ### <a name="redux-entity#redux-state">Redux State</a>
 
@@ -105,6 +102,19 @@ If `loadOrders` fails, the results are stamped on `model.order.error` and `lastU
 }
 ```
 
+If `loadOrders` is pending, `isFetching` is set to true:
+
+```
+{
+  "model": {
+    "orders": {
+      "isFetching": true,
+      ...
+    }
+  }
+}
+```
+
 Stamp additional entities on `model` by creating more thunks:
 
 ```
@@ -122,7 +132,6 @@ Stamp additional entities on `model` by creating more thunks:
   }
 }
 ```
-
 
 ## <a name="redux-entity#detailed-usage">Detailed Usage</a>
 
