@@ -11,7 +11,7 @@ describe('Reducer', () => {
         describe('with an undefined state and an unmapped type', () => {
             it('should return the default state', () => {
                 const state = reducer(undefined, { type: null });
-                expect(state).toEqual(CONST.INITIAL_MODEL_STATE);
+                expect(state).toEqual({});
             });
         });
         describe('with a defined state and an unmapped type', () => {

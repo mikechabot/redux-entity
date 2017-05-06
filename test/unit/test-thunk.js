@@ -7,7 +7,7 @@ const loadEntity = require('../../src/thunk');
 const CONST = require('../../src/common/entity-const');
 
 const ACTION_TYPES = CONST.ACTION_TYPES;
-const STAGES = CONST.STAGES;
+const STAGES = CONST.PROCESSOR_STAGE;
 
 // Set up mock Redux store
 const middlewares = [thunk];
@@ -158,17 +158,17 @@ describe('Thunk Action Creators', () => {
         describe('when loadEntity() is configured with stage processors', () => {
             it('Stage BEFORE_SUCCESS', (done) => {
                 const beforeSuccess = {
-                    beforeSuccess: function (dispatch, data) {
+                    _runBeforeSuccess: function (dispatch, data) {
                         console.log(dispatch, data);
                         return dispatch({ type: 'foo', data });
                     }
                 };
 
-                const spy = expect.spyOn(beforeSuccess, 'beforeSuccess');
+                const spy = expect.spyOn(beforeSuccess, '_runBeforeSuccess');
 
                 const configOptions = {
                     processors: {
-                        [STAGES.BEFORE_SUCCESS]: beforeSuccess.beforeSuccess
+                        [STAGES.BEFORE_SUCCESS]: beforeSuccess._runBeforeSuccess
                     }
                 };
 
@@ -183,16 +183,16 @@ describe('Thunk Action Creators', () => {
             });
             it('Stage AFTER_SUCCESS', (done) => {
                 const afterSuccess = {
-                    afterSuccess: function (dispatch, data) {
+                    _runAfterSuccess: function (dispatch, data) {
                         return dispatch({ type: 'foo', data });
                     }
                 };
 
-                const spy = expect.spyOn(afterSuccess, 'afterSuccess');
+                const spy = expect.spyOn(afterSuccess, '_runAfterSuccess');
 
                 const configOptions = {
                     processors: {
-                        [STAGES.AFTER_SUCCESS]: afterSuccess.afterSuccess
+                        [STAGES.AFTER_SUCCESS]: afterSuccess._runAfterSuccess
                     }
                 };
 
@@ -207,16 +207,16 @@ describe('Thunk Action Creators', () => {
             });
             it('Stage BEFORE_FAILURE', (done) => {
                 const beforeFailure = {
-                    beforeFailure: function (dispatch, data) {
+                    _runBeforeFailure: function (dispatch, data) {
                         return dispatch({ type: 'foo', data });
                     }
                 };
 
-                const spy = expect.spyOn(beforeFailure, 'beforeFailure');
+                const spy = expect.spyOn(beforeFailure, '_runBeforeFailure');
 
                 const configOptions = {
                     processors: {
-                        [STAGES.BEFORE_FAILURE]: beforeFailure.beforeFailure
+                        [STAGES.BEFORE_FAILURE]: beforeFailure._runBeforeFailure
                     }
                 };
 
@@ -231,16 +231,16 @@ describe('Thunk Action Creators', () => {
             });
             it('Stage AFTER_FAILURE', (done) => {
                 const afterFailure = {
-                    afterFailure: function (dispatch, data) {
+                    _runAfterFailure: function (dispatch, data) {
                         return dispatch({ type: 'foo', data });
                     }
                 };
 
-                const spy = expect.spyOn(afterFailure, 'afterFailure');
+                const spy = expect.spyOn(afterFailure, '_runAfterFailure');
 
                 const configOptions = {
                     processors: {
-                        [STAGES.BEFORE_FAILURE]: afterFailure.afterFailure
+                        [STAGES.BEFORE_FAILURE]: afterFailure._runAfterFailure
                     }
                 };
 
@@ -260,72 +260,83 @@ describe('Thunk Action Creators', () => {
                     store.dispatch(
                         loadEntity()
                     );
-                }).toThrow('name is required, and must be a String');
+                }).toThrow('Missing required entity name');
             });
             it('should throw an error when entity name is null/undefined', () => {
                 expect(() => {
                     store.dispatch(
                         loadEntity(null)
                     );
-                }).toThrow('name is required, and must be a String');
+                }).toThrow('Missing required entity name');
                 expect(() => {
                     store.dispatch(
                         loadEntity(undefined)
                     );
-                }).toThrow('name is required, and must be a String');
+                }).toThrow('Missing required entity name');
             });
             it('should throw an error when entity name not passed a String', () => {
                 expect(() => {
                     store.dispatch(
                         loadEntity(123)
                     );
-                }).toThrow('name is required, and must be a String');
+                }).toThrow('Missing required entity name');
                 expect(() => {
                     store.dispatch(
                         loadEntity({})
                     );
-                }).toThrow('name is required, and must be a String');
+                }).toThrow('Missing required entity name');
                 expect(() => {
                     store.dispatch(
                         loadEntity(new Date())
                     );
-                }).toThrow('name is required, and must be a String');
+                }).toThrow('Missing required entity name');
             });
             it('should throw an error with an undefined data promise', () => {
                 expect(() => {
                     store.dispatch(
                         loadEntity(entity)
                     );
-                }).toThrow('promise is required, and must be a Promise');
+                }).toThrow('Missing required entity promise');
             });
             it('should throw an error when a promise is not passed', () => {
                 expect(() => {
                     store.dispatch(
                         loadEntity(entity, {})
                     );
-                }).toThrow('promise is required, and must be a Promise');
+                }).toThrow('Missing required entity promise');
             });
             it('should throw an error when invalid options are passed', () => {
                 expect(() => {
                     store.dispatch(
                         loadEntity(entity, Promise.resolve(), 'foo')
                     );
-                }).toThrow('options must be an Object');
+                }).toThrow('');
                 expect(() => {
                     store.dispatch(
                         loadEntity(entity, Promise.resolve(), 123)
                     );
-                }).toThrow('options must be an Object');
+                }).toThrow('Expected options to be an object');
                 expect(() => {
                     store.dispatch(
                         loadEntity(entity, Promise.resolve(), [])
                     );
-                }).toThrow('options must be an Object');
+                }).toThrow('Expected options to be an object');
                 expect(() => {
                     store.dispatch(
                         loadEntity(entity, Promise.resolve(), function () {})
                     );
-                }).toThrow('options must be an Object');
+                }).toThrow('Expected options to be an object');
+            });
+        });
+        describe('when loadEntity() is passed valid arguments', () => {
+            it('should not throw any errors', (done) => {
+                expect(() => {
+                    store.dispatch(
+                        loadEntity(entity, Promise.resolve(), {})
+                    )
+                        .then(done)
+                        .catch(done);
+                }).toNotThrow('Expected options to be an object');
             });
         });
     });

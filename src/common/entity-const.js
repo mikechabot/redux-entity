@@ -1,6 +1,6 @@
 'use strict';
 
-const STAGES = {
+const PROCESSOR_STAGE = {
     BEFORE_SUCCESS: 'beforeSuccess',
     AFTER_SUCCESS : 'afterSuccess',
     BEFORE_FAILURE: 'beforeFailure',
@@ -8,7 +8,16 @@ const STAGES = {
 };
 
 module.exports = {
-    INITIAL_MODEL_STATE : {},
+    ACTION_PROPS: {
+        ENTITY: 'entity',
+        APPEND: 'append'
+    },
+    ENTITY_PROPS: {
+        DATA        : 'data',
+        IS_FETCHING : 'isFetching',
+        LAST_UPDATED: 'lastUpdated',
+        ERROR       : 'error'
+    },
     INITIAL_ENTITY_STATE: {
         isFetching : false,
         lastUpdated: null,
@@ -22,15 +31,15 @@ module.exports = {
         RESET_ENTITY : 'RESET_ENTITY',
         DELETE_ENTITY: 'DELETE_ENTITY'
     },
-    STAGES         : STAGES,
+    PROCESSOR_STAGE: PROCESSOR_STAGE,
     DEFAULT_OPTIONS: {
         silent    : false,
         append    : false,
         processors: {
-            [STAGES.BEFORE_SUCCESS]: null,
-            [STAGES.AFTER_SUCCESS] : null,
-            [STAGES.BEFORE_FAILURE]: null,
-            [STAGES.AFTER_FAILURE] : null
+            [PROCESSOR_STAGE.BEFORE_SUCCESS]: null,
+            [PROCESSOR_STAGE.AFTER_SUCCESS] : null,
+            [PROCESSOR_STAGE.BEFORE_FAILURE]: null,
+            [PROCESSOR_STAGE.AFTER_FAILURE] : null
         }
     }
 };
