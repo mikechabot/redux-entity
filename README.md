@@ -10,19 +10,23 @@
 
 - [Live Demo](#live-demo)
 - [Usage](#usage)
+  - [loadEntity](#load-entity)
+  - [Custom Thunk Example](#custom-thunk-example)
+  - [Entity Properties](#entity-properties)
+  - [Redux State](#redux-state)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
 
 ## <a name="redux-entity#installation">Live Demo</a>
-[react-boilerplate](https://github.com/mikechabot/react-boilerplate) utilizes with `redux-entity`, [click here](http://mikechabot.github.io/react-boilerplate/dist/) to see it in action.
+[Click here](http://mikechabot.github.io/react-boilerplate/dist/) to see `redux-entity` as utilized in [react-boilerplate](https://github.com/mikechabot/react-boilerplate). 
 
 ## <a name="redux-entity#usage">Usage</a> 
 
 Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability.
 
-### `loadEntity`
+### <a name="redux-entity#load-entity">loadEntity</a>
 
 Accepts an entity name, a promise, and an options object.
 
@@ -33,7 +37,7 @@ Accepts an entity name, a promise, and an options object.
 | `options` | See [configuration options](#configuration-options) | object | No |
 
 
-### Custom Thunk Example
+### <a name="redux-entity#custom-thunk-example">Custom Thunk Example</a>
 
 ```javascript
 // thunks.js
@@ -48,7 +52,7 @@ export function loadOrders() {
 }
 ```
 
-### Entity Properties
+### <a name="redux-entity#entity-properties">Entity Properties</a>
 
 | Property | Description |
 | -------- | ----------- |
@@ -57,7 +61,7 @@ export function loadOrders() {
 | `isFetching` | Whether the entity's promise is pending |
 | `lastUpdated` | Timestamp of the entity's last update |
 
-### Redux State
+### <a name="redux-entity#redux-state">Redux State</a>
 
 If `loadOrders` succeeds, the results are stamped on `orders.data` and `lastUpdated` is updated:
 
