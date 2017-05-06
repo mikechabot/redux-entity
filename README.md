@@ -9,13 +9,13 @@
 `redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux.
 
 - [Live Demo](#live-demo)
-- [Usage](#usage)
-  - [Entity Properties](#entity-properties)
+- [Getting Started](#getting-started)
   - [loadEntity](#load-entity)
+  - [Entity Properties](#entity-properties)
   - [Custom Thunk Example](#custom-thunk-example)
   - [Redux State](#redux-state)
 - [Installation](#installation)
-- [Getting Started](#getting-started)
+- [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
 
@@ -27,11 +27,23 @@ Yarn: or npm:
 - ```$ yarn add redux-entity```
 - ```$ npm i -S redux-entity```
 
-## <a name="redux-entity#usage">Usage</a> 
+## <a name="redux-entity#getting-started">Getting Started</a> 
 
 Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability:
 
+### <a name="redux-entity#load-entity">`loadEntity(string, Promise, object)`</a>
+
+Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
+
+| Argument | Description | Type | Required | 
+| -------- | ----------- | ---- | ---------|
+| `name` | Entity name | string | Yes |
+| `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
+| `options` | See [configuration options](#configuration-options) | object | No |
+
 ### <a name="redux-entity#entity-properties">Entity Properties</a>
+
+Each thunk is attached to the following properties:
 
 | Property | Description |
 | -------- | ----------- |
@@ -39,16 +51,6 @@ Each custom thunk you create with `loadEntity` is associated with a specific set
 | `error` | The results of the rejected promise |
 | `isFetching` | Whether the entity's promise is pending |
 | `lastUpdated` | Timestamp of the entity's last update |
-
-### <a name="redux-entity#load-entity">`loadEntity(string, Promise, object)`</a>
-
-Accepts an entity name, promise, and an options object.
-
-| Argument | Description | Type | Required | 
-| -------- | ----------- | ---- | ---------|
-| `name` | Entity name | string | Yes |
-| `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
-| `options` | See [configuration options](#configuration-options) | object | No |
 
 ### <a name="redux-entity#custom-thunk-example">Custom Thunk Example</a>
 
@@ -103,7 +105,26 @@ If `loadOrders` fails, the results are stamped on `model.order.error` and `lastU
 }
 ```
 
-## <a name="redux-entity#getting-started">Getting Started</a>
+Stamp additional entities on `model` by creating more thunks:
+
+```
+{
+  "model": {
+    "orders": {
+      ...
+    },
+    "products": {
+      ...
+    },
+    "customers": {
+      ...
+    }
+  }
+}
+```
+
+
+## <a name="redux-entity#detailed-usage">Detailed Usage</a>
 
 ### 1. Configure the root reducer
 In your root reducer, import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
