@@ -10,9 +10,9 @@
 
 - [Live Demo](#live-demo)
 - [Usage](#usage)
+  - [Entity Properties](#entity-properties)
   - [loadEntity](#load-entity)
   - [Custom Thunk Example](#custom-thunk-example)
-  - [Entity Properties](#entity-properties)
   - [Redux State](#redux-state)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
@@ -29,18 +29,26 @@ Yarn: or npm:
 
 ## <a name="redux-entity#usage">Usage</a> 
 
-Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability.
+Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability:
 
-### <a name="redux-entity#load-entity">loadEntity</a>
+### <a name="redux-entity#entity-properties">Entity Properties</a>
 
-Accepts an entity name, a promise, and an options object.
+| Property | Description |
+| -------- | ----------- |
+| `data` | The results of a resolved promise |
+| `error` | The results of the rejected promise |
+| `isFetching` | Whether the entity's promise is pending |
+| `lastUpdated` | Timestamp of the entity's last update |
+
+### <a name="redux-entity#load-entity">`loadEntity(string, Promise, object)`</a>
+
+Accepts an entity name, promise, and an options object.
 
 | Argument | Description | Type | Required | 
 | -------- | ----------- | ---- | ---------|
 | `name` | Entity name | string | Yes |
 | `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
 | `options` | See [configuration options](#configuration-options) | object | No |
-
 
 ### <a name="redux-entity#custom-thunk-example">Custom Thunk Example</a>
 
@@ -57,18 +65,9 @@ export function loadOrders() {
 }
 ```
 
-### <a name="redux-entity#entity-properties">Entity Properties</a>
-
-| Property | Description |
-| -------- | ----------- |
-| `data` | The results of a resolved promise |
-| `error` | The results of the rejected promise |
-| `isFetching` | Whether the entity's promise is pending |
-| `lastUpdated` | Timestamp of the entity's last update |
-
 ### <a name="redux-entity#redux-state">Redux State</a>
 
-If `loadOrders` succeeds, the results are stamped on `orders.data` and `lastUpdated` is updated:
+If `loadOrders` succeeds, the results are stamped on `model.orders.data` and `lastUpdated` is updated:
 
 ```
 {
@@ -87,7 +86,7 @@ If `loadOrders` succeeds, the results are stamped on `orders.data` and `lastUpda
 }
 ```
 
-If `loadOrders` fails, the results are stamped on `order.error` and `lastUpdated` is updated:
+If `loadOrders` fails, the results are stamped on `model.order.error` and `lastUpdated` is updated:
 
 ```
 {
