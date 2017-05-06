@@ -136,15 +136,15 @@ Stamp additional entities on `entities` by creating more thunks:
 ## <a name="redux-entity#detailed-usage">Detailed Usage</a>
 
 ### 1. Configure the root reducer
-In your root reducer, import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
+In your root reducer, import the `entities` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
 import { combineReducers } from 'redux';
-import { model } from 'redux-entity';
+import { entities } from 'redux-entity';
 
 export default combineReducers({
     ...<your other reducers>,
-    model
+    entities
 });
 ```
 ### 2. Configure the Redux store
