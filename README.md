@@ -19,7 +19,7 @@
 - [Additional Actions](#additional-actions)
 
 ## <a name="redux-entity#installation">Live Demo</a>
-[Click here](http://mikechabot.github.io/react-boilerplate/dist/) to see `redux-entity` in action at [react-boilerplate](https://github.com/mikechabot/react-boilerplate). 
+[Click here to see a live demo](http://mikechabot.github.io/react-boilerplate/dist/) 
 
 ## <a name="redux-entity#installation">Installation</a>
 Yarn: or npm:
