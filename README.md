@@ -16,6 +16,11 @@
   - [Redux State](#redux-state)
 - [Installation](#installation)
 - [Detailed Usage](#detailed-usage)
+  1. [Configure reducer](#config-reducer)
+  2. [Configure Redux](#config-store)
+  3. [Create Redux store](#create-store)
+  4. [Create custom thunk](#create-thunk)
+  5. [Create React component](#create-thunk)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
 
@@ -126,7 +131,7 @@ Stamp additional entities on `model` by creating more thunks:
 
 ## <a name="redux-entity#detailed-usage">Detailed Usage</a>
 
-### 1. Configure the root reducer
+### <a name="redux-entity#config-reducer">1. Configure the root reducer</a>
 In your root reducer, import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
