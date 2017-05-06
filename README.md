@@ -9,12 +9,12 @@
 `redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux.
 
 - [Live Demo](#live-demo)
+- [Installation](#installation)
 - [Getting Started](#getting-started)
   - [loadEntity](#load-entity)
   - [Entity Properties](#entity-properties)
   - [Custom Thunk Example](#custom-thunk-example)
   - [Redux State](#redux-state)
-- [Installation](#installation)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
