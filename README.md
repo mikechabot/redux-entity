@@ -293,12 +293,12 @@ Processors are completely optional and in most cases won't be needed, since `red
 
 Simple
 ```javascript
-{ append: true }
+loadEntity('orders', OrderService.getOrders(), { append: true })
 ```
 
-Advanved (with processors)
+Advanced (with processors)
 ```javascript
-{
+const options = {
     silent: true,
     append: true,
     processors: {
@@ -310,6 +310,8 @@ Advanved (with processors)
         }
     }
 }
+
+loadEntity('orders', OrderService.getOrders(), options)
 ```
 
 ## <a name="redux-entity#additional-actions">Additional Actions</a> 
