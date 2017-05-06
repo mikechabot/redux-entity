@@ -1,12 +1,12 @@
 'use strict';
 
-const model = require('./reducer');
-const loadEntity = require('./thunk');
+const reducer = require('./reducer');
+const thunk = require('./thunk');
 const actionCreators = require('./action-creators');
 
 module.exports = {
-    model       : model,
-    loadEntity  : loadEntity,
+    entities    : reducer,
+    loadEntity  : thunk,
     resetEntity : actionCreators.resetEntity,
     deleteEntity: actionCreators.deleteEntity
 };

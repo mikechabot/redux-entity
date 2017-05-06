@@ -3,7 +3,7 @@
 const CONST = require('./common/entity-const');
 const { ACTION_TYPES } = CONST;
 
-module.exports = function model (state, action) {
+module.exports = function entities (state, action) {
     if (!state) state = {};
     switch (action.type) {
         case ACTION_TYPES.RESET_ENTITY:  // fall through

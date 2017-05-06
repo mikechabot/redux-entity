@@ -1,24 +1,17 @@
 {
   "env": {
-    "browser": true,
     "node": true,
     "es6": true,
     "mocha": true
   },
-  "globals": {
-    "_": true
-  },
   "ecmaFeatures": {
-    "jsx": true,
     "modules": true,
     "experimentalObjectRestSpread": true
   },
-  "plugins": [ "react"],
-  "extends": [ "eslint:recommended", "standard", "plugin:react/recommended" ],
+  "extends": [ "eslint:recommended", "standard" ],
   "rules": {
     "eqeqeq": [2, "always"],
     "indent": [2, 4, { "SwitchCase": 1 }],
-    "jsx-quotes": [2, "prefer-single"],
     "key-spacing": ["error", { "align": {
       "beforeColon": false,
       "afterColon": true,
@@ -29,8 +22,6 @@
     "no-extend-native": 0,
     "no-var": 1,
     "quotes": [2, "single"],
-    "react/prop-types": 1,
-    "react/no-find-dom-node": 0,
     "semi": [2, "always"]
   }
 }
