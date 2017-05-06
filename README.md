@@ -11,7 +11,7 @@
 - [Live Demo](#live-demo)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
-  - [loadEntity](#loadentity)
+  - [loadEntity(name, promise, options)](#loadentityname-promise-options)
   - [Entity Properties](#entity-properties)
   - [Redux State](#redux-state)
 - [Detailed Usage](#detailed-usage)
@@ -43,7 +43,7 @@ export function loadOrders() {
 }
 ```
 
-### <a name="redux-entity#loadentity">`loadEntity(name, promise, options)`</a>
+### <a name="redux-entity#loadentityname-promise-options">`loadEntity(name, promise, options)`</a>
 
 Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
 
