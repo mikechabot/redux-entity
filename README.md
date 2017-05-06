@@ -6,23 +6,136 @@
 [![Dev Dependency Status](https://david-dm.org/mikechabot/redux-entity/dev-status.svg)](https://david-dm.org/mikechabot/redux-entity?type=dev)
 [![Coverage Status](https://coveralls.io/repos/github/mikechabot/redux-entity/badge.svg?branch=master)](https://coveralls.io/github/mikechabot/redux-entity?branch=master)
 
-`redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux. It's comprised of a **[thunk](https://github.com/gaearon/redux-thunk#whats-a-thunk)** and a **[reducer](http://redux.js.org/docs/basics/Reducers.html)**.
+`redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux.
 
 - [Live Demo](#live-demo)
+- [Installation](#installation)
 - [Getting Started](#getting-started)
+  - [loadEntity](#load-entity)
+  - [Entity Properties](#entity-properties)
+  - [Redux State](#redux-state)
+- [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
 
-## Live Demo
-http://mikechabot.github.io/react-boilerplate/
+## <a name="redux-entity#installation">Live Demo</a>
+[Click here](http://mikechabot.github.io/react-boilerplate/dist/) to see `redux-entity` in action at [react-boilerplate](https://github.com/mikechabot/react-boilerplate). 
 
-## <a name="redux-entity#getting-started">Getting Started</a>
-### 1. Installation
-Using `npm` or `yarn`:
+## <a name="redux-entity#installation">Installation</a>
+Yarn: or npm:
 - ```$ yarn add redux-entity```
 - ```$ npm i -S redux-entity```
 
-### 2. Configure the root reducer
+## <a name="redux-entity#getting-started">Getting Started</a> 
+
+Create custom thunks with `loadEntity`. Here's an example of a `loadOrders` thunk. We can create as many of these as we want as long as the entity's `name` is unique (e.g. `orders`).
+
+```javascript
+// thunks.js
+import { loadEntity } from 'redux-entity';
+import OrderService from './services/order-service';
+
+export function loadOrders() {
+    return loadEntity(
+        'orders',
+        OrderService.getOrders()
+    );
+}
+```
+
+### <a name="redux-entity#load-entity">`loadEntity(name, promise, options)`</a>
+
+Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
+
+| Argument | Description | Type | Required | 
+| -------- | ----------- | ---- | ---------|
+| `name` | Entity name | string | Yes |
+| `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
+| `options` | See [configuration options](#configuration-options) | object | No |
+
+### <a name="redux-entity#entity-properties">Entity Properties</a>
+
+Each thunk you create is associated with a specific set of properties to ensure predictability:
+
+| Property | Description |
+| -------- | ----------- |
+| `data` | The results of a resolved promise |
+| `error` | The results of the rejected promise |
+| `isFetching` | Whether the entity's promise is pending |
+| `lastUpdated` | Timestamp of the entity's last update |
+
+### <a name="redux-entity#redux-state">Redux State</a>
+
+If `loadOrders` succeeds, the results are stamped on `model.orders.data` and `lastUpdated` is updated:
+
+```
+{
+  "model": {
+    "orders": {
+      "isFetching": false,
+      "data": [
+      	{ orderId: 1, type: 'FOO' },
+      	{ orderId: 2, type: 'BAR' } 
+      	{ orderId: 3, type: 'BAZ' } 
+      ],
+      "lastUpdated": 1494092038176,
+      "error": null,
+    }
+  }
+}
+```
+
+If `loadOrders` fails, the results are stamped on `model.order.error` and `lastUpdated` is updated:
+
+```
+{
+  "model": {
+    "orders": {
+      "isFetching": false,
+      "error": {
+        "message": "Error fetching data!"
+      },
+      "lastUpdated": 1494094113880,
+      "data": null
+    }
+  }
+}
+```
+
+If `loadOrders` is pending, `isFetching` is set to true:
+
+```
+{
+  "model": {
+    "orders": {
+      "isFetching": true,
+      ...
+    }
+  }
+}
+```
+
+Stamp additional entities on `model` by creating more thunks:
+
+```
+{
+  "model": {
+    "orders": {
+      ...
+    },
+    "products": {
+      ...
+    },
+    "customers": {
+      ...
+    }
+  }
+}
+```
+
+## <a name="redux-entity#detailed-usage">Detailed Usage</a>
+
+### 1. Configure the root reducer
 In your root reducer, import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
@@ -34,7 +147,7 @@ export default combineReducers({
     model
 });
 ```
-### 3. Configure the Redux store
+### 2. Configure the Redux store
 Ensure `redux-thunk` middelware is applied, along with your root reducer:
 
 ```javascript
@@ -50,7 +163,7 @@ export default function configureStore(initialState) {
     );
 };
 ```
-### 4. Create and inject the Redux store
+### 3. Create and inject the Redux store
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -62,7 +175,7 @@ ReactDOM.render(
     document.getElementById('example-app')
 );
 ```
-### 5. Create a custom thunk
+### 4. Create a custom thunk
 Import `loadEntity()` from `redux-entity` along with **your domain service**, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 // thunks.js
@@ -99,7 +212,7 @@ export function loadOrders(options) {
 }
 ```
 
-### 6. Create a React component
+### 5. Create a React component
    1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
@@ -157,43 +270,43 @@ export default connect(
 )(Orders);
 ```
 ## <a name="redux-entity#configuration-options">Configuration Options</a>
-An `options` object can be passed to [`loadEntity`](#reducer) as the third argument, and the following properties are available for configuration: 
+Optionally pass a configuration to a custom thunk with any of the following properties:
 
-### `silent` (default: `false`, type: `Boolean`)
-* If true, do not dispatch the `FETCH_REQUEST` action, which sets the `isFetching` property on the entity to true. 
-* Set `silent` to `true` to inhibit any UI hooks that are listenting for `isFetching` to be `true`, for instance, to show a loading indicator. 
+| Argument | Type | Default | Description | 
+| -------- | ----------- | ---- | ---------|
+| `silent` | boolean | `false` | If `true`, don't toggle `isFetching` when the thunk is invoked |
+| `append` | boolean | `false` | If `true`, attach the results of each invocation to the existing `data` property instead of overwriting |
+| `processors` | object | `null` | Hook into the `loadEntity` lifecycle. Each processor has access to Redux `dispatch` along with either the `data` or `error` object of the entity. See [processors](#processors)|
 
-### `append` (default: `false`, type: `Boolean`)
-* By default, each time you invoke your custom thunk (e.g. `loadOrders()`), it will overwrite the entity's `data` property with fresh data. 
-* If `append` is set to `true`, new data will be appended to the entity's existing data.
 
-### `processors` (default: `null`, type: `Object`)
-* `processors` grant you access to various stages in the `loadEntity` lifecycle. 
-* All processors have access to Redux dispatch (be careful!) along with either the data object, if the promise resolves, or the error object if the promise rejects.
-* Use of `processors` is optional, but should be considered for advanced use-cases.
+#### <a name="redux-entity#processors">Processors</a>
+Processors are completely optional and in most cases won't be needed, since `redux-entity` automatically tracks `lastUpdated`, `isFetching`, and either `data` or `error` out-of-the-box. But you can take additional action when an entity's promise either resolves or rejects by hooking into the processors below.
 
-#### Available processors
-| Processor        | Description                    | When to use                                     | Type       |
-|-----------------:|:-------------------------------|-------------------------------------------------|------------|
-| `beforeSuccess`  | Invoked before `FETCH_SUCCESS` | Process the data before its dispatched to Redux | `Function` |
-| `afterSuccess`   | Invoked after `FETCH_SUCCESS`  | Take action after the entity's state changes    | `Function` |
-| `beforeFailure`  | Invoked before `FETCH_FAILURE` | Process the error before its dispatched to Redux| `Function` |
-| `afterFailure`   | Invoked after `FETCH_FAILURE`  | Take action after the error is dispatched       | `Function` |
+| Processor        | When to use  | Signature |
+| ---------------- | ------------ | ---- |
+| `beforeSuccess`  | Take action after the promise resolves, but before the entity's `data` is dispatched to Redux | `func(dispatch, data)` |
+| `afterSuccess`   | Take action after the promise resolves, and after an entity's `data` has been updated |  `func(dispatch, data)` |
+| `beforeFailure`  | Take action after the promise rejects, but before the entity's `error` is dispatched to Redux |  `func(dispatch, error)` |
+| `afterFailure`   | Take action after the promise rejects, and after an entity's `error` has been updated | `func(dispatch, error)` |
 
-**Note**: [See here](https://github.com/mikechabot/redux-entity/blob/master/src/thunk.js#L49) for how `processors` are implemented in `loadEntity`.
+#### Example Configurations
 
-#### Example Configuration
+Simple
+```javascript
+{ append: true }
+```
+
+Advanved (with processors)
 ```javascript
 {
     silent: true,
     append: true,
     processors: {
         beforeSuccess: function (dispatch, data) {
-            dispatch({ type: 'SOME_ACTION' });
-            return _.map(data, 'stuff');
+            // do stuff
         },
         afterFailure : function (dispatch, error) {
-            dispatch({ type: 'SOME_ERROR', error })
+            // do stuff
         }
     }
 }
