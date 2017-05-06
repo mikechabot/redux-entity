@@ -43,7 +43,7 @@ export function loadOrders() {
 }
 ```
 
-### <a name="redux-entity#loadEntity">loadEntity(name, promise, options)</a>
+### <a name="redux-entity#load-entity">loadEntity</a>
 
 Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
 
