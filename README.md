@@ -261,7 +261,7 @@ export default connect(
 )(Orders);
 ```
 ## <a name="redux-entity#configuration-options">Configuration Options</a>
-Optionally pass a configuration to [`loadEntity`](#load-entity) with any of the following properties:
+Optionally pass a configuration to a custom thunk with any of the following properties:
 
 | Argument | Type | Default | Description | 
 | -------- | ----------- | ---- | ---------|
@@ -271,16 +271,23 @@ Optionally pass a configuration to [`loadEntity`](#load-entity) with any of the 
 
 
 #### <a name="redux-entity#processors">Processors</a>
-Processors are completely optional, and in most cases won't be needed since `redux-entity` automatically tracks `lastUpdated`, `isFetching`, and either `data` or `error` on entities out-of-the-box. But you can take additional action if on a given entity when its promise either resolves or rejects by hooking into the processors below. 
+Processors are completely optional and in most cases won't be needed, since `redux-entity` automatically tracks `lastUpdated`, `isFetching`, and either `data` or `error` out-of-the-box. But you can take additional action when an entity's promise either resolves or rejects by hooking into the processors below.
 
-| Processor        | When to use  | Type |
+| Processor        | When to use  | Signature |
 | ---------------- | ------------ | ---- |
-| `beforeSuccess`  | Take action after the promise resolves, but before the entity's `data` is dispatched to Redux | `function` |
-| `afterSuccess`   | Take action after the promise resolves, and after an entity's `data` has been updated | `function` |
-| `beforeFailure`  | Take action after the promise rejects, but before the entity's `error` is dispatched to Redux | `function` |
-| `afterFailure`   | Take action after the promise rejects, and after an entity's `error` has been updated | `function` |
+| `beforeSuccess`  | Take action after the promise resolves, but before the entity's `data` is dispatched to Redux | `func(dispatch, data)` |
+| `afterSuccess`   | Take action after the promise resolves, and after an entity's `data` has been updated |  `func(dispatch, data)` |
+| `beforeFailure`  | Take action after the promise rejects, but before the entity's `error` is dispatched to Redux |  `func(dispatch, error)` |
+| `afterFailure`   | Take action after the promise rejects, and after an entity's `error` has been updated | `func(dispatch, error)` |
 
-#### Example Configuration
+#### Example Configurations
+
+Simple
+```javascript
+{ append: true }
+```
+
+Advanved (with processors)
 ```javascript
 {
     silent: true,
