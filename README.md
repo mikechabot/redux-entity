@@ -261,7 +261,7 @@ export default connect(
 )(Orders);
 ```
 ## <a name="redux-entity#configuration-options">Configuration Options</a>
-Optionally pass a configuration to [`loadEntity`](#reducer) with any of the following properties:
+Optionally pass a configuration to [`loadEntity`](#load-entity) with any of the following properties:
 
 | Argument | Type | Default | Description | 
 | -------- | ----------- | ---- | ---------|
