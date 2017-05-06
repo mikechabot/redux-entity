@@ -6,23 +6,103 @@
 [![Dev Dependency Status](https://david-dm.org/mikechabot/redux-entity/dev-status.svg)](https://david-dm.org/mikechabot/redux-entity?type=dev)
 [![Coverage Status](https://coveralls.io/repos/github/mikechabot/redux-entity/badge.svg?branch=master)](https://coveralls.io/github/mikechabot/redux-entity?branch=master)
 
-`redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux. It's comprised of a **[thunk](https://github.com/gaearon/redux-thunk#whats-a-thunk)** and a **[reducer](http://redux.js.org/docs/basics/Reducers.html)**.
+`redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux.
 
 - [Live Demo](#live-demo)
+- [Usage](#usage)
+- [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
 
-## Live Demo
-http://mikechabot.github.io/react-boilerplate/
+## <a name="redux-entity#installation">Live Demo</a>
+[react-boilerplate](https://github.com/mikechabot/react-boilerplate) utilizes with `redux-entity`, [click here](http://mikechabot.github.io/react-boilerplate/dist/) to see it in action.
 
-## <a name="redux-entity#getting-started">Getting Started</a>
-### 1. Installation
-Using `npm` or `yarn`:
+## <a name="redux-entity#usage">Usage</a> 
+
+Each custom thunk you create with `loadEntity` is associated with a specific set of properties to ensure predictability.
+
+### `loadEntity`
+
+Accepts an entity name, a promise, and an options object.
+
+| Argument | Description | Type | Required | 
+| -------- | ----------- | ---- | ---------|
+| `name` | Entity name | string | Yes |
+| `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
+| `options` | See [configuration options](#configuration-options) | object | No |
+
+
+### Custom Thunk Example
+
+```javascript
+// thunks.js
+import { loadEntity } from 'redux-entity';
+import OrderService from './services/order-service';
+
+export function loadOrders() {
+    return loadEntity(
+        'orders',
+        OrderService.getOrders()
+    );
+}
+```
+
+### Entity Properties
+
+| Property | Description |
+| -------- | ----------- |
+| `data` | The results of a resolved promise |
+| `error` | The results of the rejected promise |
+| `isFetching` | Whether the entity's promise is pending |
+| `lastUpdated` | Timestamp of the entity's last update |
+
+### Redux State
+
+If `loadOrders` succeeds, the results are stamped on `orders.data` and `lastUpdated` is updated:
+
+```
+{
+  "model": {
+    "orders": {
+      "isFetching": false,
+      "data": [
+      	{ orderId: 1, type: 'FOO' },
+      	{ orderId: 2, type: 'BAR' } 
+      	{ orderId: 3, type: 'BAZ' } 
+      ],
+      "lastUpdated": 1494092038176,
+      "error": null,
+    }
+  }
+}
+```
+
+If `loadOrders` fails, the results are stamped on `order.error` and `lastUpdated` is updated:
+
+```
+{
+  "model": {
+    "orders": {
+      "isFetching": false,
+      "error": {
+        "message": "Error fetching data!"
+      },
+      "lastUpdated": 1494094113880,
+      "data": null
+    }
+  }
+}
+```
+
+## <a name="redux-entity#installation">Installation</a>
+Yarn: or npm:
 - ```$ yarn add redux-entity```
 - ```$ npm i -S redux-entity```
 
-### 2. Configure the root reducer
+## <a name="redux-entity#getting-started">Getting Started</a>
+
+### 1. Configure the root reducer
 In your root reducer, import the `model` reducer from `redux-entity`, and use it with [`combineReducers()`](http://redux.js.org/docs/api/combineReducers.html):
 ```javascript
 // root-reducer.js
@@ -34,7 +114,7 @@ export default combineReducers({
     model
 });
 ```
-### 3. Configure the Redux store
+### 2. Configure the Redux store
 Ensure `redux-thunk` middelware is applied, along with your root reducer:
 
 ```javascript
@@ -50,7 +130,7 @@ export default function configureStore(initialState) {
     );
 };
 ```
-### 4. Create and inject the Redux store
+### 3. Create and inject the Redux store
 ```javascript
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -62,7 +142,7 @@ ReactDOM.render(
     document.getElementById('example-app')
 );
 ```
-### 5. Create a custom thunk
+### 4. Create a custom thunk
 Import `loadEntity()` from `redux-entity` along with **your domain service**, and define an entity key (e.g. `orders`) that will be associated with the given promise.
 ```javascript
 // thunks.js
@@ -99,7 +179,7 @@ export function loadOrders(options) {
 }
 ```
 
-### 6. Create a React component
+### 5. Create a React component
    1. Import your thunk, and `connect()` your component to Redux.
    2. Map your thunk (`loadOrders`) to `mapDispatchToProps`.
    3. Map your entity (`orders`) to `mapStateToProps`.
