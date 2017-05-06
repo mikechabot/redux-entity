@@ -271,14 +271,14 @@ Optionally pass a configuration to [`loadEntity`](#load-entity) with any of the 
 
 
 #### <a name="redux-entity#processors">Processors</a>
-Processors are completely optional, and in most cases you won't need them. 
+Processors are completely optional, and in most cases won't be needed since `redux-entity` automatically tracks `lastUpdated`, `isFetching`, and either `data` or `error` on entities out-of-the-box. But you can take additional action if on a given entity when its promise either resolves or rejects by hooking into the processors below. 
 
 | Processor        | When to use  | Type |
 | ---------------- | ------------ | ---- |
-| `beforeSuccess`  | Take action before the entity's `data` is dispatched to the store | `function` |
-| `afterSuccess`   | Take action after an entity's `data` has been updated | `function` |
-| `beforeFailure`  | Take action before the entity's `error` is dispatched to the store | `function` |
-| `afterFailure`   | Take action after an entity's `error` has been updated | `function` |
+| `beforeSuccess`  | Take action after the promise resolves, but before the entity's `data` is dispatched to Redux | `function` |
+| `afterSuccess`   | Take action after the promise resolves, and after an entity's `data` has been updated | `function` |
+| `beforeFailure`  | Take action after the promise rejects, but before the entity's `error` is dispatched to Redux | `function` |
+| `afterFailure`   | Take action after the promise rejects, and after an entity's `error` has been updated | `function` |
 
 #### Example Configuration
 ```javascript
