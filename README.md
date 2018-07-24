@@ -64,8 +64,8 @@ To get started, simply import `entities` from `redux-thunk`, and combine with yo
 
 ```javascript
 // root-reducer.js
-import { combineReducers } from 'redux';
 import { entities } from 'redux-entity';
+import { combineReducers } from 'redux';
 
 export default combineReducers({
     ...<existing reducers>,
@@ -77,7 +77,7 @@ Now we're ready to use [`loadEntity`](#loadentitykey-promise-options).
 
 ## <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
 
-When using `loadEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data. 
+When using `loadEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
 
 > Don't worry if you can't provide a promise, `redux-entity` will automatically promisify synchronous calls.
 
