@@ -40,8 +40,6 @@ Most web applications need to handle a variety of domain entities, be it Orders,
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
 
-----
-
 ## <a name="redux-entity#install">Install</a>
 
 * `$ npm install redux-entity`
@@ -60,8 +58,6 @@ The API is very simplistic; once [integrated into Redux](#integrate-into-redux),
 | `error` | Error if the entity fetch failed |
 | `isFetching` | Whether the entity is currently fetching |
 | `lastUpdated` | Date/time of the entity's last success or failure |
-
-----
 
 ### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a> 
 
@@ -82,8 +78,6 @@ export default combineReducers({
 
 Now we're ready to use [`loadEntity`](#loadentitykey-promise-options).
 
-----
-
 ### <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
 
 When using `loadEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
@@ -103,8 +97,6 @@ export function loadOrders() {
 ```
 
 Continue on to see what happens when `loadOrders` is invoked.
-
-----
 
 ### <a name="redux-entity#redux-store">Redux Store</a>
 
