@@ -182,7 +182,7 @@ If we need to load more entities, we just create additional thunks with [`loadEn
 
 ## <a name="redux-entity#detailed-usage">Detailed Usage</a>
 
-This guide assumes you've already injected the Redux store into your React application.
+The guide below assumes you've already injected the Redux store into your React application.
 
 ### 1. Configure the root reducer
 
