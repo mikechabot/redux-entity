@@ -1,7 +1,7 @@
+import expect from 'expect';
+
 import reducer from '../../src/reducer';
 import { ACTION_TYPES, INITIAL_ENTITY_STATE } from '../../src/common/entity-const';
-
-const expect = require('expect');
 
 describe('Reducer', () => {
   describe('invoking the reducer', () => {

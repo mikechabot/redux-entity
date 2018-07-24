@@ -1,12 +1,9 @@
-
+import expect from 'expect';
+import thunk from 'redux-thunk';
+import configureStore from 'redux-mock-store';
 
 import loadEntity from '../../src/thunk';
-import { ACTION_TYPES } from '../../src/common/entity-const';
-import { PROCESSOR_STAGE } from '../../src/common/entity-const';
-
-const expect = require('expect');
-const configureStore = require('redux-mock-store').default;
-const thunk = require('redux-thunk').default;
+import { ACTION_TYPES, PROCESSOR_STAGE } from '../../src/common/entity-const';
 
 // Set up mock Redux store
 const middlewares = [thunk];

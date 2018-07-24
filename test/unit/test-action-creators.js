@@ -1,13 +1,10 @@
+import expect from 'expect';
+import thunk from 'redux-thunk';
+import configureStore from 'redux-mock-store';
 
 import { makeActionCreator, makeEntityActionCreator } from '../../src/common/action-creators';
-
-import { ACTION_TYPES } from '../../src/common/entity-const';
 import { fetchRequest, fetchSuccess, fetchFailure } from '../../src/action-creators';
-
-const expect = require('expect');
-const configureStore = require('redux-mock-store').default;
-const thunk = require('redux-thunk').default;
-
+import { ACTION_TYPES } from '../../src/common/entity-const';
 
 // Set up mock Redux store
 const middlewares = [thunk];
