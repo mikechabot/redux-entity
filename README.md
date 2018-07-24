@@ -30,7 +30,7 @@ Most web applications need to handle a variety of domain entities, be it Orders,
 - [Getting Started](#getting-started)
   - [Integrate into Redux](#integrate-into-redux)
   - [loadEntity(name, promise, options)](#loadentitykey-promise-options)
-- [Redux Store](#redux-store)
+  - [Redux Store](#redux-store)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
@@ -96,7 +96,7 @@ export function loadOrders() {
 
 Continue on to see what happens when `loadOrders` is invoked.
 
-## <a name="redux-entity#redux-store">Redux Store</a>
+### <a name="redux-entity#redux-store">Redux Store</a>
 
 Let's take a look at what the Redux store might look like when `loadOrders` is invoked.
 
