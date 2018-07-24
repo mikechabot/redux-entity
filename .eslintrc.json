@@ -1,27 +1,27 @@
 {
   "env": {
+    "browser": true,
     "node": true,
-    "es6": true,
     "mocha": true
   },
-  "ecmaFeatures": {
-    "modules": true,
-    "experimentalObjectRestSpread": true
-  },
-  "extends": [ "eslint:recommended", "standard" ],
+  "extends": "airbnb-base",
+  "plugins": ["chai-friendly"],
   "rules": {
-    "eqeqeq": [2, "always"],
-    "indent": [2, 4, { "SwitchCase": 1 }],
-    "key-spacing": ["error", { "align": {
-      "beforeColon": false,
-      "afterColon": true,
-      "on": "colon"
-    }, "multiLine": { } }],
-    "no-console": ["error", { "allow": ["log", "warn", "error"]}],
-    "no-debugger": 2,
-    "no-extend-native": 0,
-    "no-var": 1,
-    "quotes": [2, "single"],
-    "semi": [2, "always"]
+    "comma-dangle": ["error", {
+      "arrays": "never",
+      "objects": "never",
+      "imports": "never",
+      "exports": "never",
+      "functions": "ignore"
+    }],
+    "no-unused-expressions": 0,
+    "chai-friendly/no-unused-expressions": 2,
+    "no-plusplus": [2, { "allowForLoopAfterthoughts": true }],
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allowAfterThis": true
+      }
+    ]
   }
 }

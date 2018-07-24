@@ -1,6 +1,4 @@
-'use strict';
-
-const EntityLifecycle = require('./common/entity-lifecycle');
+import EntityLifecycle from './common/entity-lifecycle';
 
 /**
  * Redux thunk action creator for performing asynchronous actions.
@@ -10,20 +8,20 @@ const EntityLifecycle = require('./common/entity-lifecycle');
  * @param {object}  options     Configuration options object
  * @return {function}           Perform an asynchronous action, dispatch Redux actions accordingly
  */
-module.exports = function loadEntity (
-    name,
-    promise,
-    options
+export default function loadEntity(
+  name,
+  promise,
+  options
 ) {
-    if (!name || typeof name !== 'string') throw new Error('Missing required entity name');
-    if (!promise || !promise.then) throw new Error('Missing required entity promise');
-    if (options && options.constructor !== Object) throw new Error('Expected options to be an object');
-    const _el = new EntityLifecycle(name, options);
-    return (dispatch) => {
-        _el.setDispatch(dispatch);
-        _el.onLoad();
-        return promise
-            .then(data => { _el.onSuccess(data); })
-            .catch(error => { _el.onFailure(error); });
-    };
-};
+  if (!name || typeof name !== 'string') throw new Error('Missing required entity name');
+  if (!promise || !promise.then) throw new Error('Missing required entity promise');
+  if (options && options.constructor !== Object) throw new Error('Expected options to be an object');
+  const entityLifecycle = new EntityLifecycle(name, options);
+  return (dispatch) => {
+    entityLifecycle.setDispatch(dispatch);
+    entityLifecycle.onLoad();
+    return promise
+      .then((data) => { entityLifecycle.onSuccess(data); })
+      .catch((error) => { entityLifecycle.onFailure(error); });
+  };
+}
