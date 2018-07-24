@@ -58,7 +58,7 @@ The API is very simplistic; a single thunk called [`loadEntity`](#loadentitykey-
 
 ## <a name="redux-entity#integrate-into-redux">Integrate into Redux</a> 
 
-To get started, simply import `entities` from `redux-thunk`, and combine with your existing reducers. Now we're ready to use [`loadEntity`](#loadentitykey-promise-options).
+To get started, simply import `entities` from `redux-thunk`, and combine with your existing reducers.
 
 > By default, we're carving out a space in the Redux tree with the key of `entities`, but you can rename it to whatever you'd like.
 
@@ -72,6 +72,8 @@ export default combineReducers({
     entities
 });
 ```
+
+Now we're ready to use [`loadEntity`](#loadentitykey-promise-options).
 
 ## <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
 
