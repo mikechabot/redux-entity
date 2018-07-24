@@ -1,5 +1,5 @@
 import EntityConfiguration from './entity-configuration';
-import { fetchRequest, fetchSuccess, fetchFailure } from '../action-creators';
+import actionCreators from '../action-creators';
 import { PROCESSOR_STAGE } from './entity-const';
 
 function EntityLifecycle(entityName, options) {
@@ -25,7 +25,7 @@ EntityLifecycle.prototype.getDispatch = function () {
 
 EntityLifecycle.prototype.onLoad = function () {
   if (!this.config.isSilent()) {
-    this.getDispatch()(fetchRequest(this.getEntityName())());
+    this.getDispatch()(actionCreators.fetchRequest(this.getEntityName())());
   }
 };
 
@@ -59,13 +59,13 @@ EntityLifecycle.prototype.runAfterFailure = function (error) {
 
 EntityLifecycle.prototype.dispatchFetchSuccess = function (data) {
   this.dispatch(
-    fetchSuccess(this.getEntityName())(data, Date.now(), this.config.doAppend())
+    actionCreators.fetchSuccess(this.getEntityName())(data, Date.now(), this.config.doAppend())
   );
 };
 
 EntityLifecycle.prototype.dispatchFetchFailure = function (error) {
   this.dispatch(
-    fetchFailure(this.getEntityName())(error, Date.now())
+    actionCreators.fetchFailure(this.getEntityName())(error, Date.now())
   );
 };
 

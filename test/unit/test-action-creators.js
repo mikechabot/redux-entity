@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 
 import { makeActionCreator, makeEntityActionCreator } from '../../src/common/action-creators';
-import { fetchRequest, fetchSuccess, fetchFailure } from '../../src/action-creators';
+import actionCreators from '../../src/action-creators';
 import { ACTION_TYPES } from '../../src/common/entity-const';
 
 // Set up mock Redux store
@@ -121,7 +121,7 @@ describe('Action Creators', () => {
 
         // Under test
         store.dispatch(
-          fetchRequest(mockEntity)()
+          actionCreators.fetchRequest(mockEntity)()
         );
 
         expect(
@@ -147,7 +147,7 @@ describe('Action Creators', () => {
 
         // Under test
         store.dispatch(
-          fetchSuccess(mockEntity)(mockData, now, false)
+          actionCreators.fetchSuccess(mockEntity)(mockData, now, false)
         );
 
         expect(
@@ -172,7 +172,7 @@ describe('Action Creators', () => {
 
         // Under test
         store.dispatch(
-          fetchFailure(mockEntity)(mockError, now)
+          actionCreators.fetchFailure(mockEntity)(mockError, now)
         );
 
         expect(
