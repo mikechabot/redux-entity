@@ -43,7 +43,7 @@ A predictable approach to maintaining domain entities in Redux.
 
 At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers); it's designed to deal with asynchronous actions, but it can handle synchronous calls just as easily.
 
-Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects in a predictable and scalable way.
+Moreover, most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects in a predictable and scalable way.
 
 The API is very simplistic; a single thunk called [`loadEntity`](#loadentitykey-promise-options) is exposed, which does all the heavy lifting. 
 
