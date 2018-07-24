@@ -378,7 +378,7 @@ import { connect } from 'react-redux';
 import { resetEntity, deleteEntity } from 'redux-entity';
 
 function Orders({
-    entityName,
+    entityKey,
     orders,
     resetEntity,
     deleteEntity
@@ -403,8 +403,8 @@ function Orders({
                     <li key={index}> {value.label}</li>
                 )}
             </ul>
-            <button onClick={() => resetEntity(entityName, Date.now())}>Reset</button>
-            <button onClick={() => deleteEntity(entityName, Date.now())}>Delete</button>
+            <button onClick={() => resetEntity(entityKey, Date.now())}>Reset</button>
+            <button onClick={() => deleteEntity(entityKey, Date.now())}>Delete</button>
         </div>
     );
 }
