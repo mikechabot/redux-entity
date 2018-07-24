@@ -96,7 +96,7 @@ export function loadOrders() {
 }
 ```
 
-Continue on to see what happens when `loadOrders` is invoked.
+Continue on to see what happens to the Redux store when `loadOrders` is invoked.
 
 ### <a name="redux-entity#redux-store">Redux Store</a>
 
