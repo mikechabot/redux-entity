@@ -1,7 +1,10 @@
 # redux-entity
 
+At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers) that utilizes a specialized [thunk](https://github.com/reduxjs/redux-thunk#whats-a-thunk), which is designed to handle asynchronous actions in the form of a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects within Redux in a predictable and scalable way.
+
 <div align="center">
-A predictable approach to maintaining domain entities in Redux.
 <br /><br />
   <a href="https://www.npmjs.com/package/redux-entity">
     <img src="https://img.shields.io/npm/v/redux-entity.svg?style=flat-square" alt="npm version" />
@@ -25,8 +28,8 @@ A predictable approach to maintaining domain entities in Redux.
 - [Demo](#demo)
 - [Install](#install)
 - [Getting Started](#getting-started)
-- [Integrate into Redux](#integrate-into-redux)
-- [loadEntity(name, promise, options)](#loadentitykey-promise-options)
+  - [Integrate into Redux](#integrate-into-redux)
+  - [loadEntity(name, promise, options)](#loadentitykey-promise-options)
 - [Redux State](#redux-state)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
@@ -43,10 +46,6 @@ A predictable approach to maintaining domain entities in Redux.
 
 ## <a name="redux-entity#getting-started">Getting Started</a> 
 
-At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers) that utilizes a specialized [thunk](https://github.com/reduxjs/redux-thunk#whats-a-thunk), which is designed to handle asynchronous actions in the form of a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
-
-Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects in a predictable and scalable way.
-
 The API is very simplistic; once [integrated into Redux](#integrate-into-redux), a single thunk called [`loadEntity`](#loadentitykey-promise-options) is exposed, which does all the heavy lifting. 
 
 > Every entity you fetch is automatically associated with the following properties to ensure predictability. No need to track these yourself.
@@ -58,7 +57,7 @@ The API is very simplistic; once [integrated into Redux](#integrate-into-redux),
 | `isFetching` | Whether the entity is currently fetching |
 | `lastUpdated` | Date/time of the entity's last success or failure |
 
-## <a name="redux-entity#integrate-into-redux">Integrate into Redux</a> 
+### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a> 
 
 To get started, simply import `entities` from `redux-thunk`, and combine with your existing reducers.
 
@@ -77,7 +76,7 @@ export default combineReducers({
 
 Now we're ready to use [`loadEntity`](#loadentitykey-promise-options).
 
-## <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
+### <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
 
 When using `loadEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
 
