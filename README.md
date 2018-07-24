@@ -25,7 +25,7 @@ A predictable approach to maintaining domain entities in Redux.
 - [Demo](#demo)
 - [Install](#install)
 - [Getting Started](#getting-started)
-- [loadEntity(name, promise, options)](#loadentityname-promise-options)
+- [loadEntity(name, promise, options)](#loadentitykey-promise-options)
 - [Redux State](#redux-state)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
@@ -44,7 +44,7 @@ At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/redu
 
 Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects in a predictable and scalable way.
 
-The API is very simplistic; a single thunk called [`loadEntity`](#loadentityname-promise-options) is exposed, which does all the heavy lifting. 
+The API is very simplistic; a single thunk called [`loadEntity`](#loadentitykey-promise-options) is exposed, which does all the heavy lifting. 
 
 > Every entity you fetch is automatically associated with the following properties to ensure predictability. No need to track these yourself.
 
@@ -55,35 +55,54 @@ The API is very simplistic; a single thunk called [`loadEntity`](#loadentityname
 | `isFetching` | Whether the entity is currently fetching |
 | `lastUpdated` | Date/time of the entity's last success or failure |
 
-## <a name="redux-entity#loadentityname-promise-options">`loadEntity(name, promise, options)`</a>
+## <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
 
-Create custom thunks with `loadEntity`. Here's an example of a `loadOrders` thunk. We can create as many of these as we want as long as the entity's `name` is unique (e.g. `orders`).
+When using `loadEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data. 
+
+> Don't worry if you can't provide a promise, `redux-entity` will automatically promisify synchronous calls.
+
+Here's a simple example of loading orders:
 
 ```javascript
-// thunks.js
 import { loadEntity } from 'redux-entity';
 import OrderService from './services/order-service';
 
+const key = 'orders';
+const promise = OrderService.getOrders();
+
 export function loadOrders() {
-    return loadEntity(
-        'orders',
-        OrderService.getOrders()
-    );
+    return loadEntity(key, promise);
 }
 ```
 
-Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
+Continue on to see what happens when `loadOrders` is invoked.
 
-| Argument | Description | Type | Required | 
-| -------- | ----------- | ---- | ---------|
-| `name` | Entity name | string | Yes |
-| `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
-| `options` | See [configuration options](#configuration-options) | object | No |
+## <a name="redux-entity#redux-state">Redux State</a>
 
+In the context of React, let's say we have an `<Orders />` component; when the component mounts, we'll want to fetch our data:
 
-### <a name="redux-entity#redux-state">Redux State</a>
+```javascript
+componentDidMount() {
+    this.props.loadOrders();
+}
+```
 
-If `loadOrders` succeeds, the results are stamped on `entities.orders.data` and `lastUpdated` is updated:
+While `loadOrders` is pending, `isFetching` is set to true:
+
+```
+{
+  "entities": {
+    "orders": {
+      "isFetching": true,
+      "lastUpdated": null,
+      "data": null,
+      "error:" null
+    }
+  }
+}
+```
+
+If `loadOrders` **succeeds**, the results are stamped on `entities.orders.data`, and `lastUpdated` is also updated:
 
 ```
 {
@@ -102,7 +121,7 @@ If `loadOrders` succeeds, the results are stamped on `entities.orders.data` and 
 }
 ```
 
-If `loadOrders` fails, the results are stamped on `entities.orders.error` and `lastUpdated` is updated:
+If `loadOrders` **fails**, the results are stamped on `entities.orders.error`, and `lastUpdated` is also updated:
 
 ```
 {
@@ -119,20 +138,7 @@ If `loadOrders` fails, the results are stamped on `entities.orders.error` and `l
 }
 ```
 
-If `loadOrders` is pending, `isFetching` is set to true:
-
-```
-{
-  "entities": {
-    "orders": {
-      "isFetching": true,
-      ...
-    }
-  }
-}
-```
-
-Stamp additional entities on `entities` by creating more thunks:
+If we need to load more entities, we just create additional thunks with [`loadEntity`](#loadentitykey-promise-options):
 
 ```
 {
