@@ -1,32 +1,59 @@
 # redux-entity
 
-[![npm version](https://badge.fury.io/js/redux-entity.svg)](https://badge.fury.io/js/redux-entity)
-[![Build Status](https://travis-ci.org/mikechabot/redux-entity.svg?branch=master)](https://travis-ci.org/mikechabot/redux-entity)
-[![Coverage Status](https://coveralls.io/repos/github/mikechabot/redux-entity/badge.svg?branch=master)](https://coveralls.io/github/mikechabot/redux-entity?branch=master)
-[![Dependency Status](https://david-dm.org/mikechabot/redux-entity.svg)](https://david-dm.org/mikechabot/redux-entity)
-[![Dev Dependency Status](https://david-dm.org/mikechabot/redux-entity/dev-status.svg)](https://david-dm.org/mikechabot/redux-entity?type=dev)
+<div align="center">
+A predictable approach to maintaining domain entities in Redux.
+<br /><br />
+  <a href="https://www.npmjs.com/package/redux-entity">
+    <img src="https://img.shields.io/npm/v/redux-entity.svg?style=flat-square" alt="npm version" />
+  </a>
+  <a href="https://travis-ci.org/mikechabot/redux-entity">
+    <img src="https://travis-ci.org/mikechabot/redux-entity.svg?branch=master" alt="build status" />
+  </a>
+  <a href="https://coveralls.io/github/mikechabot/maybe-baby?branch=master">
+    <img src="https://coveralls.io/repos/github/mikechabot/maybe-baby/badge.svg?branch=master&cacheBuster=1" alt="coverage status" />
+  </a>
+  <a href="https://david-dm.org/mikechabot/redux-entity">
+    <img src="https://david-dm.org/mikechabot/redux-entity.svg" alt="dependency status" />
+  </a>
+  <a href="https://david-dm.org/mikechabot/redux-entity?type=dev">
+    <img src="https://david-dm.org/mikechabot/redux-entity/dev-status.svg" alt="devDependency status" />
+  </a>
+</div>
 
-`redux-entity` seeks to provide a predictable approach to maintaining domain entities in Redux.
+<hr />
 
-- [Live Demo](#live-demo)
-- [Installation](#installation)
+- [Demo](#demo)
+- [Install](#install)
 - [Getting Started](#getting-started)
-  - [loadEntity(name, promise, options)](#loadentityname-promise-options)
-  - [Entity Properties](#entity-properties)
-  - [Redux State](#redux-state)
+- [loadEntity(name, promise, options)](#loadentityname-promise-options)
+- [Redux State](#redux-state)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
 
-## <a name="redux-entity#installation">Live Demo</a>
+## <a name="redux-entity#demo">Demo</a>
 [Click here to see a live demo](http://mikechabot.github.io/react-boilerplate/dist/) 
 
-## <a name="redux-entity#installation">Installation</a>
-Yarn: or npm:
-- ```$ yarn add redux-entity```
-- ```$ npm i -S redux-entity```
+## <a name="redux-entity#install">Install</a>
+
+* `$ npm install redux-entity`
 
 ## <a name="redux-entity#getting-started">Getting Started</a> 
+
+At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers); it's designed to deal with asynchronous actions, but it can handle synchronous calls just as easily.
+
+Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects in a predictable and scalable way.
+
+The API is very simplistic; a single thunk called [`loadEntity`](#loadentityname-promise-options) is exposed, which does all the heavy lifting. Every entity you fetch is automatically associated with the following properties to ensure predictability. No need to track these yourself.
+
+| Property | Description |
+| -------- | ----------- |
+| `data` | The entity's data (i.e. Products, Orders, etc) |
+| `error` | Error if the entity fetch failed |
+| `isFetching` | Whether the entity is currently fetching |
+| `lastUpdated` | Date/time of the entity's last success or failure |
+
+## <a name="redux-entity#loadentityname-promise-options">`loadEntity(name, promise, options)`</a>
 
 Create custom thunks with `loadEntity`. Here's an example of a `loadOrders` thunk. We can create as many of these as we want as long as the entity's `name` is unique (e.g. `orders`).
 
@@ -43,8 +70,6 @@ export function loadOrders() {
 }
 ```
 
-### <a name="redux-entity#loadentityname-promise-options">`loadEntity(name, promise, options)`</a>
-
 Accepts an entity name, promise, and an options object, returns a [redux thunk](https://github.com/gaearon/redux-thunk).
 
 | Argument | Description | Type | Required | 
@@ -53,16 +78,6 @@ Accepts an entity name, promise, and an options object, returns a [redux thunk](
 | `promise` | Data promise | [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) | Yes |
 | `options` | See [configuration options](#configuration-options) | object | No |
 
-### <a name="redux-entity#entity-properties">Entity Properties</a>
-
-Each thunk you create is associated with a specific set of properties to ensure predictability:
-
-| Property | Description |
-| -------- | ----------- |
-| `data` | The results of a resolved promise |
-| `error` | The results of the rejected promise |
-| `isFetching` | Whether the entity's promise is pending |
-| `lastUpdated` | Timestamp of the entity's last update |
 
 ### <a name="redux-entity#redux-state">Redux State</a>
 
