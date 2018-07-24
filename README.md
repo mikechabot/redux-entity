@@ -44,6 +44,8 @@ Most web applications need to handle a variety of domain entities, be it Orders,
 
 * `$ npm install redux-entity`
 
+----
+
 ## <a name="redux-entity#getting-started">Getting Started</a> 
 
 The API is very simplistic; once [integrated into Redux](#integrate-into-redux), a single thunk called [`loadEntity`](#loadentitykey-promise-options) is exposed, which does all the heavy lifting. 
@@ -56,6 +58,8 @@ The API is very simplistic; once [integrated into Redux](#integrate-into-redux),
 | `error` | Error if the entity fetch failed |
 | `isFetching` | Whether the entity is currently fetching |
 | `lastUpdated` | Date/time of the entity's last success or failure |
+
+----
 
 ### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a> 
 
@@ -76,6 +80,8 @@ export default combineReducers({
 
 Now we're ready to use [`loadEntity`](#loadentitykey-promise-options).
 
+----
+
 ### <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
 
 When using `loadEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
@@ -95,6 +101,8 @@ export function loadOrders() {
 ```
 
 Continue on to see what happens when `loadOrders` is invoked.
+
+----
 
 ### <a name="redux-entity#redux-store">Redux Store</a>
 
@@ -180,6 +188,8 @@ If we need to load more entities, we just create additional thunks with [`loadEn
   }
 }
 ```
+
+----
 
 ## <a name="redux-entity#detailed-usage">Detailed Usage</a>
 
@@ -279,6 +289,8 @@ export default connect(
 )(Orders);
 ```
 
+----
+
 ## <a name="redux-entity#configuration-options">Configuration Options</a>
 
 Optionally pass a configuration with any of the following properties:
@@ -314,6 +326,8 @@ export function loadOrders(options) {
 }
 ```
 
+----
+
 #### <a name="redux-entity#processors">Processors</a>
 
 Processors are completely optional and in most cases won't be needed, however you can take additional action when an entity's promise either resolves or rejects by hooking into the processors below.
@@ -347,6 +361,8 @@ export function loadOrders() {
     return loadEntity(key, promise, options);
 }
 ```
+
+----
 
 ## <a name="redux-entity#additional-actions">Additional Actions</a>
 
