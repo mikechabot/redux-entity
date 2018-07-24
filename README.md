@@ -44,7 +44,9 @@ At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/redu
 
 Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects in a predictable and scalable way.
 
-The API is very simplistic; a single thunk called [`loadEntity`](#loadentityname-promise-options) is exposed, which does all the heavy lifting. Every entity you fetch is automatically associated with the following properties to ensure predictability. No need to track these yourself.
+The API is very simplistic; a single thunk called [`loadEntity`](#loadentityname-promise-options) is exposed, which does all the heavy lifting. 
+
+> Every entity you fetch is automatically associated with the following properties to ensure predictability. No need to track these yourself.
 
 | Property | Description |
 | -------- | ----------- |
