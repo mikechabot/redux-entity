@@ -43,7 +43,7 @@ A predictable approach to maintaining domain entities in Redux.
 
 ## <a name="redux-entity#getting-started">Getting Started</a> 
 
-At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers) that utilizes a special [thunk](https://github.com/reduxjs/redux-thunk#whats-a-thunk) that's designed to deal with asynchronous actions in the form of a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers) that utilizes a special [thunk](https://github.com/reduxjs/redux-thunk#whats-a-thunk), which is designed to handle asynchronous actions in the form of a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects in a predictable and scalable way.
 
@@ -215,6 +215,7 @@ Here's a full React component that utilizes our `loadOrders` example, which impl
 ```javascript
 // Orders.jsx
 import React from 'react';
+import PropTypes from 'prop-types';
 import { loadOrders } from '../redux/thunks';
 import { connect } from 'react-redux';
 
@@ -263,6 +264,11 @@ class Orders extends React.Component {
     }
 }
 
+Orders.propTypes  = {
+    orders: PropTypes.object,
+    loadOrders: PropTypes.func.isRequired,
+};
+
 const mapStateToProps = state => ({orders: state.entities && state.entities.orders});
 const mapDispatchToProps = { loadOrders };
 
@@ -278,19 +284,8 @@ Optionally pass a configuration to a custom thunk with any of the following prop
 | Argument | Type | Default | Description | 
 | -------- | ----------- | ---- | ---------|
 | `silent` | boolean | `false` | If `true`, don't toggle `isFetching` when the thunk is invoked |
-| `append` | boolean | `false` | If `true`, attach the results of each invocation to the existing `data` property instead of overwriting |
-| `processors` | object | `null` | Hook into the `loadEntity` lifecycle. Each processor has access to Redux `dispatch` along with either the `data` or `error` object of the entity. See [processors](#processors)|
-
-
-#### <a name="redux-entity#processors">Processors</a>
-Processors are completely optional and in most cases won't be needed, since `redux-entity` automatically tracks `lastUpdated`, `isFetching`, and either `data` or `error` out-of-the-box. But you can take additional action when an entity's promise either resolves or rejects by hooking into the processors below.
-
-| Processor        | When to use  | Signature |
-| ---------------- | ------------ | ---- |
-| `beforeSuccess`  | Take action after the promise resolves, but before the entity's `data` is dispatched to Redux | `func(dispatch, data)` |
-| `afterSuccess`   | Take action after the promise resolves, and after an entity's `data` has been updated |  `func(dispatch, data)` |
-| `beforeFailure`  | Take action after the promise rejects, but before the entity's `error` is dispatched to Redux |  `func(dispatch, error)` |
-| `afterFailure`   | Take action after the promise rejects, and after an entity's `error` has been updated | `func(dispatch, error)` |
+| `append` | boolean | `false` | If `true`, attach the results of each invocation to the existing `data` property instead of overwriting it |
+| `processors` | object | `null` | Hook into the `loadEntity` lifecycle. Each processor has access to Redux `dispatch` along with either the `data` or `error` object of the entity. See [Processors](#processors)|
 
 #### Example Configurations
 
@@ -316,17 +311,27 @@ export function loadOrders(options) {
 }
 ```
 
-Advanced (with processors)
+#### <a name="redux-entity#processors">Processors</a>
+
+Processors are completely optional and in most cases won't be needed, however you can take additional action when an entity's promise either resolves or rejects by hooking into the processors below.
+
+| Processor        | When to use  | Signature |
+| ---------------- | ------------ | ---- |
+| `beforeSuccess`  | Invoked after the promise resolves, but before `data` is dispatched | `func(dispatch, data)` |
+| `afterSuccess`   | Invoked after the promise resolves, and after `data` has been updated |  `func(dispatch, data)` |
+| `beforeFailure`  | Invoked after the promise rejects, but before the `error` is dispatched |  `func(dispatch, error)` |
+| `afterFailure`   | Invoked after the promise rejects, and after the `error` has been updated | `func(dispatch, error)` |
+
+Configuration with processors:
 ```javascript
 const options = {
     silent: true,
-    append: true,
     processors: {
         beforeSuccess: function (dispatch, data) {
-            // do stuff
+            // do synchronous stuff
         },
         afterFailure : function (dispatch, error) {
-            // do stuff
+            // do synchronous stuff
         }
     }
 }
@@ -340,32 +345,37 @@ export function loadOrders() {
 }
 ```
 
-## <a name="redux-entity#additional-actions">Additional Actions</a> 
-The following action creators are synchonrous, and can be used to reset or delete your entity. Check out the [Live Demo](#live-demo) to see these in action.
+## <a name="redux-entity#additional-actions">Additional Actions</a>
+
+The following actions can be use to reset or delete your entity.
+
+> Check out the [Demo](#demo) to see these in action.
 
 | Action creator | Description                                                           |
 |---------------:|:----------------------------------------------------------------------|
 | `resetEntity`  | Set the `data` property on the entity to `null`. Update `lastUpdated` |
-| `deleteEntity` | Delete the entity from `state.entities`                                  |
+| `deleteEntity` | Delete the entity from `state.entities`                               |
 
 ### Example usage
-   1. `connect()` your component to Redux.
-   2. Map the action creators (`resetEntity`, `deleteEntity`) in `mapDispatchToProps`.
-   3. Pass your `entity` name, and the current time to either action creator.
+   
 ```javascript
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { resetEntity, deleteEntity } from 'redux-entity';
 
-function Entity({
+function Orders({
     entityName,
-    entity,
+    orders,
     resetEntity,
     deleteEntity
 }) {
 
-    if (!entity) return <span />;
-    const { error, data, isFetching } = entity;
+    if (!orders) {
+        return <span />;
+    }
+    
+    const { error, data, isFetching } = orders;
 
     if (isFetching) {
         return <span>Loading!</span>;
@@ -383,31 +393,24 @@ function Entity({
             <button onClick={() => resetEntity(entityName, Date.now())}>Reset</button>
             <button onClick={() => deleteEntity(entityName, Date.now())}>Delete</button>
         </div>
-    )
+    );
 }
 
 Entity.propTypes  = {
-    entityName: React.PropTypes.string.isRequired,
-    entity: React.PropTypes.shape({
-        isFetching : React.PropTypes.bool,
-        lastUpdated: React.PropTypes.number,
-        data       : React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.number,
-            React.PropTypes.object,
-            React.PropTypes.array
-        ]),
-        error: React.PropTypes.oneOfType([
-            React.PropTypes.object,
-            React.PropTypes.string
-        ])
-    }),
-    resetEntity: React.PropTypes.func.isRequired,
-    deleteEntity: React.PropTypes.func.isRequired
+    entityKey: PropTypes.string.isRequired,
+    orders: PropTypes.object,
+    resetEntity: PropTypes.func.isRequired,
+    deleteEntity: PropTypes.func.isRequired
 };
 
-export default connect (null, {
+const mapStateToProps = state => ({orders: state.entities && state.entities.orders});
+const mapDispatchToProps = {
     resetEntity,
     deleteEntity
-})(Entity);
+};
+
+export default connect (
+    mapStateToProps, 
+    mapDispatchToProps
+)(Orders);
 ```
