@@ -40,6 +40,8 @@ Most web applications need to handle a variety of domain entities, be it Orders,
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
 
+----
+
 ## <a name="redux-entity#install">Install</a>
 
 * `$ npm install redux-entity`
