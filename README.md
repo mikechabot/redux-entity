@@ -35,13 +35,15 @@ A predictable approach to maintaining domain entities in Redux.
 ## <a name="redux-entity#demo">Demo</a>
 [Click here to see a live demo](http://mikechabot.github.io/react-boilerplate/dist/) 
 
+> Check out the demo repository at https://github.com/mikechabot/react-boilerplate
+
 ## <a name="redux-entity#install">Install</a>
 
 * `$ npm install redux-entity`
 
 ## <a name="redux-entity#getting-started">Getting Started</a> 
 
-At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers); it's designed to deal with asynchronous actions, but it can handle synchronous calls just as easily.
+At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers); it's designed to deal with asynchronous actions in the form of a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 Moreover, most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects in a predictable and scalable way.
 
@@ -78,8 +80,6 @@ Now we're ready to use [`loadEntity`](#loadentitykey-promise-options).
 ## <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
 
 When using `loadEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
-
-> Don't worry if you can't provide a promise, `redux-entity` will automatically promisify synchronous calls.
 
 Here's a simple example of loading orders:
 
