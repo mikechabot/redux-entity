@@ -5,7 +5,7 @@ At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/redu
 Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects within Redux in a predictable and scalable way.
 
 <div align="center">
-<br /><br />
+<br />
   <a href="https://www.npmjs.com/package/redux-entity">
     <img src="https://img.shields.io/npm/v/redux-entity.svg?style=flat-square" alt="npm version" />
   </a>
