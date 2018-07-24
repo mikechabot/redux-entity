@@ -30,7 +30,7 @@ Most web applications need to handle a variety of domain entities, be it Orders,
 - [Getting Started](#getting-started)
   - [Integrate into Redux](#integrate-into-redux)
   - [loadEntity(name, promise, options)](#loadentitykey-promise-options)
-- [Redux State](#redux-state)
+- [Redux Store](#redux-store)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
 - [Additional Actions](#additional-actions)
@@ -96,7 +96,9 @@ export function loadOrders() {
 
 Continue on to see what happens when `loadOrders` is invoked.
 
-## <a name="redux-entity#redux-state">Redux State</a>
+## <a name="redux-entity#redux-store">Redux Store</a>
+
+Let's take a look at what the Redux store might look like when `loadOrders` is invoked.
 
 In the context of React, let's say we have an `<Orders />` component; when the component mounts, we'll want to fetch our data:
 
@@ -123,7 +125,7 @@ While `loadOrders` is pending, `isFetching` is set to true:
 }
 ```
 
-If `loadOrders` **succeeds**, the results are stamped on `entities.orders.data`, and `lastUpdated` is set:
+If `loadOrders` **succeeds**, the results are stamped on the store at `entities.orders.data`, and `lastUpdated` is set:
 
 ```
 {
@@ -142,7 +144,7 @@ If `loadOrders` **succeeds**, the results are stamped on `entities.orders.data`,
 }
 ```
 
-If `loadOrders` **fails**, the results are stamped on `entities.orders.error`, and `lastUpdated` is set:
+If `loadOrders` **fails**, the results are stamped on the store at `entities.orders.error`, and `lastUpdated` is set:
 
 ```javascript
 {
@@ -207,9 +209,9 @@ export function loadOrders() {
 
 ### 3. Create a React component
 
-Here's a full React component that utilizes our `loadOrders` example, which implements `loadEntities`. At this point, `loadOrders` is no different from any other Redux thunks.
+Here's a full React component that utilizes our `loadOrders` example. At this point, `loadOrders` is no different from any other Redux thunk.
 
-> The following code is considered boilerplate for integrating Redux thunks.
+> The following code is considered boilerplate for integrating thunks.
 
 ```javascript
 // Orders.jsx
@@ -278,7 +280,8 @@ export default connect(
 ```
 
 ## <a name="redux-entity#configuration-options">Configuration Options</a>
-Optionally pass a configuration to a custom thunk with any of the following properties:
+
+Optionally pass a configuration with any of the following properties:
 
 | Argument | Type | Default | Description | 
 | -------- | ----------- | ---- | ---------|
