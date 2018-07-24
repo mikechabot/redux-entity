@@ -293,23 +293,24 @@ Optionally pass a configuration with any of the following properties:
 
 Simple configuration:
 ```javascript
+
+const key = 'orders';
+const promise = OrderService.getOrders();
+const options = { silent: true, append: true };
+
 export function loadOrders() {
-    return loadEntity(
-        'orders',
-        OrderService.getOrders(),
-        { silent: true, append: true }
-    );
+    return loadEntity(key, promise, options);
 }
 ```
 
 Dynamically pass a configuration: 
 ```javascript
+
+const key = 'orders';
+const promise = OrderService.getOrders();
+
 export function loadOrders(options) {
-    return loadEntity(
-        'orders',
-        OrderService.getOrders(),
-        options
-    );
+    return loadEntity(key, promise, options);
 }
 ```
 
@@ -326,6 +327,10 @@ Processors are completely optional and in most cases won't be needed, however yo
 
 Configuration with processors:
 ```javascript
+
+const key = 'orders';
+const promise = OrderService.getOrders();
+
 const options = {
     silent: true,
     processors: {
@@ -339,11 +344,7 @@ const options = {
 }
 
 export function loadOrders() {
-    return loadEntity(
-        'orders',
-        OrderService.getOrders(),
-        options
-    );
+    return loadEntity(key, promise, options);
 }
 ```
 
