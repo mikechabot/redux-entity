@@ -29,7 +29,7 @@ Most web applications need to handle a variety of domain entities, be it Orders,
 - [Install](#install)
 - [Getting Started](#getting-started)
   - [Integrate into Redux](#integrate-into-redux)
-  - [loadEntity(name, promise, options)](#loadentitykey-promise-options)
+  - [loadEntity(key, promise, options)](#loadentitykey-promise-options)
   - [Redux Store](#redux-store)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
