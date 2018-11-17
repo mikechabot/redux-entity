@@ -25,8 +25,8 @@ describe('Action Creators', () => {
 
       it('should return a function', () => {
         expect(
-          makeActionCreator(type, key1, key2)
-        ).toBeA('function');
+          typeof makeActionCreator(type, key1, key2)
+        ).toBe('function');
       });
 
       it('should throw an error if a type is not passed', () => {
@@ -65,10 +65,10 @@ describe('Action Creators', () => {
 
       it('should return a function', () => {
         expect(
-          makeEntityActionCreator(
+          typeof makeEntityActionCreator(
             type, entity, key1, key2
           )
-        ).toBeA('function');
+        ).toBe('function');
       });
 
       it('should throw an error if a type is not passed', () => {

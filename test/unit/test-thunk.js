@@ -1,3 +1,4 @@
+import mock from 'jest-mock';
 import expect from 'expect';
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
@@ -53,8 +54,8 @@ describe('Thunk Action Creators', () => {
             // Assert timestamp is present and valid
             const success = actions[1];
 
-            expect(success.lastUpdated).toExist();
-            expect(success.lastUpdated).toBeA('number');
+            expect(success.lastUpdated).toBeTruthy();
+            expect(typeof success.lastUpdated).toBe('number');
 
             // Force timestamps to match for easier assertion
             expectedSuccess.lastUpdated = success.lastUpdated;
@@ -100,8 +101,8 @@ describe('Thunk Action Creators', () => {
 
             // Assert timestamp is present and valid
             const failure = actions[1];
-            expect(failure.lastUpdated).toExist();
-            expect(failure.lastUpdated).toBeA('number');
+            expect(failure.lastUpdated).toBeTruthy();
+            expect(typeof failure.lastUpdated).toBe('number');
 
             // Force timestamps to match for easier assertion
             expectedFailure.lastUpdated = failure.lastUpdated;
@@ -139,8 +140,8 @@ describe('Thunk Action Creators', () => {
 
             // Assert timestamp is present and valid
             const success = actions[0];
-            expect(success.lastUpdated).toExist();
-            expect(success.lastUpdated).toBeA('number');
+            expect(success.lastUpdated).toBeTruthy();
+            expect(typeof success.lastUpdated).toBe('number');
 
             // Force timestamps to match for easier assertion
             expectedSuccess.lastUpdated = success.lastUpdated;
@@ -161,7 +162,7 @@ describe('Thunk Action Creators', () => {
           }
         };
 
-        const spy = expect.spyOn(beforeSuccess, '_runBeforeSuccess');
+        const spy = mock.spyOn(beforeSuccess, '_runBeforeSuccess');
 
         const configOptions = {
           processors: {
@@ -185,7 +186,7 @@ describe('Thunk Action Creators', () => {
           }
         };
 
-        const spy = expect.spyOn(afterSuccess, '_runAfterSuccess');
+        const spy = mock.spyOn(afterSuccess, '_runAfterSuccess');
 
         const configOptions = {
           processors: {
@@ -209,7 +210,7 @@ describe('Thunk Action Creators', () => {
           }
         };
 
-        const spy = expect.spyOn(beforeFailure, '_runBeforeFailure');
+        const spy = mock.spyOn(beforeFailure, '_runBeforeFailure');
 
         const configOptions = {
           processors: {
@@ -233,7 +234,7 @@ describe('Thunk Action Creators', () => {
           }
         };
 
-        const spy = expect.spyOn(afterFailure, '_runAfterFailure');
+        const spy = mock.spyOn(afterFailure, '_runAfterFailure');
 
         const configOptions = {
           processors: {
@@ -333,7 +334,7 @@ describe('Thunk Action Creators', () => {
           )
             .then(done)
             .catch(done);
-        }).toNotThrow('Expected options to be an object');
+        }).not.toThrow('Expected options to be an object');
       });
     });
   });
