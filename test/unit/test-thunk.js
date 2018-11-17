@@ -157,7 +157,6 @@ describe('Thunk Action Creators', () => {
       it('Stage BEFORE_SUCCESS', (done) => {
         const beforeSuccess = {
           _runBeforeSuccess(dispatch, data) {
-            console.log(dispatch, data);
             return dispatch({ type: 'foo', data });
           }
         };
@@ -304,37 +303,85 @@ describe('Thunk Action Creators', () => {
         }).toThrow('Missing required entity promise');
       });
       it('should throw an error when invalid options are passed', () => {
+        const optionsMustBeAnObject = 'Options must be an object. See https://github.com/mikechabot/redux-entity#configuration-options';
+        const emptyOptionsObject = 'Options object is empty! If you mean to pass options, see https://github.com/mikechabot/redux-entity#configuration-options';
+        // Options as a string
         expect(() => {
           store.dispatch(
             loadEntity(entity, Promise.resolve(), 'foo')
           );
-        }).toThrow('');
+        }).toThrow(optionsMustBeAnObject);
+        // Options as a number
         expect(() => {
           store.dispatch(
             loadEntity(entity, Promise.resolve(), 123)
           );
-        }).toThrow('Expected options to be an object');
+        }).toThrow(optionsMustBeAnObject);
+        // Options as an array
         expect(() => {
           store.dispatch(
             loadEntity(entity, Promise.resolve(), [])
           );
-        }).toThrow('Expected options to be an object');
+        }).toThrow(optionsMustBeAnObject);
+        // Options as a function
         expect(() => {
           store.dispatch(
             loadEntity(entity, Promise.resolve(), () => {})
           );
-        }).toThrow('Expected options to be an object');
+        }).toThrow(optionsMustBeAnObject);
+        // Options as an empty object
+        expect(() => {
+          store.dispatch(
+            loadEntity(entity, Promise.resolve(), {})
+          );
+        }).toThrow(emptyOptionsObject);
+        // Unexpected top-level key
+        expect(() => {
+          store.dispatch(
+            loadEntity(entity, Promise.resolve(), { foo: 'bar' })
+          );
+        }).toThrow('Unexpected top-level option: foo');
+        // Invalid type for "silent"
+        expect(() => {
+          store.dispatch(
+            loadEntity(entity, Promise.resolve(), { silent: 'bar' })
+          );
+        }).toThrow('Expected "boolean" but found "string" for "silent"');
+        // Invalid type for "append"
+        expect(() => {
+          store.dispatch(
+            loadEntity(entity, Promise.resolve(), { append: 'bar' })
+          );
+        }).toThrow('Expected "boolean" but found "string" for "append"');
+        // Invalid type for "processors"
+        expect(() => {
+          store.dispatch(
+            loadEntity(entity, Promise.resolve(), { processors: 'bar' })
+          );
+        }).toThrow('Expected "object" but found "string" for "processors"');
+        // Unexpected processor key
+        expect(() => {
+          store.dispatch(
+            loadEntity(entity, Promise.resolve(), { processors: { foo: 'bar'} })
+          );
+        }).toThrow('Unexpected processor key "foo"');
+        // Invalid subprocessor type
+        expect(() => {
+          store.dispatch(
+            loadEntity(entity, Promise.resolve(),  { processors: { beforeSuccess: 'bar'} })
+          );
+        }).toThrow('Expected "function" but found "string" for "beforeSuccess"');
       });
     });
     describe('when loadEntity() is passed valid arguments', () => {
       it('should not throw any errors', (done) => {
         expect(() => {
           store.dispatch(
-            loadEntity(entity, Promise.resolve(), {})
+            loadEntity(entity, Promise.resolve(), {silent: true, append: false, processors: { beforeSuccess: () => {}}})
           )
             .then(done)
             .catch(done);
-        }).not.toThrow('Expected options to be an object');
+        }).not.toThrow(Error);
       });
     });
   });

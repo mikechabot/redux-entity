@@ -4,11 +4,11 @@
   "description": "A predictable approach to managing domain entities in Redux.",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clear && npm run compile",
+    "build": "npm run clean && npm run compile",
     "compile": "babel src -d lib",
     "test": "nyc mocha",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "clear": "rm -rf ./lib",
+    "clean": "rm -rf ./lib",
     "example": "node example.js"
   },
   "nyc": {

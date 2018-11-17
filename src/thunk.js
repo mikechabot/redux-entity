@@ -1,4 +1,5 @@
 import EntityLifecycle from './common/entity-lifecycle';
+import validateOptions from "./util/validateOptions";
 
 /**
  * Redux thunk action creator for performing asynchronous actions.
@@ -8,6 +9,7 @@ import EntityLifecycle from './common/entity-lifecycle';
  * @param {object}  options     Configuration options object
  * @return {function}           Perform an asynchronous action, dispatch Redux actions accordingly
  */
+
 export default function loadEntity(
   name,
   promise,
@@ -15,7 +17,11 @@ export default function loadEntity(
 ) {
   if (!name || typeof name !== 'string') throw new Error('Missing required entity name');
   if (!promise || !promise.then) throw new Error('Missing required entity promise');
-  if (options && options.constructor !== Object) throw new Error('Expected options to be an object');
+  try {
+    !validateOptions(options)
+  } catch (error) {
+    throw error;
+  }
   const entityLifecycle = new EntityLifecycle(name, options);
   return (dispatch) => {
     entityLifecycle.setDispatch(dispatch);
