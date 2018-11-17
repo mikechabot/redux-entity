@@ -16,3 +16,4 @@ dist
 # Coverage reports
 /.nyc-coverage-temp
 /.nyc-coverage
+/.nyc_output

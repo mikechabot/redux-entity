@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run clear && npm run compile",
     "compile": "babel src -d lib",
-    "test": "nyc mocha --require babel-core/register",
+    "test": "nyc mocha",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "clear": "rm -rf ./lib",
     "example": "node example.js"
@@ -38,22 +38,25 @@
   },
   "homepage": "https://github.com/mikechabot/redux-entity#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
     "chalk": "^2.4.1",
     "coveralls": "^3.0.2",
-    "eslint": "^5.2.0",
-    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-chai-friendly": "^0.4.1",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-node": "^6.0.1",
-    "expect": "^1.20.2",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "expect": "^23.6.0",
     "mocha": "^5.1.1",
-    "nyc": "^12.0.2",
-    "redux": "^4.0.0",
+    "nyc": "^13.1.0",
+    "redux": "^4.0.1",
     "redux-mock-store": "~1.5.3",
     "redux-thunk": "^2.3.0"
   },
-  "tonicExampleFilename": "example.js"
+  "tonicExampleFilename": "example.js",
+  "dependencies": {
+    "@babel/register": "^7.0.0"
+  }
 }
