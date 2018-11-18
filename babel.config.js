@@ -1,11 +1,6 @@
 const presets = [
   [
-    "@babel/env",
-    {
-      targets: {
-        esmodules: true
-      },
-    },
+    "@babel/env"
   ],
 ];
 

@@ -11,6 +11,10 @@
     "clean": "rm -rf ./lib",
     "example": "node example.js"
   },
+  "browserslist": [
+    "last 2 versions",
+    "ie 9-11"
+  ],
   "nyc": {
     "include": [
       "src/**/*.js"
