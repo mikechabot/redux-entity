@@ -293,7 +293,7 @@ Optionally pass a configuration with any of the following properties:
 | -------- | ----------- | ---- | ---------|
 | `silent` | boolean | `false` | If `true`, don't toggle `isFetching` when the thunk is invoked |
 | `append` | boolean | `false` | If `true`, attach the results of each invocation to the existing `data` property instead of overwriting it |
-| `processors` | object | `null` | Hook into the `loadEntity` lifecycle. Each processor has access to Redux `dispatch` along with either the `data` or `error` object of the entity. See [Processors](#processors)|
+| `processors` | object | `null` | Hook into the `loadEntity` lifecycle. Each processor has access to Redux `dispatch` and `getState` along with either the `data` or `error` object of the entity. See [Processors](#processors)|
 
 #### Example Configurations
 
@@ -328,10 +328,10 @@ Processors are completely optional and in most cases won't be needed, however yo
 
 | Processor        | When to use  | Signature |
 | ---------------- | ------------ | ---- |
-| `beforeSuccess`  | Invoked after the promise resolves, but before `data` is dispatched | `func(dispatch, data)` |
-| `afterSuccess`   | Invoked after the promise resolves, and after `data` has been updated |  `func(dispatch, data)` |
-| `beforeFailure`  | Invoked after the promise rejects, but before the `error` is dispatched |  `func(dispatch, error)` |
-| `afterFailure`   | Invoked after the promise rejects, and after the `error` has been updated | `func(dispatch, error)` |
+| `beforeSuccess`  | Invoked after the promise resolves, but before `data` is dispatched | `func(dispatch, getState, data)` |
+| `afterSuccess`   | Invoked after the promise resolves, and after `data` has been updated |  `func(dispatch, getState, data)` |
+| `beforeFailure`  | Invoked after the promise rejects, but before the `error` is dispatched |  `func(dispatch, getState, error)` |
+| `afterFailure`   | Invoked after the promise rejects, and after the `error` has been updated | `func(dispatch, getState, error)` |
 
 Configuration with processors:
 ```javascript
@@ -342,10 +342,10 @@ const promise = OrderService.getOrders();
 const options = {
     silent: true,
     processors: {
-        beforeSuccess: function (dispatch, data) {
+        beforeSuccess: function (dispatch, getState, data) {
             // do synchronous stuff
         },
-        afterFailure : function (dispatch, error) {
+        afterFailure : function (dispatch, getState, error) {
             // do synchronous stuff
         }
     }
