@@ -27,8 +27,14 @@ export default function loadEntity(
     entityLifecycle.setDispatch(dispatch);
     entityLifecycle.setGetState(getState);
     entityLifecycle.onLoad();
-    return promise
-      .then((data) => { entityLifecycle.onSuccess(data); })
-      .catch((error) => { entityLifecycle.onFailure(error); });
+    return new Promise((resolve, reject) => {
+        promise
+            .then((data) => {
+              resolve(entityLifecycle.onSuccess(data));
+            })
+            .catch((error) => {
+              reject(entityLifecycle.onFailure(error));
+            });
+    })
   };
 }
