@@ -18,6 +18,11 @@ EntityLifecycle.prototype.setDispatch = function (dispatch) {
   this.dispatch = dispatch;
 };
 
+EntityLifecycle.prototype.setGetState = function (getState) {
+    if (typeof getState !== 'function') throw new Error('getState must be a function');
+    this.getState = getState;
+};
+
 EntityLifecycle.prototype.getDispatch = function () {
   if (!this.dispatch) throw new Error('Missing required dispatch function');
   return this.dispatch;
@@ -74,7 +79,7 @@ EntityLifecycle.prototype.processStage = function (stage, obj) {
   const processor = this.config.getProcessors()[stage];
   if (processor) {
     if (typeof processor !== 'function') throw new Error('processor must be a function');
-    processor(this.dispatch, obj);
+    processor(this.dispatch, this.getState, obj);
   }
 };
 

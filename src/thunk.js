@@ -23,8 +23,9 @@ export default function loadEntity(
     throw error;
   }
   const entityLifecycle = new EntityLifecycle(name, options);
-  return (dispatch) => {
+  return (dispatch, getState) => {
     entityLifecycle.setDispatch(dispatch);
+    entityLifecycle.setGetState(getState);
     entityLifecycle.onLoad();
     return promise
       .then((data) => { entityLifecycle.onSuccess(data); })
