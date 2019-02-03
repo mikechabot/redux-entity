@@ -224,14 +224,13 @@ import PropTypes from 'prop-types';
 import { loadOrders } from '../redux/thunks';
 import { connect } from 'react-redux';
 
-class Orders extends React.Component {
+class Orders extends PureComponent {
 
     componentDidMount() {
         this.props.loadOrders();
     }
 
-    render() {
-    
+    render() {    
         const { orders } = this.props;
 
         if (!orders) {
