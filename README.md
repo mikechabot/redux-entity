@@ -1,8 +1,8 @@
-# redux-entity
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity-logo.png' alt='logo' aria-label='https://github.com/mikechabot/redux-entity' />
 
 At its core, `redux-entity` is just a [reducer](https://redux.js.org/basics/reducers) that utilizes a specialized [thunk](https://github.com/reduxjs/redux-thunk#whats-a-thunk), which is designed to handle asynchronous actions in the form of a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
-Most web applications need to handle a variety of domain entities, be it Orders, Customers, Products, Users, etc. This library was designed to manage these objects within Redux in a predictable and scalable way.
+Most web applications need to handle a variety of domain entities such as orders, products, users, etc. This library was designed to manage these objects within Redux in a predictable and scalable way.
 
 <div align="center">
 <br />
@@ -219,36 +219,23 @@ Here's a full React component that utilizes our `loadOrders` example. At this po
 
 ```javascript
 // Orders.jsx
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import { loadOrders } from '../redux/thunks';
 import { connect } from 'react-redux';
 
 class Orders extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            orders: null
-        }
-    }
-
     componentDidMount() {
         this.props.loadOrders();
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            orders: nextProps.orders
-        })
-    }
-
     render() {
     
-        const { orders } = this.state;
+        const { orders } = this.props;
 
         if (!orders) {
-            return <span />;
+            return null;
         }
         
         const { error, data, isFetching } = orders;
@@ -328,9 +315,9 @@ Processors are completely optional and in most cases won't be needed, however yo
 
 | Processor        | When to use  | Signature |
 | ---------------- | ------------ | ---- |
-| `beforeSuccess`  | Invoked after the promise resolves, but before `data` is dispatched | `func(dispatch, getState, data)` |
+| `beforeSuccess`  | Invoked after the promise resolves, but before `data` is dispatched. **Must** return an object to be dispatched | `func(dispatch, getState, data)` |
 | `afterSuccess`   | Invoked after the promise resolves, and after `data` has been updated |  `func(dispatch, getState, data)` |
-| `beforeFailure`  | Invoked after the promise rejects, but before the `error` is dispatched |  `func(dispatch, getState, error)` |
+| `beforeFailure`  | Invoked after the promise rejects, but before the `error` is dispatched. **Must** return an object/error to be dispatched |  `func(dispatch, getState, error)` |
 | `afterFailure`   | Invoked after the promise rejects, and after the `error` has been updated | `func(dispatch, getState, error)` |
 
 Configuration with processors:
@@ -343,10 +330,12 @@ const options = {
     silent: true,
     processors: {
         beforeSuccess: function (dispatch, getState, data) {
-            // do synchronous stuff
+            // Do synchronous stuff
+            // *Must* return data (e.g. return Object.keys(data);)
         },
         afterFailure : function (dispatch, getState, error) {
-            // do synchronous stuff
+            // Do synchronous stuff
+            // **Must return data (e.g. return new Error('Uh oh!');)
         }
     }
 }
