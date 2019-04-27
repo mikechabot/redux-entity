@@ -38,12 +38,14 @@ EntityLifecycle.prototype.onSuccess = function (data) {
     const dispatchedData = this.runBeforeSuccess(data);
     this.dispatchFetchSuccess(dispatchedData);
     this.runAfterSuccess(dispatchedData);
+    return dispatchedData;
 };
 
 EntityLifecycle.prototype.onFailure = function (error) {
     const dispatchedError = this.runBeforeFailure(error);
     this.dispatchFetchFailure(dispatchedError);
     this.runAfterFailure(dispatchedError);
+    return dispatchedError;
 };
 
 EntityLifecycle.prototype.runBeforeSuccess = function (data) {
