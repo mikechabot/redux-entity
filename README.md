@@ -136,7 +136,7 @@ If `loadOrders` **succeeds**, the results are stamped on the store at `entities.
       "isFetching": false,
       "data": [
       	{ orderId: 1, type: 'FOO' },
-      	{ orderId: 2, type: 'BAR' } 
+      	{ orderId: 2, type: 'BAR' },
       	{ orderId: 3, type: 'BAZ' } 
       ],
       "lastUpdated": 1494092038176,
@@ -219,7 +219,7 @@ Here's a full React component that utilizes our `loadOrders` example. At this po
 
 ```javascript
 // Orders.jsx
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { loadOrders } from '../redux/thunks';
 import { connect } from 'react-redux';
@@ -247,7 +247,7 @@ class Orders extends PureComponent {
 
         return (
             <ul>
-                { data.map((order, index) =>
+                {data.map((order, index) =>
                     <li key={index}> {order.label}</li>
                 )}
             </ul>
@@ -260,7 +260,7 @@ Orders.propTypes  = {
     loadOrders: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({orders: state.entities && state.entities.orders});
+const mapStateToProps = state => ({ orders: state.entities && state.entities.orders });
 const mapDispatchToProps = { loadOrders };
 
 export default connect(
@@ -332,7 +332,7 @@ const options = {
             // Do synchronous stuff
             // *Must* return data (e.g. return Object.keys(data);)
         },
-        afterFailure : function (dispatch, getState, error) {
+        afterFailure: function (dispatch, getState, error) {
             // Do synchronous stuff
             // **Must return data (e.g. return new Error('Uh oh!');)
         }
@@ -387,7 +387,7 @@ function Orders({
     return (
         <div>
             <ul>
-                { data.map((value, index) =>
+                {data.map((value, index) =>
                     <li key={index}> {value.label}</li>
                 )}
             </ul>
@@ -404,7 +404,7 @@ Entity.propTypes  = {
     deleteEntity: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({orders: state.entities && state.entities.orders});
+const mapStateToProps = state => ({ orders: state.entities && state.entities.orders });
 const mapDispatchToProps = {
     resetEntity,
     deleteEntity
