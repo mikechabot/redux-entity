@@ -1,6 +1,6 @@
 {
   "name": "redux-entity",
-  "version": "7.1.0",
+  "version": "7.1.1",
   "description": "A predictable approach to managing domain entities in Redux.",
   "main": "index.js",
   "scripts": {
