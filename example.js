@@ -1,14 +1,24 @@
-'use strict';
+/***
+ *
+ *  This example is executable at https://npm.runkit.com/redux-entity *
+ *
+ *  To run locally via "npm run example", uncomment the "./lib" require
+ *  statements, and comment out the "redux-entity" require statements.
+ */
 
 const entities = require('redux-entity').entities;
 const loadEntity = require('redux-entity').loadEntity;
+
+// const entities = require('./lib').entities;
+// const loadEntity = require('./lib').loadEntity;
+
 const chalk = require('chalk');
 
 // Redux state
 let state = {};
 
 // Invoke your custom thunk
-fetchFoobar()(dispatch);
+fetchFoobar()(dispatch, getState);
 
 /**
  * Define custom thunk
@@ -30,6 +40,10 @@ function dispatch (action) {
     _logDetails(action);
     state = entities(state, action);
     _logDetails();
+}
+
+function getState() {
+    return {}
 }
 
 /**
