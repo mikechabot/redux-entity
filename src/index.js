@@ -1,10 +1,11 @@
-import entities from './reducer';
 import loadEntity from './thunk';
-import actionCreators from './action-creators';
+import { resetEntity, deleteEntity } from './actions';
 
-module.exports = {
-  entities,
-  loadEntity,
-  resetEntity: actionCreators.resetEntity,
-  deleteEntity: actionCreators.deleteEntity
+export { default as entities } from './reducer';
+export * from './types';
+
+export default {
+  Load: loadEntity,
+  Reset: resetEntity,
+  Delete: deleteEntity,
 };

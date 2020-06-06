@@ -1,4 +1,4 @@
-import { ACTION_TYPES, INITIAL_ENTITY_STATE } from './common/entity-const';
+import { ACTION_TYPES, INITIAL_ENTITY_STATE } from './const';
 
 function toArray(obj) {
   return Array.isArray(obj) ? obj : [obj];
@@ -7,10 +7,11 @@ function toArray(obj) {
 function entity(state = INITIAL_ENTITY_STATE, action) {
   switch (action.type) {
     case ACTION_TYPES.FETCH_REQUEST: {
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: true,
-        error: null
-      });
+        error: null,
+      };
     }
     case ACTION_TYPES.FETCH_SUCCESS: {
       let newData;
@@ -19,28 +20,31 @@ function entity(state = INITIAL_ENTITY_STATE, action) {
       } else if (!state.data) {
         newData = toArray(action.data);
       } else {
-        newData = state.data.concat(toArray(action.data));
+        newData = [...state.data, ...toArray(action.data)];
       }
 
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: false,
         lastUpdated: action.lastUpdated,
         data: newData,
-        error: null
-      });
+        error: null,
+      };
     }
     case ACTION_TYPES.FETCH_FAILURE: {
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: false,
         lastUpdated: action.lastUpdated,
         data: null,
-        error: action.error
-      });
+        error: action.error,
+      };
     }
     case ACTION_TYPES.RESET_ENTITY: {
-      return Object.assign({}, INITIAL_ENTITY_STATE, {
-        lastUpdated: action.lastUpdated
-      });
+      return {
+        ...INITIAL_ENTITY_STATE,
+        lastUpdated: action.lastUpdated,
+      };
     }
     default: {
       return state;
@@ -55,10 +59,7 @@ export default function entities(state = {}, action) {
     case ACTION_TYPES.FETCH_FAILURE: // fall through
     case ACTION_TYPES.FETCH_REQUEST: {
       return Object.assign({}, state, {
-        [action.entity]: entity(
-          state[action.entity],
-          action
-        )
+        [action.entity]: entity(state[action.entity], action),
       });
     }
     case ACTION_TYPES.DELETE_ENTITY: {
