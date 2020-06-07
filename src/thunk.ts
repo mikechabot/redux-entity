@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux';
 
-import { ReduxEntityOptions, GetState } from './types';
+import { GetState, OptionKey, ReduxEntityOptions } from './types';
 
-import EntityLifecycle from './common/EntityLifecycle';
+import EntityLifecycle from './EntityLifecycle';
 
 import validate from './util/validator';
 import { fetchRequestCreator } from './actions';
@@ -17,20 +17,19 @@ import { fetchRequestCreator } from './actions';
  */
 
 const GetEntity = (entityName: string, promise: Promise<any>, options: ReduxEntityOptions) => {
-  if (!entityName) throw new Error('Missing required entityName');
+  if (!entityName || typeof entityName !== 'string') throw new Error('Missing required entityName');
   if (!promise || !promise.then) throw new Error('Missing required entity promise');
 
-  try {
-    validate(options);
-  } catch (error) {
-    return Promise.reject(error);
-  }
+  validate(options);
 
   const entityLifecycle = new EntityLifecycle({ entityName, options });
 
   return (dispatch: Dispatch, getState: GetState) => {
-    const fetchAction = fetchRequestCreator(entityName);
-    dispatch(fetchAction());
+    if (!options || !options[OptionKey.SILENT]) {
+      const fetchAction = fetchRequestCreator(entityName);
+      dispatch(fetchAction());
+    }
+
     return new Promise((resolve, reject) => {
       promise
         .then((data) => resolve(entityLifecycle.onSuccess(data, dispatch, getState)))

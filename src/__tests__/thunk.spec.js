@@ -2,8 +2,7 @@ import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 
 import GetEntity from '../../src/thunk';
-import { ACTION_TYPES } from '../const';
-import { PROCESSOR_STAGE } from '../common/EntityLifecycle';
+import { ActionType, ProcessorType } from '../types';
 
 // Set up mock Redux store
 const middlewares = [thunk];
@@ -40,87 +39,108 @@ describe('Thunk Action Creators', () => {
       it('should throw an error when passed no arguments', () => {
         expect(() => {
           store.dispatch(GetEntity());
-        }).toThrow('Missing required entity name');
+        }).toThrow('Missing required entityName');
       });
-      it('should throw an error when entity name is null/undefined', () => {
-        expect(() => {
-          store.dispatch(GetEntity(null));
-        }).toThrow('Missing required entity name');
-        expect(() => {
-          store.dispatch(GetEntity(undefined));
-        }).toThrow('Missing required entity name');
+
+      it('should throw an error when "entityName" is null/undefined', () => {
+        [null, undefined].forEach((val) => {
+          expect(() => {
+            store.dispatch(GetEntity(val));
+          }).toThrow('Missing required entityName');
+        });
       });
-      it('should throw an error when entity name not passed a String', () => {
-        expect(() => {
-          store.dispatch(GetEntity(123));
-        }).toThrow('Missing required entity name');
-        expect(() => {
-          store.dispatch(GetEntity({}));
-        }).toThrow('Missing required entity name');
-        expect(() => {
-          store.dispatch(GetEntity(new Date()));
-        }).toThrow('Missing required entity name');
+
+      it('should throw an error when "entityName" not passed a String', () => {
+        [123, {}, new Date()].forEach((val) => {
+          expect(() => {
+            store.dispatch(GetEntity(val));
+          }).toThrow('Missing required entityName');
+        });
       });
+
       it('should throw an error with an undefined data promise', () => {
         expect(() => {
           store.dispatch(GetEntity(entity));
         }).toThrow('Missing required entity promise');
       });
+
       it('should throw an error when a promise is not passed', () => {
         expect(() => {
           store.dispatch(GetEntity(entity, {}));
         }).toThrow('Missing required entity promise');
       });
-      it('should throw an error when invalid options are passed', () => {
+
+      describe('Invalid Options Params', () => {
         const optionsMustBeAnObject =
-          'Options must be an object. See https://github.com/mikechabot/redux-entity#configuration-options';
-        const emptyOptionsObject =
-          // eslint-disable-next-line max-len
-          'Options object is empty! If you mean to pass options, see https://github.com/mikechabot/redux-entity#configuration-options';
-        // Options as a string
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), 'foo'));
-        }).toThrow(optionsMustBeAnObject);
-        // Options as a number
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), 123));
-        }).toThrow(optionsMustBeAnObject);
-        // Options as an array
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), []));
-        }).toThrow(optionsMustBeAnObject);
-        // Options as a function
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), () => {}));
-        }).toThrow(optionsMustBeAnObject);
-        // Options as an empty object
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), {}));
-        }).toThrow(emptyOptionsObject);
-        // Unexpected top-level key
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), { foo: 'bar' }));
-        }).toThrow('Unexpected top-level option: foo');
-        // Invalid type for "silent"
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), { silent: 'bar' }));
-        }).toThrow('Expected "boolean" but found "string" for "silent"');
-        // Invalid type for "append"
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), { append: 'bar' }));
-        }).toThrow('Expected "boolean" but found "string" for "append"');
-        // Invalid type for "processors"
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), { processors: 'bar' }));
-        }).toThrow('Expected "object" but found "string" for "processors"');
-        // Unexpected processor key
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), { processors: { foo: 'bar' } }));
-        }).toThrow('Unexpected processor key "foo"');
-        // Invalid subprocessor type
-        expect(() => {
-          store.dispatch(GetEntity(entity, Promise.resolve(), { processors: { beforeSuccess: 'bar' } }));
-        }).toThrow('Expected "function" but found "string" for "beforeSuccess"');
+          'Options must be an object of type ReduxEntityOptions. See https://github.com/mikechabot/redux-entity#configuration-options';
+
+        it('should throw an error if "options" is a string', () => {
+          expect(() => {
+            store.dispatch(GetEntity(entity, Promise.resolve(), 'foo'));
+          }).toThrow(optionsMustBeAnObject);
+        });
+
+        it('should throw an error if "options" is a number', () => {
+          expect(() => {
+            store.dispatch(GetEntity(entity, Promise.resolve(), 123));
+          }).toThrow(optionsMustBeAnObject);
+        });
+
+        it('should throw an error if "options" is an array', () => {
+          expect(() => {
+            store.dispatch(GetEntity(entity, Promise.resolve(), []));
+          }).toThrow(optionsMustBeAnObject);
+        });
+
+        it('should throw an error if "options" is a function', () => {
+          expect(() => {
+            store.dispatch(GetEntity(entity, Promise.resolve(), () => {}));
+          }).toThrow(optionsMustBeAnObject);
+        });
+
+        it('should throw an error if an unknown key is passed in "options"', () => {
+          expect(() => {
+            store.dispatch(GetEntity(entity, Promise.resolve(), { foo: 'bar' }));
+          }).toThrow('Unexpected top-level option: foo');
+        });
+
+        it('should throw an error if "silent" is not a boolean', () => {
+          [123, 'foo', {}, () => {}, [], null, undefined].forEach((val) => {
+            expect(() => {
+              store.dispatch(GetEntity(entity, Promise.resolve(), { silent: val }));
+            }).toThrow(`Expected "boolean" but found "${typeof val}" for "silent"`);
+          });
+        });
+
+        it('should throw an error if "append" is not a boolean', () => {
+          [123, 'foo', {}, () => {}, [], null, undefined].forEach((val) => {
+            expect(() => {
+              store.dispatch(GetEntity(entity, Promise.resolve(), { append: val }));
+            }).toThrow(`Expected "boolean" but found "${typeof val}" for "append"`);
+          });
+        });
+
+        it('should throw an error if "processors" is not an object', () => {
+          [123, 'foo', () => {}, [], null, undefined].forEach((val) => {
+            expect(() => {
+              store.dispatch(GetEntity(entity, Promise.resolve(), { processors: val }));
+            }).toThrow(`Expected "boolean" but found "${typeof val}" for "processors"`);
+          });
+        });
+
+        it('should throw an error if an unknown processor type is passed', () => {
+          expect(() => {
+            store.dispatch(GetEntity(entity, Promise.resolve(), { processors: { foo: 'bar' } }));
+          }).toThrow('Unexpected processor type "foo"');
+        });
+
+        it('should throw an error if a processor is not a function', () => {
+          [123, 'foo', {}, [], null, undefined].forEach((val) => {
+            expect(() => {
+              store.dispatch(GetEntity(entity, Promise.resolve(), { processors: { beforeSuccess: val } }));
+            }).toThrow(`Expected "function" but found "${typeof val}" for "beforeSuccess"`);
+          });
+        });
       });
     });
     describe('when GetEntity() succeeds', () => {
@@ -129,16 +149,18 @@ describe('Thunk Action Creators', () => {
         const promise = Promise.resolve(data);
 
         const expectedFetch = {
-          type: ACTION_TYPES.FETCH_REQUEST,
+          type: ActionType.REQUEST,
           entity,
         };
 
         const expectedSuccess = {
-          type: ACTION_TYPES.FETCH_SUCCESS,
-          lastUpdated: undefined, // Overwrite this in assertion
           entity,
-          data,
-          append: false,
+          type: ActionType.SUCCESS,
+          payload: {
+            data,
+            lastUpdated: undefined, // Overwrite this in assertion
+            append: false,
+          },
         };
 
         // Under test
@@ -156,11 +178,11 @@ describe('Thunk Action Creators', () => {
             // Assert timestamp is present and valid
             const success = actions[1];
 
-            expect(success.lastUpdated).toBeTruthy();
-            expect(typeof success.lastUpdated).toBe('number');
+            expect(success.payload.lastUpdated).toBeTruthy();
+            expect(typeof success.payload.lastUpdated).toBe('number');
 
             // Force timestamps to match for easier assertion
-            expectedSuccess.lastUpdated = success.lastUpdated;
+            expectedSuccess.payload.lastUpdated = success.payload.lastUpdated;
 
             // Assert FETCH_SUCCESS was well-formed
             expect(success).toEqual(expectedSuccess);
@@ -175,15 +197,17 @@ describe('Thunk Action Creators', () => {
         const promise = Promise.reject(error);
 
         const expectedRequest = {
-          type: ACTION_TYPES.FETCH_REQUEST,
+          type: ActionType.REQUEST,
           entity,
         };
 
         const expectedFailure = {
-          type: ACTION_TYPES.FETCH_FAILURE,
-          lastUpdated: undefined, // Overwrite this in assertion
           entity,
-          error,
+          type: ActionType.FAILURE,
+          payload: {
+            lastUpdated: undefined, // Overwrite this in assertion
+            error,
+          },
         };
 
         // Under test
@@ -200,11 +224,11 @@ describe('Thunk Action Creators', () => {
 
             // Assert timestamp is present and valid
             const failure = actions[1];
-            expect(failure.lastUpdated).toBeTruthy();
-            expect(typeof failure.lastUpdated).toBe('number');
+            expect(failure.payload.lastUpdated).toBeTruthy();
+            expect(typeof failure.payload.lastUpdated).toBe('number');
 
             // Force timestamps to match for easier assertion
-            expectedFailure.lastUpdated = failure.lastUpdated;
+            expectedFailure.payload.lastUpdated = failure.payload.lastUpdated;
 
             // Assert FETCH_FAILURE was well-formed
             expect(failure).toEqual(expectedFailure);
@@ -219,11 +243,13 @@ describe('Thunk Action Creators', () => {
         const promise = Promise.resolve(data);
 
         const expectedSuccess = {
-          type: ACTION_TYPES.FETCH_SUCCESS,
-          lastUpdated: undefined, // Overwrite this in assertion
           entity,
-          data,
-          append: false,
+          type: ActionType.SUCCESS,
+          payload: {
+            lastUpdated: undefined, // Overwrite this in assertion
+            data,
+            append: false,
+          },
         };
 
         const configOptions = { silent: true };
@@ -238,11 +264,11 @@ describe('Thunk Action Creators', () => {
 
             // Assert timestamp is present and valid
             const success = actions[0];
-            expect(success.lastUpdated).toBeTruthy();
-            expect(typeof success.lastUpdated).toBe('number');
+            expect(success.payload.lastUpdated).toBeTruthy();
+            expect(typeof success.payload.lastUpdated).toBe('number');
 
             // Force timestamps to match for easier assertion
-            expectedSuccess.lastUpdated = success.lastUpdated;
+            expectedSuccess.payload.lastUpdated = success.payload.lastUpdated;
 
             // Assert FETCH_SUCCESS was well-formed
             expect(success).toEqual(expectedSuccess);
@@ -253,11 +279,11 @@ describe('Thunk Action Creators', () => {
     });
     describe('when GetEntity() is configured with stage processors', () => {
       it('Stage BEFORE_SUCCESS', (done) => {
-        const spy = jest.fn().mockImplementation((dispatch, getState, data) => dispatch({ type: 'foo', data }));
+        const spy = jest.fn().mockImplementation(() => () => ({ type: 'foo', data }));
 
         const configOptions = {
           processors: {
-            [PROCESSOR_STAGE.BEFORE_SUCCESS]: spy,
+            [ProcessorType.BEFORE_SUCCESS]: spy,
           },
         };
 
@@ -272,14 +298,14 @@ describe('Thunk Action Creators', () => {
       });
       it('Stage BEFORE_SUCCESS should return a new object', (done) => {
         const beforeSuccess = {
-          _runBeforeSuccess(dispatch, getState, data) {
+          _runBeforeSuccess(data, dispatch, getState) {
             return Object.keys(data);
           },
         };
 
         const configOptions = {
           processors: {
-            [PROCESSOR_STAGE.BEFORE_SUCCESS]: beforeSuccess._runBeforeSuccess,
+            [ProcessorType.BEFORE_SUCCESS]: beforeSuccess._runBeforeSuccess,
           },
         };
 
@@ -287,14 +313,15 @@ describe('Thunk Action Creators', () => {
         store
           .dispatch(GetEntity(entity, Promise.resolve({ foo: 'bar' }), configOptions))
           .then(() => {
-            expect(store.getActions()[1].data).toEqual(['foo']);
+            const success = store.getActions()[1];
+            expect(success.payload.data).toEqual(['foo']);
           })
           .then(done)
           .catch(done);
       });
       it('Stage BEFORE_SUCCESS should mutate the existing data object', (done) => {
         const beforeSuccess = {
-          _runBeforeSuccess: (dispatch, getState, data) => {
+          _runBeforeSuccess: (data, dispatch, getState) => {
             data.foo = 'baz';
             return data;
           },
@@ -302,7 +329,7 @@ describe('Thunk Action Creators', () => {
 
         const configOptions = {
           processors: {
-            [PROCESSOR_STAGE.BEFORE_SUCCESS]: beforeSuccess._runBeforeSuccess,
+            [ProcessorType.BEFORE_SUCCESS]: beforeSuccess._runBeforeSuccess,
           },
         };
 
@@ -310,17 +337,18 @@ describe('Thunk Action Creators', () => {
         store
           .dispatch(GetEntity(entity, Promise.resolve({ foo: 'bar' }), configOptions))
           .then(() => {
-            expect(store.getActions()[1].data).toEqual({ foo: 'baz' });
+            const success = store.getActions()[1];
+            expect(success.payload.data).toEqual({ foo: 'baz' });
           })
           .then(done)
           .catch(done);
       });
       it('Stage AFTER_SUCCESS', (done) => {
-        const spy = jest.fn().mockImplementation((dispatch, getState, data) => dispatch({ type: 'foo', data }));
+        const spy = jest.fn().mockImplementation(() => () => ({ type: 'foo', data }));
 
         const configOptions = {
           processors: {
-            [PROCESSOR_STAGE.AFTER_SUCCESS]: spy,
+            [ProcessorType.AFTER_SUCCESS]: spy,
           },
         };
 
@@ -334,11 +362,11 @@ describe('Thunk Action Creators', () => {
           .catch(done);
       });
       it('Stage BEFORE_FAILURE', (done) => {
-        const spy = jest.fn().mockImplementation((dispatch, getState, data) => dispatch({ type: 'foo', data }));
+        const spy = jest.fn().mockImplementation(() => () => ({ type: 'foo', data }));
 
         const configOptions = {
           processors: {
-            [PROCESSOR_STAGE.BEFORE_FAILURE]: spy,
+            [ProcessorType.BEFORE_FAILURE]: spy,
           },
         };
 
@@ -357,22 +385,23 @@ describe('Thunk Action Creators', () => {
 
         const configOptions = {
           processors: {
-            [PROCESSOR_STAGE.BEFORE_FAILURE]: beforeFailure._runBeforeFailure,
+            [ProcessorType.BEFORE_FAILURE]: beforeFailure._runBeforeFailure,
           },
         };
 
         // Under test
         store.dispatch(GetEntity(entity, Promise.reject(new Error('Fake error 1')), configOptions)).catch(() => {
-          expect(store.getActions()[1].error).toEqual(new Error('Fake error 2'));
+          const failure = store.getActions()[1];
+          expect(failure.payload.error).toEqual(new Error('Fake error 2'));
           done();
         });
       });
       it('Stage AFTER_FAILURE', (done) => {
-        const spy = jest.fn().mockImplementation((dispatch, getState, data) => dispatch({ type: 'foo', data }));
+        const spy = jest.fn().mockImplementation(() => () => ({ type: 'foo', data }));
 
         const configOptions = {
           processors: {
-            [PROCESSOR_STAGE.BEFORE_FAILURE]: spy,
+            [ProcessorType.BEFORE_FAILURE]: spy,
           },
         };
 

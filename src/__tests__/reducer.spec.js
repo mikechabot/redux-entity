@@ -1,5 +1,12 @@
 import reducer from '../../src/reducer';
-import { ACTION_TYPES, INITIAL_ENTITY_STATE } from '../const';
+import { ActionType } from '../types';
+
+const INITIAL_ENTITY_STATE = {
+  data: undefined,
+  lastUpdated: undefined,
+  isFetching: false,
+  error: undefined,
+};
 
 describe('Reducer', () => {
   describe('invoking the reducer', () => {
@@ -41,7 +48,7 @@ describe('Reducer', () => {
             lastUpdated: existingState[entity].lastUpdated,
           };
 
-          const action = ACTION_TYPES.FETCH_REQUEST;
+          const action = ActionType.REQUEST;
 
           // Under test
           const state = reducer(existingState, { entity, lastUpdated, type: action });
@@ -60,14 +67,16 @@ describe('Reducer', () => {
             lastUpdated,
           };
 
-          const action = ACTION_TYPES.FETCH_SUCCESS;
+          const action = ActionType.SUCCESS;
 
           // Under test
           const state = reducer(existingState, {
             entity,
-            data,
-            lastUpdated,
             type: action,
+            payload: {
+              data,
+              lastUpdated,
+            },
           });
           expect(state[entity]).toEqual(expectedState);
         });
@@ -82,15 +91,17 @@ describe('Reducer', () => {
             lastUpdated,
           };
 
-          const action = ACTION_TYPES.FETCH_SUCCESS;
+          const action = ActionType.SUCCESS;
 
           // Under test
           const state = reducer(existingState, {
             entity,
-            data,
-            lastUpdated,
             type: action,
-            append: true,
+            payload: {
+              data,
+              lastUpdated,
+              append: true,
+            },
           });
           expect(state[entity]).toEqual(expectedState);
         });
@@ -105,15 +116,17 @@ describe('Reducer', () => {
             lastUpdated,
           };
 
-          const action = ACTION_TYPES.FETCH_SUCCESS;
+          const action = ActionType.SUCCESS;
 
           // Under test
           const state = reducer(existingState, {
-            entity,
-            data,
-            lastUpdated,
             type: action,
-            append: true,
+            entity,
+            payload: {
+              data,
+              lastUpdated,
+              append: true,
+            },
           });
           expect(state[entity]).toEqual(expectedState);
         });
@@ -130,32 +143,39 @@ describe('Reducer', () => {
             lastUpdated,
           };
 
-          const action = ACTION_TYPES.FETCH_FAILURE;
+          const action = ActionType.FAILURE;
 
           // Under test
           const state = reducer(existingState, {
             entity,
-            data,
-            error,
-            lastUpdated,
             type: action,
+            payload: {
+              data,
+              error,
+              lastUpdated,
+            },
           });
           expect(state[entity]).toEqual(expectedState);
         });
       });
       describe('RESET_ENTITY', () => {
         it('should revert the entity to the default entity state', () => {
-          const expectedState = Object.assign({}, INITIAL_ENTITY_STATE, { lastUpdated });
-          const action = ACTION_TYPES.RESET_ENTITY;
+          const expectedState = {
+            ...INITIAL_ENTITY_STATE,
+            lastUpdated,
+          };
+          const type = ActionType.RESET;
+
+          const action = { entity, payload: { lastUpdated }, type };
 
           // Under test
-          const state = reducer(existingState, { entity, lastUpdated, type: action });
+          const state = reducer(existingState, action);
           expect(state[entity]).toEqual(expectedState);
         });
       });
       describe('RESET_ENTITY', () => {
         it('should revert the entity to the default entity state', () => {
-          const action = ACTION_TYPES.DELETE_ENTITY;
+          const action = ActionType.DELETE;
 
           // Under test
           const state = reducer(existingState, { entity, type: action });

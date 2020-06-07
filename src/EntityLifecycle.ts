@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
-import { fetchRequestCreator, fetchSuccessCreator, fetchFailureCreator } from '../actions';
-import { Processors, ReduxEntityProps, ReduxEntityOptions, ProcessorType, GetState } from '../types';
+import { fetchRequestCreator, fetchSuccessCreator, fetchFailureCreator } from './actions';
+import { Processors, ReduxEntityProps, ReduxEntityOptions, ProcessorType, GetState } from './types';
 
 class EntityLifecycle {
   private readonly entityName: string;
@@ -38,7 +38,7 @@ class EntityLifecycle {
      * Process the "afterSuccess" stage, which is invoked after the success
      * action has been dispatched.
      */
-    this.processStage(ProcessorType.AFTER_SUCCESS, data, dispatch, getState);
+    this.processStage(ProcessorType.AFTER_SUCCESS, dispatchedData, dispatch, getState);
     /**
      * Return the mutated data
      */
@@ -62,12 +62,12 @@ class EntityLifecycle {
      * Create and dispatch the failure action
      */
     const failureAction = fetchFailureCreator(this.entityName);
-    dispatch(failureAction(error, Date.now()));
+    dispatch(failureAction(dispatchedError, Date.now()));
     /**
      * Process the "afterFailure" stage, which is invoked after the failure
      * action has been dispatched.
      */
-    this.processStage(ProcessorType.AFTER_FAILURE, error, dispatch, getState);
+    this.processStage(ProcessorType.AFTER_FAILURE, dispatchedError, dispatch, getState);
 
     return dispatchedError;
   }

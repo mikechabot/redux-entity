@@ -8,8 +8,7 @@ import {
   makeActionCreator,
   makeEntityActionCreator,
 } from '../actions';
-
-import { ACTION_TYPES } from '../const';
+import { ActionType } from '../types';
 
 // Set up mock Redux store
 const middlewares = [thunk];
@@ -45,8 +44,10 @@ describe('Action Creators', () => {
         it('should return an action containing the correct type and keys', () => {
           const expectedAction = {
             type,
-            key1: data1,
-            key2: data2,
+            payload: {
+              key1: data1,
+              key2: data2,
+            },
           };
 
           expect(makeActionCreator(type, key1, key2)(data1, data2)).toEqual(expectedAction);
@@ -63,10 +64,12 @@ describe('Action Creators', () => {
       beforeEach(() => {
         type = 'FooType';
         entity = 'testModel';
-        key1 = 'key1';
-        key2 = 'key2';
-        data1 = 'data1';
-        data2 = 'data2';
+        payload: {
+          key1 = 'key1';
+          key2 = 'key2';
+          data1 = 'data1';
+          data2 = 'data2';
+        }
       });
 
       it('should return a function', () => {
@@ -90,8 +93,10 @@ describe('Action Creators', () => {
           const expectedAction = {
             type,
             entity,
-            key1: data1,
-            key2: data2,
+            payload: {
+              key1: data1,
+              key2: data2,
+            },
           };
 
           const actionCreator = makeEntityActionCreator(type, entity, key1, key2);
@@ -114,7 +119,7 @@ describe('Action Creators', () => {
     describe('invoking the fetchRequest action creator', () => {
       it('should create a FETCH_REQUEST action', () => {
         const fetchRequestAction = {
-          type: ACTION_TYPES.FETCH_REQUEST,
+          type: ActionType.REQUEST,
           entity: mockEntity,
         };
 
@@ -131,11 +136,13 @@ describe('Action Creators', () => {
 
       it('should create a FETCH_SUCCESS action', () => {
         const fetchSuccessAction = {
-          type: ACTION_TYPES.FETCH_SUCCESS,
+          type: ActionType.SUCCESS,
           entity: mockEntity,
-          data: mockData,
-          lastUpdated: now,
-          append: false,
+          payload: {
+            data: mockData,
+            lastUpdated: now,
+            append: false,
+          },
         };
 
         // Under test
@@ -152,9 +159,11 @@ describe('Action Creators', () => {
       it('should create a FETCH_FAILURE action', () => {
         const fetchFailureAction = {
           entity: mockEntity,
-          type: ACTION_TYPES.FETCH_FAILURE,
-          error: mockError,
-          lastUpdated: now,
+          type: ActionType.FAILURE,
+          payload: {
+            error: mockError,
+            lastUpdated: now,
+          },
         };
 
         // Under test
