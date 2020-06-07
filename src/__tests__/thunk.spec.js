@@ -1,7 +1,7 @@
 import thunk from 'redux-thunk';
 import configureStore from 'redux-mock-store';
 
-import loadEntity from '../../src/thunk';
+import GetEntity from '../../src/thunk';
 import { ACTION_TYPES } from '../const';
 import { PROCESSOR_STAGE } from '../common/EntityLifecycle';
 
@@ -17,13 +17,13 @@ describe('Thunk Action Creators', () => {
     store = mockStore({});
   });
 
-  describe('loadEntity()', () => {
+  describe('GetEntity()', () => {
     describe('Valid Params', () => {
       it('should not throw any errors', (done) => {
         expect(() => {
           store
             .dispatch(
-              loadEntity(entity, Promise.resolve(), {
+              GetEntity(entity, Promise.resolve(), {
                 silent: true,
                 append: false,
                 processors: {
@@ -39,36 +39,36 @@ describe('Thunk Action Creators', () => {
     describe('Invalid Params', () => {
       it('should throw an error when passed no arguments', () => {
         expect(() => {
-          store.dispatch(loadEntity());
+          store.dispatch(GetEntity());
         }).toThrow('Missing required entity name');
       });
       it('should throw an error when entity name is null/undefined', () => {
         expect(() => {
-          store.dispatch(loadEntity(null));
+          store.dispatch(GetEntity(null));
         }).toThrow('Missing required entity name');
         expect(() => {
-          store.dispatch(loadEntity(undefined));
+          store.dispatch(GetEntity(undefined));
         }).toThrow('Missing required entity name');
       });
       it('should throw an error when entity name not passed a String', () => {
         expect(() => {
-          store.dispatch(loadEntity(123));
+          store.dispatch(GetEntity(123));
         }).toThrow('Missing required entity name');
         expect(() => {
-          store.dispatch(loadEntity({}));
+          store.dispatch(GetEntity({}));
         }).toThrow('Missing required entity name');
         expect(() => {
-          store.dispatch(loadEntity(new Date()));
+          store.dispatch(GetEntity(new Date()));
         }).toThrow('Missing required entity name');
       });
       it('should throw an error with an undefined data promise', () => {
         expect(() => {
-          store.dispatch(loadEntity(entity));
+          store.dispatch(GetEntity(entity));
         }).toThrow('Missing required entity promise');
       });
       it('should throw an error when a promise is not passed', () => {
         expect(() => {
-          store.dispatch(loadEntity(entity, {}));
+          store.dispatch(GetEntity(entity, {}));
         }).toThrow('Missing required entity promise');
       });
       it('should throw an error when invalid options are passed', () => {
@@ -79,51 +79,51 @@ describe('Thunk Action Creators', () => {
           'Options object is empty! If you mean to pass options, see https://github.com/mikechabot/redux-entity#configuration-options';
         // Options as a string
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), 'foo'));
+          store.dispatch(GetEntity(entity, Promise.resolve(), 'foo'));
         }).toThrow(optionsMustBeAnObject);
         // Options as a number
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), 123));
+          store.dispatch(GetEntity(entity, Promise.resolve(), 123));
         }).toThrow(optionsMustBeAnObject);
         // Options as an array
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), []));
+          store.dispatch(GetEntity(entity, Promise.resolve(), []));
         }).toThrow(optionsMustBeAnObject);
         // Options as a function
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), () => {}));
+          store.dispatch(GetEntity(entity, Promise.resolve(), () => {}));
         }).toThrow(optionsMustBeAnObject);
         // Options as an empty object
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), {}));
+          store.dispatch(GetEntity(entity, Promise.resolve(), {}));
         }).toThrow(emptyOptionsObject);
         // Unexpected top-level key
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), { foo: 'bar' }));
+          store.dispatch(GetEntity(entity, Promise.resolve(), { foo: 'bar' }));
         }).toThrow('Unexpected top-level option: foo');
         // Invalid type for "silent"
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), { silent: 'bar' }));
+          store.dispatch(GetEntity(entity, Promise.resolve(), { silent: 'bar' }));
         }).toThrow('Expected "boolean" but found "string" for "silent"');
         // Invalid type for "append"
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), { append: 'bar' }));
+          store.dispatch(GetEntity(entity, Promise.resolve(), { append: 'bar' }));
         }).toThrow('Expected "boolean" but found "string" for "append"');
         // Invalid type for "processors"
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), { processors: 'bar' }));
+          store.dispatch(GetEntity(entity, Promise.resolve(), { processors: 'bar' }));
         }).toThrow('Expected "object" but found "string" for "processors"');
         // Unexpected processor key
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), { processors: { foo: 'bar' } }));
+          store.dispatch(GetEntity(entity, Promise.resolve(), { processors: { foo: 'bar' } }));
         }).toThrow('Unexpected processor key "foo"');
         // Invalid subprocessor type
         expect(() => {
-          store.dispatch(loadEntity(entity, Promise.resolve(), { processors: { beforeSuccess: 'bar' } }));
+          store.dispatch(GetEntity(entity, Promise.resolve(), { processors: { beforeSuccess: 'bar' } }));
         }).toThrow('Expected "function" but found "string" for "beforeSuccess"');
       });
     });
-    describe('when loadEntity() succeeds', () => {
+    describe('when GetEntity() succeeds', () => {
       it('should dispatch FETCH_REQUEST and FETCH_SUCCESS actions', (done) => {
         const data = { foo: 'bar' };
         const promise = Promise.resolve(data);
@@ -143,7 +143,7 @@ describe('Thunk Action Creators', () => {
 
         // Under test
         store
-          .dispatch(loadEntity(entity, promise, null))
+          .dispatch(GetEntity(entity, promise, null))
           .then(() => {
             // Assert 2 actions were invoked
             const actions = store.getActions();
@@ -169,7 +169,7 @@ describe('Thunk Action Creators', () => {
           .catch(done);
       });
     });
-    describe('when loadEntity() fails', () => {
+    describe('when GetEntity() fails', () => {
       it('should dispatch FETCH_REQUEST and FETCH_FAILURE actions', (done) => {
         const error = { message: 'foo' };
         const promise = Promise.reject(error);
@@ -188,7 +188,7 @@ describe('Thunk Action Creators', () => {
 
         // Under test
         store
-          .dispatch(loadEntity(entity, promise, false))
+          .dispatch(GetEntity(entity, promise, false))
           .catch(() => {
             // Assert 2 actions were invoked
             const actions = store.getActions();
@@ -213,7 +213,7 @@ describe('Thunk Action Creators', () => {
           .then(done);
       });
     });
-    describe('when loadEntity() is configured to be silent', () => {
+    describe('when GetEntity() is configured to be silent', () => {
       it('should not dispatch a FETCH_REQUEST action', (done) => {
         const data = { foo: 'bar' };
         const promise = Promise.resolve(data);
@@ -230,7 +230,7 @@ describe('Thunk Action Creators', () => {
 
         // Under test
         store
-          .dispatch(loadEntity(entity, promise, configOptions))
+          .dispatch(GetEntity(entity, promise, configOptions))
           .then(() => {
             // Assert 1 action was invoked
             const actions = store.getActions();
@@ -251,7 +251,7 @@ describe('Thunk Action Creators', () => {
           .catch(done);
       });
     });
-    describe('when loadEntity() is configured with stage processors', () => {
+    describe('when GetEntity() is configured with stage processors', () => {
       it('Stage BEFORE_SUCCESS', (done) => {
         const spy = jest.fn().mockImplementation((dispatch, getState, data) => dispatch({ type: 'foo', data }));
 
@@ -263,7 +263,7 @@ describe('Thunk Action Creators', () => {
 
         // Under test
         store
-          .dispatch(loadEntity(entity, Promise.resolve({}), configOptions))
+          .dispatch(GetEntity(entity, Promise.resolve({}), configOptions))
           .then(() => {
             expect(spy).toHaveBeenCalled();
           })
@@ -285,7 +285,7 @@ describe('Thunk Action Creators', () => {
 
         // Under test
         store
-          .dispatch(loadEntity(entity, Promise.resolve({ foo: 'bar' }), configOptions))
+          .dispatch(GetEntity(entity, Promise.resolve({ foo: 'bar' }), configOptions))
           .then(() => {
             expect(store.getActions()[1].data).toEqual(['foo']);
           })
@@ -308,7 +308,7 @@ describe('Thunk Action Creators', () => {
 
         // Under test
         store
-          .dispatch(loadEntity(entity, Promise.resolve({ foo: 'bar' }), configOptions))
+          .dispatch(GetEntity(entity, Promise.resolve({ foo: 'bar' }), configOptions))
           .then(() => {
             expect(store.getActions()[1].data).toEqual({ foo: 'baz' });
           })
@@ -326,7 +326,7 @@ describe('Thunk Action Creators', () => {
 
         // Under test
         store
-          .dispatch(loadEntity(entity, Promise.resolve({}), configOptions))
+          .dispatch(GetEntity(entity, Promise.resolve({}), configOptions))
           .then(() => {
             expect(spy).toHaveBeenCalled();
           })
@@ -343,7 +343,7 @@ describe('Thunk Action Creators', () => {
         };
 
         // Under test
-        store.dispatch(loadEntity(entity, Promise.reject(new Error('Fake error')), configOptions)).catch(() => {
+        store.dispatch(GetEntity(entity, Promise.reject(new Error('Fake error')), configOptions)).catch(() => {
           expect(spy).toHaveBeenCalled();
           done();
         });
@@ -362,7 +362,7 @@ describe('Thunk Action Creators', () => {
         };
 
         // Under test
-        store.dispatch(loadEntity(entity, Promise.reject(new Error('Fake error 1')), configOptions)).catch(() => {
+        store.dispatch(GetEntity(entity, Promise.reject(new Error('Fake error 1')), configOptions)).catch(() => {
           expect(store.getActions()[1].error).toEqual(new Error('Fake error 2'));
           done();
         });
@@ -377,7 +377,7 @@ describe('Thunk Action Creators', () => {
         };
 
         // Under test
-        store.dispatch(loadEntity(entity, Promise.reject(new Error('Fake Error')), configOptions)).catch(() => {
+        store.dispatch(GetEntity(entity, Promise.reject(new Error('Fake Error')), configOptions)).catch(() => {
           expect(spy).toHaveBeenCalled();
           done();
         });

@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { fetchRequestCreator, fetchSuccessCreator, fetchFailureCreator } from '../actions';
-import { Processors, EntityLifecycleProps, ProcessorTypes, GetState, ProcessorType } from '../types';
+import { Processors, ReduxEntityProps, ReduxEntityOptions, ProcessorType, GetState } from '../types';
 
 class EntityLifecycle {
   private readonly entityName: string;
@@ -9,9 +9,8 @@ class EntityLifecycle {
   private readonly silent: boolean;
   private readonly processors: Processors;
 
-  constructor({ entityName, options = {} }: EntityLifecycleProps) {
+  constructor({ entityName, options }: ReduxEntityProps) {
     this.entityName = entityName;
-
     this.append = options?.append || false;
     this.silent = options?.silent || false;
     this.processors = options?.processors || ({} as Processors);
@@ -23,13 +22,13 @@ class EntityLifecycle {
    * @param dispatch
    * @param getState
    */
-  onSuccess(data: any, dispatch: Dispatch, getState: GetState) {
+  onSuccess(data: any, dispatch: Dispatch, getState: GetState): any {
     /**
      * Process the "beforeSuccess" stage, which is able to mutate the response
      * from the promise, dispatch additional actions, or getState(), before
      * dispatching the success message
      */
-    const dispatchedData = this.processStage(ProcessorTypes.beforeSuccess, data, dispatch, getState);
+    const dispatchedData = this.processStage(ProcessorType.BEFORE_SUCCESS, data, dispatch, getState);
     /**
      * Create and dispatch the success action
      */
@@ -39,7 +38,7 @@ class EntityLifecycle {
      * Process the "afterSuccess" stage, which is invoked after the success
      * action has been dispatched.
      */
-    this.processStage(ProcessorTypes.afterSuccess, data, dispatch, getState);
+    this.processStage(ProcessorType.AFTER_SUCCESS, data, dispatch, getState);
     /**
      * Return the mutated data
      */
@@ -52,13 +51,13 @@ class EntityLifecycle {
    * @param dispatch
    * @param getState
    */
-  onFailure(error: any, dispatch: Dispatch, getState: GetState) {
+  onFailure(error: any, dispatch: Dispatch, getState: GetState): Error {
     /**
      * Process the "beforeFailure" stage, which is able to mutate the response
      * from the promise, dispatch additional actions, or getState(), before
      * dispatching the error message
      */
-    const dispatchedError = this.processStage(ProcessorTypes.beforeFailure, error, dispatch, getState);
+    const dispatchedError = this.processStage(ProcessorType.BEFORE_FAILURE, error, dispatch, getState);
     /**
      * Create and dispatch the failure action
      */
@@ -68,7 +67,7 @@ class EntityLifecycle {
      * Process the "afterFailure" stage, which is invoked after the failure
      * action has been dispatched.
      */
-    this.processStage(ProcessorTypes.afterFailure, error, dispatch, getState);
+    this.processStage(ProcessorType.AFTER_FAILURE, error, dispatch, getState);
 
     return dispatchedError;
   }
@@ -80,7 +79,7 @@ class EntityLifecycle {
    * @param dispatch
    * @param getState
    */
-  processStage(processorType: ProcessorType, data: any, dispatch: Dispatch, getState: GetState) {
+  processStage(processorType: ProcessorType, data: any, dispatch: Dispatch, getState: GetState): any {
     if (!processorType) {
       throw new Error('Missing required processorType');
     }

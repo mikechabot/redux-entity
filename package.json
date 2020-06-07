@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run clean && npm run compile",
-    "compile": "babel src -d lib",
+    "compile": "babel src -d lib --extensions .ts,.js",
     "test": "jest --coverage",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "clean": "rm -rf ./lib",

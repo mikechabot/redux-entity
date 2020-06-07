@@ -1,9 +1,11 @@
 import { Dispatch } from 'redux';
 
+import { ReduxEntityOptions, GetState } from './types';
+
 import EntityLifecycle from './common/EntityLifecycle';
+
 import validate from './util/validator';
 import { fetchRequestCreator } from './actions';
-import { EntityLifecycleOptions, GetState } from './types';
 
 /**
  * Redux thunk action creator for performing asynchronous actions.
@@ -14,11 +16,15 @@ import { EntityLifecycleOptions, GetState } from './types';
  * @return {function}           Perform an asynchronous action, dispatch Redux actions accordingly
  */
 
-export default function loadEntity(entityName: string, promise: Promise<any>, options: EntityLifecycleOptions) {
+const GetEntity = (entityName: string, promise: Promise<any>, options: ReduxEntityOptions) => {
   if (!entityName) throw new Error('Missing required entityName');
   if (!promise || !promise.then) throw new Error('Missing required entity promise');
 
-  validate(options);
+  try {
+    validate(options);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 
   const entityLifecycle = new EntityLifecycle({ entityName, options });
 
@@ -27,8 +33,10 @@ export default function loadEntity(entityName: string, promise: Promise<any>, op
     dispatch(fetchAction());
     return new Promise((resolve, reject) => {
       promise
-        .then((data: any) => resolve(entityLifecycle.onSuccess(data, dispatch, getState)))
-        .catch((error: any) => reject(entityLifecycle.onFailure(error, dispatch, getState)));
+        .then((data) => resolve(entityLifecycle.onSuccess(data, dispatch, getState)))
+        .catch((error) => reject(entityLifecycle.onFailure(error, dispatch, getState)));
     });
   };
-}
+};
+
+export default GetEntity;
