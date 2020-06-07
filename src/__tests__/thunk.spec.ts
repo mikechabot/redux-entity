@@ -1,26 +1,26 @@
-'use strict';
+import ReduxThunk from 'redux-thunk';
+import configureStore from 'redux-mock-store';
 
-var _reduxThunk = _interopRequireDefault(require('redux-thunk'));
-
-var _reduxMockStore = _interopRequireDefault(require('redux-mock-store'));
-
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+import GetEntity from '../../src/thunk';
+import { ActionType, ProcessorType } from '../types';
 
 // Set up mock Redux store
-var middlewares = [_reduxThunk.default];
-var mockStore = (0, _reduxMockStore.default)(middlewares);
-describe('Thunk Action Creators', function () {
-  var store;
-  var entity;
-  beforeEach(function () {
+const middlewares = [ReduxThunk];
+const mockStore = configureStore(middlewares);
+
+describe('Thunk Action Creators', () => {
+  let store;
+  let entity;
+  beforeEach(() => {
     entity = 'mockEntity';
     store = mockStore({});
   });
-  it('should pass', function () {
+
+  it('should pass', () => {
     expect(true).toBe(true);
-  }); // describe('GetEntity()', () => {
+  });
+
+  // describe('GetEntity()', () => {
   //   describe('Valid Params', () => {
   //     it('should not throw any errors', (done) => {
   //       expect(() => {

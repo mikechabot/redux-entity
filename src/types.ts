@@ -39,7 +39,8 @@ export interface Payload {
   /** Timestamp indicating the last time the entity was updated */
   [PayloadKey.LAST_UPDATED]?: Date;
   /** The error returned from a rejected promise */
-  [PayloadKey.ERROR]?: boolean;
+  [PayloadKey.ERROR]?: Error;
+
   /** Determine whether data is overwritten of appended in the entity state */
   [PayloadKey.APPEND]?: boolean;
 }

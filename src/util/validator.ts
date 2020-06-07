@@ -1,6 +1,6 @@
 import { OptionKey, Processors, ProcessorType, ReduxEntityOptions } from '../types';
 
-export default function validate(options: any) {
+export const validate = (options: any | undefined) => {
   if (!options) return;
 
   if (
@@ -20,35 +20,36 @@ export default function validate(options: any) {
     }
 
     const type = typeof options[key];
+    const value = options[key];
 
     if (key === OptionKey.APPEND && type !== 'boolean') {
-      throw new Error(`Expected "boolean" but found "${type}" for "${key}"`);
+      throw new Error(`Invalid type for "${OptionKey.APPEND}, expected "boolean"`);
     }
 
     if (key === OptionKey.SILENT && type !== 'boolean') {
-      throw new Error(`Expected "boolean" but found "${type}" for "${key}"`);
+      throw new Error(`Invalid type for "${OptionKey.SILENT}, expected "boolean"`);
     }
 
     if (key === OptionKey.PROCESSORS) {
-      if (type !== 'object' || Array.isArray(options[key]) || options[key] == null || options[key] === undefined) {
-        throw new Error(`Expected "boolean" but found "${typeof options[key]}" for "${key}"`);
+      if (!value || Array.isArray(value) || type !== 'object') {
+        throw new Error(`Invalid type for ${OptionKey.PROCESSORS}, expected "object"`);
       }
 
-      const processors: Processors = options[key];
+      const processors: Processors = value;
       const processorTypes = Object.keys(processors) as ProcessorType[];
 
       processorTypes.forEach((processorType) => {
         if (!Object.values(ProcessorType).includes(processorType as ProcessorType)) {
-          throw new Error(`Unexpected processor type "${processorType}"`);
+          throw new Error(`Invalid processorType: "${processorType}"`);
         }
 
         const processor = processors[processorType];
         if (typeof processor !== 'function') {
-          throw new Error(`Expected "function" but found "${typeof processor}" for "${processorType}"`);
+          throw new Error(`Expected function for processorType, but found "${typeof processor}"`);
         }
       });
     }
   });
 
-  return true;
-}
+  return;
+};

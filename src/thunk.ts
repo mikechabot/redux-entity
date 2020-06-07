@@ -4,7 +4,7 @@ import { GetState, OptionKey, ReduxEntityOptions } from './types';
 
 import EntityLifecycle from './EntityLifecycle';
 
-import validate from './util/validator';
+import { validate } from './util/validator';
 import { fetchRequestCreator } from './actions';
 
 /**
