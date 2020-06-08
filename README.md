@@ -57,10 +57,13 @@ The API is very simplistic; a thunk called [`GetEntity`](#GetEntity-promise-opti
 interface EntityState {
   /** Data returned from the resolved promise */
   data?: any;
+  
   /** Error returned from the rejected promise */
   error?: Error;
+  
   /** Whether the entity promise is pending */
   isFetching: boolean;
+  
   /** Timestamp of the promise's last resolution or rejection */
   lastUpdated?: Date | undefined;
 }
