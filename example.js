@@ -6,7 +6,7 @@
  *  statements, and comment out the "redux-entity" require statements.
  */
 
-const { entities, GetEntity } = require('./lib');
+const { entities, GetEntity } = require('redux-entity');
 
 const chalk = require('chalk');
 
