@@ -26,10 +26,10 @@ Most web applications need to handle a variety of domain entities such as orders
 <hr />
 
 - [Demo](#demo)
-- [Install](#install)
+- [Installation](#installation)
 - [Getting Started](#getting-started)
   - [Integrate into Redux](#integrate-into-redux)
-  - [loadEntity(key, promise, options)](#loadentitykey-promise-options)
+  - [loadEntity(key, promise, options)](#GetEntity-promise-options)
   - [Redux Store](#redux-store)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
@@ -49,7 +49,7 @@ Most web applications need to handle a variety of domain entities such as orders
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
 
-The API is very simplistic; once [integrated into Redux](#integrate-into-redux), a single thunk called [`loadEntity`](#loadentitykey-promise-options) is exposed, which does all the heavy lifting.
+The API is very simplistic; once [integrated into Redux](#integrate-into-redux), a single thunk called [`GetEntity`](#GetEntity-promise-options) is exposed, which does all the heavy lifting.
 
 > Every entity you fetch is automatically associated with the following properties to ensure predictability. No need to track these yourself.
 
@@ -62,13 +62,13 @@ The API is very simplistic; once [integrated into Redux](#integrate-into-redux),
 
 ### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a>
 
-To get started, simply import `entities` from `redux-entity`, and combine with your existing reducers.
+To get started, import `reducers` from `redux-entity`, and combine with your existing reducers.
 
 > By default, we're carving out a space in the Redux tree with the key of `entities`, but you can rename it to whatever you'd like.
 
 ```javascript
 // root-reducer.ts
-import { entities } from 'redux-entity';
+import { reducer as entities } from 'redux-entity';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
@@ -77,31 +77,25 @@ export default combineReducers({
 });
 ```
 
-Now we're ready to use [`loadEntity`](#loadentitykey-promise-options).
+Now we're ready to use [`GetEntity`](#GetEntity-promise-options).
 
-### <a name="redux-entity#loadentitykey-promise-options">`loadEntity(key, promise, options)`</a>
+### <a name="redux-entity#GetEntity-promise-options">`loadEntity(key, promise, options)`</a>
 
-When using `loadEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
-
-Here's a simple example of loading orders:
+When using `GetEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
 
 ```javascript
-import { loadEntity } from 'redux-entity';
+import { GetEntity } from 'redux-entity';
 import OrderService from './services/order-service';
 
 const key = 'orders';
 const promise = OrderService.getOrders();
 
-export function loadOrders() {
-  return loadEntity(key, promise);
-}
+export const loadOrders = () => GetEntity(key, promise);
 ```
-
-Continue on to see what happens to the Redux store when `loadOrders` is invoked.
 
 ### <a name="redux-entity#redux-store">Redux Store</a>
 
-Let's take a look at what the Redux store might look like when `loadOrders` is invoked.
+Let's take a look at what the Redux store looks like when `loadOrders` is invoked.
 
 In the context of React, let's say we have an `<Orders />` component; when the component mounts, we'll want to fetch our data:
 
@@ -109,7 +103,7 @@ In the context of React, let's say we have an `<Orders />` component; when the c
 
 ```javascript
 componentDidMount() {
-    this.props.loadOrders();
+   this.props.loadOrders();
 }
 ```
 
@@ -136,9 +130,9 @@ If `loadOrders` **succeeds**, the results are stamped on the store at `entities.
     "orders": {
       "isFetching": false,
       "data": [
-      	{ orderId: 1, type: 'FOO' },
-      	{ orderId: 2, type: 'BAR' },
-      	{ orderId: 3, type: 'BAZ' }
+      	{ orderId: 1, name: 'Coke' },
+      	{ orderId: 2, name: 'Pepsi' },
+      	{ orderId: 3, name: 'Dr. Pepper' }
       ],
       "lastUpdated": 1494092038176,
       "error": null,
@@ -164,7 +158,7 @@ If `loadOrders` **fails**, the results are stamped on the store at `entities.ord
 }
 ```
 
-If we need to load more entities, we just create additional thunks with [`loadEntity`](#loadentitykey-promise-options), and invoke them as described above.
+If we need to load more entities, we just create additional thunks with [`GetEntity`](#GetEntity-promise-options), and invoke them as described above.
 
 > Every entity we fetch will be stamped on the `entities` tree.
 
@@ -192,16 +186,16 @@ The guide below assumes you've already injected the Redux store into your React 
 
 ### 1. Configure the root reducer
 
-Follow along with [Integrate into Redux](#integrate-into-redux) to integrate `entities` into your existing Redux store.
+Follow along with [Integrate into Redux](#integrate-into-redux) to integrate the reducer into your existing Redux store.
 
 ### 2. Create a custom thunk
 
-Create a thunk using `loadEntity`. You only need to provide a key that uniquely identifies the entity, and a data promise.
+Create a thunk using `GetEntity`. You only need to provide a key that uniquely identifies the entity, and a data promise.
 
-> You can optionally pass a configuration to `loadEntity`. See [Configuration](#configuration-options):
+> You can optionally pass a configuration to `GetEntity`. See [Configuration](#configuration-options):
 
 ```javascript
-import { loadEntity } from 'redux-entity';
+import { GetEntity } from 'redux-entity';
 import OrderService from './services/order-service';
 
 const key = 'orders';
@@ -214,18 +208,16 @@ export function loadOrders() {
 
 ### 3. Create a React component
 
-Here's a full React component that utilizes our `loadOrders` example. At this point, `loadOrders` is no different from any other Redux thunk.
-
-> The following code is considered boilerplate for integrating thunks.
+Here's a full React component that utilizes our `loadOrders` example. At this point, `loadOrders` is no different than any other Redux thunk.
 
 ```javascript
 // Orders.jsx
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { loadOrders } from '../redux/thunks';
 import { connect } from 'react-redux';
 
-class Orders extends PureComponent {
+class Orders extends Component {
   componentDidMount() {
     this.props.loadOrders();
   }
@@ -247,9 +239,7 @@ class Orders extends PureComponent {
 
     return (
       <ul>
-        {data.map((order, index) => (
-          <li key={index}> {order.label}</li>
-        ))}
+        {data.map(({orderId, name}) => <li key={orderId}> {name}</li>)}
       </ul>
     );
   }
