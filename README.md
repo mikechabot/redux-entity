@@ -309,12 +309,12 @@ export const loadOrders = (options) => GetEntity(key, promise, options);
 
 Processors are  optional and in most cases won't be needed, however you can take additional action when an entity's promise either resolves or rejects by hooking into the processors below.
 
-| Processor       | When to use                                                                                                      |
+| Processor       | When is this executed?                                                                                                   |
 | --------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `beforeSuccess` | Invoked after the promise resolves, but _before_ `data` is dispatched to the store. **Must** return `any`        |
-| `afterSuccess`  | Invoked after the promise resolves, and _after_ the store has been updated                                       |
-| `beforeFailure` | Invoked after the promise rejects, but _before_ the `error` is dispatched to the store. **Must** return `error`  |
-| `afterFailure`  | Invoked after the promise rejects, and _after_ the store has been updated                                        |
+| `beforeSuccess` | After promise resolution, but _before_ `data` is dispatched to the store. **Must** return `any`        |
+| `afterSuccess`  | After promise resolution, and _after_ the store has been updated                                       |
+| `beforeFailure` | After promise rejection, but _before_ the `error` is dispatched to the store. **Must** return `error`  |
+| `afterFailure`  | After promise rejection, and _after_ the store has been updated                                        |
 
 The processor object must adhere to the following interface:
 
