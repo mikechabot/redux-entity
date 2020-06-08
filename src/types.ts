@@ -1,4 +1,4 @@
-import { Action as ReduxAction } from 'redux';
+import { Action as ReduxAction, AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
 export type GetState = () => ReduxEntityState;
@@ -68,7 +68,7 @@ export interface EntityAction extends ReduxAction {
 export type Processors = {
   [key in ProcessorType]?: (
     data: any,
-    dispatch: ThunkDispatch<ReduxEntityState, unknown, EntityAction>,
+    dispatch: ThunkDispatch<ReduxEntityState, unknown, AnyAction>,
     getState: GetState
   ) => any | void;
 };
