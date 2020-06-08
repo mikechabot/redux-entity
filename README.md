@@ -79,7 +79,7 @@ export default combineReducers({
 
 Now we're ready to use [`GetEntity`](#GetEntity-promise-options).
 
-### <a name="redux-entity#GetEntity-promise-options">`loadEntity(key, promise, options)`</a>
+### <a name="redux-entity#GetEntity-promise-options">`GetEntity(key, promise, options)`</a>
 
 When using `GetEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
 
