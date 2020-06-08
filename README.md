@@ -29,11 +29,11 @@ Most web applications need to handle a variety of domain entities such as orders
 - [Installation](#installation)
 - [Getting Started](#getting-started)
   - [Integrate into Redux](#integrate-into-redux)
-  - [loadEntity(key, promise, options)](#GetEntity-promise-options)
+  - [GetEntity(key, promise, options)](#GetEntity-promise-options)
   - [Redux Store](#redux-store)
 - [Detailed Usage](#detailed-usage)
 - [Configuration Options](#configuration-options)
-- [Additional Actions](#additional-actions)
+- [Additional Thunks](#additional-thunks)
 
 ## <a name="redux-entity#demo">Demo</a>
 
@@ -268,6 +268,25 @@ Optionally pass a configuration with any of the following properties:
 | `append`     | boolean | `false` | If `true`, attach the results of each invocation to the existing `data` property instead of overwriting it                                                                                     |
 | `processors` | object  | `null`  | Hook into the `loadEntity` lifecycle. Each processor has access to Redux `dispatch` and `getState` along with either the `data` or `error` object of the entity. See [Processors](#processors) |
 
+The options configuration must adhere to the following interface:
+
+```typescript
+export interface ReduxEntityOptions {
+  /** Controls whether the "FETCH_REQUEST" action is dispatched before executing the promise */
+  [OptionKey.Silent]?: boolean;
+  /** Controls whether data is overwritten or appended during subsequent promise executions */
+  [OptionKey.Append]?: boolean;
+  /** Processor options that can be executed before/after promise resolution/reject */
+  [OptionKey.Processors]?: Processors;
+}
+
+export enum OptionKey {
+  Silent = 'silent',
+  Append = 'append',
+  Processors = 'processors',
+}
+```
+
 #### Example Configurations
 
 Simple configuration:
@@ -297,14 +316,33 @@ export function loadOrders(options) {
 
 #### <a name="redux-entity#processors">Processors</a>
 
-Processors are completely optional and in most cases won't be needed, however you can take additional action when an entity's promise either resolves or rejects by hooking into the processors below.
+Processors are  optional and in most cases won't be needed, however you can take additional action when an entity's promise either resolves or rejects by hooking into the processors below.
 
-| Processor       | When to use                                                                                                               | Signature                         |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| `beforeSuccess` | Invoked after the promise resolves, but before `data` is dispatched. **Must** return an object to be dispatched           | `func(dispatch, getState, data)`  |
-| `afterSuccess`  | Invoked after the promise resolves, and after `data` has been updated                                                     | `func(dispatch, getState, data)`  |
-| `beforeFailure` | Invoked after the promise rejects, but before the `error` is dispatched. **Must** return an object/error to be dispatched | `func(dispatch, getState, error)` |
-| `afterFailure`  | Invoked after the promise rejects, and after the `error` has been updated                                                 | `func(dispatch, getState, error)` |
+| Processor       | When to use                                                                                                      |
+| --------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `beforeSuccess` | Invoked after the promise resolves, but _before_ `data` is dispatched to the store. **Must** return `any`        |
+| `afterSuccess`  | Invoked after the promise resolves, and _after_ the store has been updated                                       |
+| `beforeFailure` | Invoked after the promise rejects, but _before_ the `error` is dispatched to the store. **Must** return `error`  |
+| `afterFailure`  | Invoked after the promise rejects, and _after_ the store has been updated                                        |
+
+The processor object must adhere to the following interface:
+
+```typescript
+export type Processors = {
+  [key in ProcessorType]?: (data: any, dispatch: ThunkDispatch<any, any, any>, getState: GetState) => void;
+};
+
+export enum ProcessorType {
+  /** Executed if the promise resolves, but before "FETCH_SUCCESS" is dispatched */
+  BeforeSuccess = 'beforeSuccess',
+  /** Executed if the promise resolves, but after "FETCH_SUCCESS" is dispatched */
+  AfterSuccess = 'afterSuccess',
+  /** Executed if the promise rejects, but before "FETCH_FAILURE" is dispatched */
+  BeforeFailure = 'beforeFailure',
+  /** Executed if the promise rejects, but after "FETCH_FAILURE" is dispatched */
+  AfterFailure = 'afterFailure',
+}
+```
 
 Configuration with processors:
 
@@ -315,11 +353,12 @@ const promise = OrderService.getOrders();
 const options = {
   silent: true,
   processors: {
-    beforeSuccess: function (dispatch, getState, data) {
+    beforeSuccess: function (data, dispatch, getState) {
       // Do synchronous stuff
-      // *Must* return data (e.g. return Object.keys(data);)
+      // *Must* return )
+      return Object.keys(data);
     },
-    afterFailure: function (dispatch, getState, error) {
+    afterFailure: function (error, dispatch, getState) {
       // Do synchronous stuff
       // **Must return data (e.g. return new Error('Uh oh!');)
     },
@@ -333,16 +372,16 @@ export function loadOrders() {
 
 ---
 
-## <a name="redux-entity#additional-actions">Additional Actions</a>
+## <a name="redux-entity#additional-thunks">Additional Thunks</a>
 
 The following actions can be use to reset or delete your entity.
 
 > Check out the [Demo](#demo) to see these in action.
 
-| Action creator | Description                                                           |
-| -------------: | :-------------------------------------------------------------------- |
-|  `resetEntity` | Set the `data` property on the entity to `null`. Update `lastUpdated` |
-| `deleteEntity` | Delete the entity from `state.entities`                               |
+| Action creator | Description                                    |
+| -------------: | :----------------------------------------------|
+|  `ResetEntity` | Reset the entity to the original `EntityState` |
+| `DeleteEntity` | Delete the entity from `state`                 | 
 
 ### Example usage
 
@@ -350,9 +389,10 @@ The following actions can be use to reset or delete your entity.
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { resetEntity, deleteEntity } from 'redux-entity';
 
-function Orders({ entityKey, orders, resetEntity, deleteEntity }) {
+import { ResetEntity, DeleteEntity } from 'redux-entity';
+
+const Orders = ({ entityKey, orders, resetEntity, deleteEntity }) => {
   if (!orders) {
     return <span />;
   }
