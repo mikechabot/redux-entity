@@ -66,7 +66,11 @@ export interface EntityAction extends ReduxAction {
 }
 
 export type Processors = {
-  [key in ProcessorType]?: (data: any, dispatch: ThunkDispatch<any, any, any>, getState: GetState) => any | void;
+  [key in ProcessorType]?: (
+    data: any,
+    dispatch: ThunkDispatch<ReduxEntityState, unknown, EntityAction>,
+    getState: GetState
+  ) => any | void;
 };
 
 export enum OptionKey {
