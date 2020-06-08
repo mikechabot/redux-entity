@@ -1,11 +1,4 @@
-import { EntityAction, EntityActionType, Payload } from './types';
-
-interface EntityState {
-  data?: any;
-  lastUpdated?: Date | undefined;
-  isFetching: boolean;
-  error?: Error;
-}
+import { EntityAction, EntityActionType, Payload, ReduxEntityState, EntityState } from './types';
 
 const INITIAL_ENTITY_STATE: EntityState = {
   data: undefined,
@@ -13,10 +6,6 @@ const INITIAL_ENTITY_STATE: EntityState = {
   isFetching: false,
   error: undefined,
 };
-
-export interface ReduxEntityState {
-  [key: string]: EntityState;
-}
 
 const INITIAL_STATE: ReduxEntityState = {};
 
@@ -42,14 +31,14 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: EntityAction) {
   const { type, payload } = action;
 
   switch (type) {
-    case EntityActionType.REQUEST: {
+    case EntityActionType.Request: {
       return {
         ...state,
         isFetching: true,
         error: null,
       };
     }
-    case EntityActionType.SUCCESS: {
+    case EntityActionType.Success: {
       const newData = deriveNewData(state.data, payload!);
       return {
         ...state,
@@ -59,7 +48,7 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: EntityAction) {
         error: null,
       };
     }
-    case EntityActionType.FAILURE: {
+    case EntityActionType.Failure: {
       return {
         ...state,
         isFetching: false,
@@ -68,7 +57,7 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: EntityAction) {
         error: payload!.error,
       };
     }
-    case EntityActionType.RESET: {
+    case EntityActionType.Reset: {
       return {
         ...INITIAL_ENTITY_STATE,
         lastUpdated: payload!.lastUpdated,
@@ -88,16 +77,16 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: EntityAction) {
 export default function entities(state = INITIAL_STATE, action: EntityAction) {
   const { type, entity } = action;
   switch (type) {
-    case EntityActionType.RESET: // fall through
-    case EntityActionType.SUCCESS: // fall through
-    case EntityActionType.FAILURE: // fall through
-    case EntityActionType.REQUEST: {
+    case EntityActionType.Reset: // fall through
+    case EntityActionType.Success: // fall through
+    case EntityActionType.Failure: // fall through
+    case EntityActionType.Request: {
       return {
         ...state,
         [entity!]: entityReducer(state[entity!], action),
       };
     }
-    case EntityActionType.DELETE: {
+    case EntityActionType.Delete: {
       const newState = { ...state };
       delete newState[entity!];
       return newState;

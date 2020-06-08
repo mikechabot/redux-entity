@@ -1,12 +1,11 @@
-import { Dispatch } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 
-import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-
-import { GetState, OptionKey, ReduxEntityOptions, EntityAction } from './types';
 import EntityLifecycle from './EntityLifecycle';
+
 import { validate } from './util/validator';
 import { fetchRequestCreator } from './actions';
-import { ReduxEntityState } from './reducer';
+
+import { GetState, OptionKey, ReduxEntityOptions, EntityAction, ReduxEntityState } from './types';
 
 /**
  * Redux thunk action creator for performing asynchronous actions.
@@ -29,7 +28,7 @@ const GetEntity = (
   const entityLifecycle = new EntityLifecycle({ entityName, options });
 
   return (dispatch, getState: GetState) => {
-    if (!options || !options[OptionKey.SILENT]) {
+    if (!options || !options[OptionKey.Silent]) {
       const fetchAction = fetchRequestCreator(entityName);
       dispatch(fetchAction());
     }

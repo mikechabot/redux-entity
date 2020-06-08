@@ -1,48 +1,59 @@
 import { Action as ReduxAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 
-export type GetState = () => any;
+export type GetState = () => ReduxEntityState;
+
+export interface ReduxEntityState {
+  [key: string]: EntityState;
+}
+
+export interface EntityState {
+  data?: any;
+  lastUpdated?: Date | undefined;
+  isFetching: boolean;
+  error?: Error;
+}
 
 export enum EntityActionType {
   /** Fetching the entity */
-  REQUEST = 'FETCH_REQUEST',
+  Request = 'FETCH_REQUEST',
   /** Promise has resolved */
-  SUCCESS = 'FETCH_SUCCESS',
+  Success = 'FETCH_SUCCESS',
   /** Promise has failed */
-  FAILURE = 'FETCH_FAILURE',
+  Failure = 'FETCH_FAILURE',
   /** Entity reset to initial state */
-  RESET = 'RESET_ENTITY',
+  Reset = 'RESET_ENTITY',
   /** Entity removed from redux-entity state */
-  DELETE = 'DELETE_ENTITY',
+  Delete = 'DELETE_ENTITY',
 }
 
 export enum ProcessorType {
   /** Executed if the promise resolves, but before "FETCH_SUCCESS" is dispatched */
-  BEFORE_SUCCESS = 'beforeSuccess',
+  BeforeSuccess = 'beforeSuccess',
   /** Executed if the promise resolves, but after "FETCH_SUCCESS" is dispatched */
-  AFTER_SUCCESS = 'afterSuccess',
+  AfterSuccess = 'afterSuccess',
   /** Executed if the promise rejects, but before "FETCH_FAILURE" is dispatched */
-  BEFORE_FAILURE = 'beforeFailure',
+  BeforeFailure = 'beforeFailure',
   /** Executed if the promise rejects, but after "FETCH_FAILURE" is dispatched */
-  AFTER_FAILURE = 'afterFailure',
+  AfterFailure = 'afterFailure',
 }
 
 export enum PayloadKey {
-  DATA = 'data',
-  ERROR = 'error',
-  LAST_UPDATED = 'lastUpdated',
-  APPEND = 'append',
+  Data = 'data',
+  Error = 'error',
+  LastUpdated = 'lastUpdated',
+  Append = 'append',
 }
 
 export interface Payload {
   /** Data for the entity */
-  [PayloadKey.DATA]?: any;
+  [PayloadKey.Data]?: any;
   /** Timestamp indicating the last time the entity was updated */
-  [PayloadKey.LAST_UPDATED]?: Date;
+  [PayloadKey.LastUpdated]?: Date;
   /** The error returned from a rejected promise */
-  [PayloadKey.ERROR]?: Error;
+  [PayloadKey.Error]?: Error;
   /** Determine whether data is overwritten of appended in the entity state */
-  [PayloadKey.APPEND]?: boolean;
+  [PayloadKey.Append]?: boolean;
 }
 
 export interface EntityAction extends ReduxAction {
@@ -59,18 +70,18 @@ export type Processors = {
 };
 
 export enum OptionKey {
-  SILENT = 'silent',
-  APPEND = 'append',
-  PROCESSORS = 'processors',
+  Silent = 'silent',
+  Append = 'append',
+  Processors = 'processors',
 }
 
 export interface ReduxEntityOptions {
   /** Controls whether the "FETCH_REQUEST" action is dispatched before executing the promise */
-  [OptionKey.SILENT]?: boolean;
+  [OptionKey.Silent]?: boolean;
   /** Controls whether data is overwritten or appended during subsequent promise executions */
-  [OptionKey.APPEND]?: boolean;
+  [OptionKey.Append]?: boolean;
   /** Processor options that can be executed before/after promise resolution/reject */
-  [OptionKey.PROCESSORS]?: Processors;
+  [OptionKey.Processors]?: Processors;
 }
 
 export interface ReduxEntityProps {

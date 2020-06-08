@@ -59,7 +59,7 @@ export const makeEntityActionCreator = (type: EntityActionType, entity: string, 
  * @param  {string} entity  Entity name (e.g. 'users', 'orders', 'foobar')
  * @return {function}       Action creator
  */
-export const fetchRequestCreator = (entity: string) => makeEntityActionCreator(EntityActionType.REQUEST, entity);
+export const fetchRequestCreator = (entity: string) => makeEntityActionCreator(EntityActionType.Request, entity);
 
 /**
  * Action creator for API fetch successes
@@ -67,13 +67,7 @@ export const fetchRequestCreator = (entity: string) => makeEntityActionCreator(E
  * @return {function}       Action creator
  */
 export const fetchSuccessCreator = (entity: string) =>
-  makeEntityActionCreator(
-    EntityActionType.SUCCESS,
-    entity,
-    PayloadKey.DATA,
-    PayloadKey.LAST_UPDATED,
-    PayloadKey.APPEND
-  );
+  makeEntityActionCreator(EntityActionType.Success, entity, PayloadKey.Data, PayloadKey.LastUpdated, PayloadKey.Append);
 
 /**
  * Action creator for API fetch failures
@@ -81,7 +75,7 @@ export const fetchSuccessCreator = (entity: string) =>
  * @return {function}       Action creator
  */
 export const fetchFailureCreator = (entity: string) =>
-  makeEntityActionCreator(EntityActionType.FAILURE, entity, PayloadKey.ERROR, PayloadKey.LAST_UPDATED);
+  makeEntityActionCreator(EntityActionType.Failure, entity, PayloadKey.Error, PayloadKey.LastUpdated);
 
-export const ResetEntity = makeEntityActionCreator(EntityActionType.RESET, ENTITY, PayloadKey.LAST_UPDATED);
-export const DeleteEntity = makeEntityActionCreator(EntityActionType.DELETE, ENTITY);
+export const ResetEntity = makeEntityActionCreator(EntityActionType.Reset, ENTITY, PayloadKey.LastUpdated);
+export const DeleteEntity = makeEntityActionCreator(EntityActionType.Delete, ENTITY);

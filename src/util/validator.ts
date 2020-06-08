@@ -22,17 +22,17 @@ export const validate = (options: any | undefined) => {
     const type = typeof options[key];
     const value = options[key];
 
-    if (key === OptionKey.APPEND && type !== 'boolean') {
-      throw new Error(`Invalid type for "${OptionKey.APPEND}, expected "boolean"`);
+    if (key === OptionKey.Append && type !== 'boolean') {
+      throw new Error(`Invalid type for "${OptionKey.Append}, expected "boolean"`);
     }
 
-    if (key === OptionKey.SILENT && type !== 'boolean') {
-      throw new Error(`Invalid type for "${OptionKey.SILENT}, expected "boolean"`);
+    if (key === OptionKey.Silent && type !== 'boolean') {
+      throw new Error(`Invalid type for "${OptionKey.Silent}, expected "boolean"`);
     }
 
-    if (key === OptionKey.PROCESSORS) {
+    if (key === OptionKey.Processors) {
       if (!value || Array.isArray(value) || type !== 'object') {
-        throw new Error(`Invalid type for ${OptionKey.PROCESSORS}, expected "object"`);
+        throw new Error(`Invalid type for ${OptionKey.Processors}, expected "object"`);
       }
 
       const processors: Processors = value;

@@ -1,13 +1,12 @@
 import { Store } from 'redux';
 import ReduxThunk, { ThunkDispatch } from 'redux-thunk';
-
 import configureMockStore from 'redux-mock-store';
+
 import GetEntity from '../../src/thunk';
-import { EntityAction, EntityActionType, ProcessorType, ReduxEntityOptions } from '../types';
-import { ReduxEntityState } from '../reducer';
+
+import { EntityAction, EntityActionType, ProcessorType, ReduxEntityOptions, ReduxEntityState } from '../types';
 
 type DispatchExts = ThunkDispatch<ReduxEntityState, undefined, EntityAction>;
-
 const middlewares = [ReduxThunk];
 const mockStore = configureMockStore<ReduxEntityState, DispatchExts>(middlewares);
 
@@ -76,11 +75,11 @@ describe('Thunk Action Creators', () => {
     describe('Promise Resolution', () => {
       const data = { foo: 'bar' };
 
-      const expectedFetch = { entity, type: EntityActionType.REQUEST };
+      const expectedFetch = { entity, type: EntityActionType.Request };
 
       const expectedSuccess = {
         entity,
-        type: EntityActionType.SUCCESS,
+        type: EntityActionType.Success,
         payload: {
           data,
           lastUpdated: undefined,
@@ -109,11 +108,11 @@ describe('Thunk Action Creators', () => {
     describe('Promise Rejection', () => {
       const error = new Error('API Failure');
 
-      const expectedRequest = { entity, type: EntityActionType.REQUEST };
+      const expectedRequest = { entity, type: EntityActionType.Request };
 
       const expectedFailure = {
         entity,
-        type: EntityActionType.FAILURE,
+        type: EntityActionType.Failure,
         payload: {
           lastUpdated: undefined,
           error,
@@ -143,7 +142,7 @@ describe('Thunk Action Creators', () => {
 
       const expectedSuccess = {
         entity,
-        type: EntityActionType.SUCCESS,
+        type: EntityActionType.Success,
         payload: {
           lastUpdated: undefined,
           data,
@@ -181,8 +180,8 @@ describe('Thunk Action Creators', () => {
 
           const options: ReduxEntityOptions = {
             processors: {
-              [ProcessorType.BEFORE_SUCCESS]: beforeSpy,
-              [ProcessorType.AFTER_SUCCESS]: afterSpy,
+              [ProcessorType.BeforeSuccess]: beforeSpy,
+              [ProcessorType.AfterSuccess]: afterSpy,
             },
           };
 
@@ -200,8 +199,8 @@ describe('Thunk Action Creators', () => {
 
           const options: ReduxEntityOptions = {
             processors: {
-              [ProcessorType.BEFORE_FAILURE]: beforeSpy,
-              [ProcessorType.AFTER_FAILURE]: afterSpy,
+              [ProcessorType.BeforeFailure]: beforeSpy,
+              [ProcessorType.AfterFailure]: afterSpy,
             },
           };
 
@@ -218,14 +217,14 @@ describe('Thunk Action Creators', () => {
 
           const options: ReduxEntityOptions = {
             processors: {
-              [ProcessorType.BEFORE_SUCCESS]: (data: any, dispatch, getState) => {
+              [ProcessorType.BeforeSuccess]: (data: any, dispatch, getState) => {
                 expect(data).toEqual(promiseData);
                 expect(typeof dispatch).toEqual('function');
                 expect(typeof getState).toEqual('function');
                 dispatch({ type: 'In_Before_Success' });
                 return data;
               },
-              [ProcessorType.AFTER_SUCCESS]: (data: any, dispatch, getState) => {
+              [ProcessorType.AfterSuccess]: (data: any, dispatch, getState) => {
                 expect(data).toEqual(promiseData);
                 expect(typeof dispatch).toEqual('function');
                 expect(typeof getState).toEqual('function');
@@ -249,14 +248,14 @@ describe('Thunk Action Creators', () => {
 
           const options: ReduxEntityOptions = {
             processors: {
-              [ProcessorType.BEFORE_FAILURE]: (error: any, dispatch, getState) => {
+              [ProcessorType.BeforeFailure]: (error: any, dispatch, getState) => {
                 expect(error).toEqual(promiseError);
                 expect(typeof dispatch).toEqual('function');
                 expect(typeof getState).toEqual('function');
                 dispatch({ type: 'In_Before_Failure' });
                 return error;
               },
-              [ProcessorType.AFTER_FAILURE]: (error: any, dispatch, getState) => {
+              [ProcessorType.AfterFailure]: (error: any, dispatch, getState) => {
                 expect(error).toEqual(promiseError);
                 expect(typeof dispatch).toEqual('function');
                 expect(typeof getState).toEqual('function');
@@ -284,7 +283,7 @@ describe('Thunk Action Creators', () => {
 
           const options: ReduxEntityOptions = {
             processors: {
-              [ProcessorType.BEFORE_SUCCESS]: (data: any) => Object.keys(data),
+              [ProcessorType.BeforeSuccess]: (data: any) => Object.keys(data),
             },
           };
 
@@ -311,7 +310,7 @@ describe('Thunk Action Creators', () => {
 
           const options: ReduxEntityOptions = {
             processors: {
-              [ProcessorType.BEFORE_SUCCESS]: (data: any) => ({
+              [ProcessorType.BeforeSuccess]: (data: any) => ({
                 ...data,
                 foo: 'foo',
                 baz: 'qux',
@@ -341,7 +340,7 @@ describe('Thunk Action Creators', () => {
         it('should return a new error', (done) => {
           const options: ReduxEntityOptions = {
             processors: {
-              [ProcessorType.BEFORE_FAILURE]: () => newError,
+              [ProcessorType.BeforeFailure]: () => newError,
             },
           };
 

@@ -1,5 +1,5 @@
-import reducer, { ReduxEntityState } from '../../src/reducer';
-import { EntityAction, EntityActionType, Payload } from '../types';
+import reducer from '../reducer';
+import { EntityAction, EntityActionType, Payload, ReduxEntityState } from '../types';
 
 const INITIAL_STATE: ReduxEntityState = {};
 
@@ -33,7 +33,7 @@ describe('Reducer', () => {
 
       const action: EntityAction = {
         entity,
-        type: EntityActionType.RESET,
+        type: EntityActionType.Reset,
         payload: { lastUpdated },
       };
 
@@ -57,7 +57,7 @@ describe('Reducer', () => {
 
       const action: EntityAction = {
         entity: entity,
-        type: EntityActionType.DELETE,
+        type: EntityActionType.Delete,
       };
 
       const state = reducer(existingState, action);
@@ -72,7 +72,7 @@ describe('Reducer', () => {
 
       const action: EntityAction = {
         entity,
-        type: EntityActionType.REQUEST,
+        type: EntityActionType.Request,
       };
 
       const state = reducer(existingState, action);
@@ -93,7 +93,7 @@ describe('Reducer', () => {
       const action: EntityAction = {
         entity,
         payload,
-        type: EntityActionType.SUCCESS,
+        type: EntityActionType.Success,
       };
 
       const state = reducer(existingState, action);
@@ -114,7 +114,7 @@ describe('Reducer', () => {
         const action: EntityAction = {
           entity,
           payload,
-          type: EntityActionType.SUCCESS,
+          type: EntityActionType.Success,
         };
 
         const state = reducer(existingState, action);
@@ -134,7 +134,7 @@ describe('Reducer', () => {
         const action: EntityAction = {
           entity,
           payload,
-          type: EntityActionType.SUCCESS,
+          type: EntityActionType.Success,
         };
 
         const state = reducer(existingState, action);
@@ -158,7 +158,7 @@ describe('Reducer', () => {
         const action: EntityAction = {
           entity,
           payload,
-          type: EntityActionType.SUCCESS,
+          type: EntityActionType.Success,
         };
 
         const state = reducer(existingState, action);
@@ -182,7 +182,7 @@ describe('Reducer', () => {
         const action: EntityAction = {
           entity,
           payload,
-          type: EntityActionType.SUCCESS,
+          type: EntityActionType.Success,
         };
 
         const state = reducer(existingState, action);
@@ -206,7 +206,7 @@ describe('Reducer', () => {
       const action: EntityAction = {
         entity,
         payload,
-        type: EntityActionType.FAILURE,
+        type: EntityActionType.Failure,
       };
 
       const state = reducer(existingState, action);

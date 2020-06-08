@@ -28,7 +28,7 @@ class EntityLifecycle {
      * from the promise, dispatch additional actions, or getState(), before
      * dispatching the success message
      */
-    const dispatchedData = this.processStage(ProcessorType.BEFORE_SUCCESS, data, dispatch, getState);
+    const dispatchedData = this.processStage(ProcessorType.BeforeSuccess, data, dispatch, getState);
     /**
      * Create and dispatch the success action
      */
@@ -38,7 +38,7 @@ class EntityLifecycle {
      * Process the "afterSuccess" stage, which is invoked after the success
      * action has been dispatched.
      */
-    this.processStage(ProcessorType.AFTER_SUCCESS, dispatchedData, dispatch, getState);
+    this.processStage(ProcessorType.AfterSuccess, dispatchedData, dispatch, getState);
     /**
      * Return the mutated data
      */
@@ -57,7 +57,7 @@ class EntityLifecycle {
      * from the promise, dispatch additional actions, or getState(), before
      * dispatching the error message
      */
-    const dispatchedError = this.processStage(ProcessorType.BEFORE_FAILURE, error, dispatch, getState);
+    const dispatchedError = this.processStage(ProcessorType.BeforeFailure, error, dispatch, getState);
     /**
      * Create and dispatch the failure action
      */
@@ -67,7 +67,7 @@ class EntityLifecycle {
      * Process the "afterFailure" stage, which is invoked after the failure
      * action has been dispatched.
      */
-    this.processStage(ProcessorType.AFTER_FAILURE, dispatchedError, dispatch, getState);
+    this.processStage(ProcessorType.AfterFailure, dispatchedError, dispatch, getState);
 
     return dispatchedError;
   }

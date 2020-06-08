@@ -61,7 +61,7 @@ describe('validate', () => {
     });
 
     describe('Append', () => {
-      const error = new Error(`Invalid type for "${OptionKey.APPEND}, expected "boolean"`);
+      const error = new Error(`Invalid type for "${OptionKey.Append}, expected "boolean"`);
 
       it('should not throw an error if "append" is a boolean', () => {
         const options = { append: true };
@@ -108,7 +108,7 @@ describe('validate', () => {
     });
 
     describe('Silent', () => {
-      const error = new Error(`Invalid type for "${OptionKey.SILENT}, expected "boolean"`);
+      const error = new Error(`Invalid type for "${OptionKey.Silent}, expected "boolean"`);
 
       it('should not throw an error if "silent" is a boolean', () => {
         const options = { silent: true };
@@ -155,7 +155,7 @@ describe('validate', () => {
     });
 
     describe('Processors', () => {
-      const error = new Error(`Invalid type for ${OptionKey.PROCESSORS}, expected "object"`);
+      const error = new Error(`Invalid type for ${OptionKey.Processors}, expected "object"`);
 
       it('should not throw an error if "processors" is an object', () => {
         const options = { processors: {} };
@@ -201,13 +201,13 @@ describe('validate', () => {
 
         it('should throw an error if a known processorType is not a function', () => {
           const error = new Error(`Expected function for processorType, but found "number"`);
-          const options = { processors: { [ProcessorType.BEFORE_FAILURE]: 123 } };
+          const options = { processors: { [ProcessorType.BeforeFailure]: 123 } };
           expect(() => validate(options)).toThrow(error);
         });
 
         it('should not throw an error if a known processorType is a function', () => {
           const error = new Error(`Expected function for processorType, but found "number"`);
-          const options = { processors: { [ProcessorType.BEFORE_FAILURE]: () => {} } };
+          const options = { processors: { [ProcessorType.BeforeFailure]: () => {} } };
           expect(validate(options)).toBeUndefined();
         });
       });
