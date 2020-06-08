@@ -270,11 +270,8 @@ The options configuration must adhere to the following interface:
 
 ```typescript
 export interface ReduxEntityOptions {
-  /** Controls whether the "FETCH_REQUEST" action is dispatched before executing the promise */
   [OptionKey.Silent]?: boolean;
-  /** Controls whether data is overwritten or appended during subsequent promise executions */
   [OptionKey.Append]?: boolean;
-  /** Processor options that can be executed before/after promise resolution/reject */
   [OptionKey.Processors]?: Processors;
 }
 
@@ -327,13 +324,9 @@ export type Processors = {
 };
 
 export enum ProcessorType {
-  /** Executed if the promise resolves, but before "FETCH_SUCCESS" is dispatched */
   BeforeSuccess = 'beforeSuccess',
-  /** Executed if the promise resolves, but after "FETCH_SUCCESS" is dispatched */
   AfterSuccess = 'afterSuccess',
-  /** Executed if the promise rejects, but before "FETCH_FAILURE" is dispatched */
   BeforeFailure = 'beforeFailure',
-  /** Executed if the promise rejects, but after "FETCH_FAILURE" is dispatched */
   AfterFailure = 'afterFailure',
 }
 ```
