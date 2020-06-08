@@ -1,8 +1,9 @@
-import { Dispatch } from 'redux';
+import { Action as ReduxAction } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
 
 export type GetState = () => any;
 
-export enum ActionType {
+export enum EntityActionType {
   /** Fetching the entity */
   REQUEST = 'FETCH_REQUEST',
   /** Promise has resolved */
@@ -40,22 +41,21 @@ export interface Payload {
   [PayloadKey.LAST_UPDATED]?: Date;
   /** The error returned from a rejected promise */
   [PayloadKey.ERROR]?: Error;
-
   /** Determine whether data is overwritten of appended in the entity state */
   [PayloadKey.APPEND]?: boolean;
 }
 
-export type Action = {
+export interface EntityAction extends ReduxAction {
   /** The type of action being dispatched */
-  type: ActionType;
+  type: EntityActionType;
   /** The entity for which the action is being dispatched */
   entity?: string;
   /** The payload of the action being dispatched */
   payload?: Payload;
-};
+}
 
 export type Processors = {
-  [key in ProcessorType]: (data: any, dispatch: Dispatch, getState: GetState) => void;
+  [key in ProcessorType]?: (data: any, dispatch: ThunkDispatch<any, any, any>, getState: GetState) => void;
 };
 
 export enum OptionKey {

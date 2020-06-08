@@ -1,4 +1,4 @@
-import { Action, ActionType, Payload } from './types';
+import { EntityAction, EntityActionType, Payload } from './types';
 
 interface EntityState {
   data?: any;
@@ -14,11 +14,11 @@ const INITIAL_ENTITY_STATE: EntityState = {
   error: undefined,
 };
 
-interface InitialState {
+export interface ReduxEntityState {
   [key: string]: EntityState;
 }
 
-const INITIAL_STATE: InitialState = {};
+const INITIAL_STATE: ReduxEntityState = {};
 
 function toArray(obj: any) {
   return Array.isArray(obj) ? obj : [obj];
@@ -38,18 +38,18 @@ function deriveNewData(stateData: any, payload: Payload) {
  * @param state
  * @param action
  */
-function entityReducer(state = INITIAL_ENTITY_STATE, action: Action) {
+function entityReducer(state = INITIAL_ENTITY_STATE, action: EntityAction) {
   const { type, payload } = action;
 
   switch (type) {
-    case ActionType.REQUEST: {
+    case EntityActionType.REQUEST: {
       return {
         ...state,
         isFetching: true,
         error: null,
       };
     }
-    case ActionType.SUCCESS: {
+    case EntityActionType.SUCCESS: {
       const newData = deriveNewData(state.data, payload!);
       return {
         ...state,
@@ -59,7 +59,7 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: Action) {
         error: null,
       };
     }
-    case ActionType.FAILURE: {
+    case EntityActionType.FAILURE: {
       return {
         ...state,
         isFetching: false,
@@ -68,7 +68,7 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: Action) {
         error: payload!.error,
       };
     }
-    case ActionType.RESET: {
+    case EntityActionType.RESET: {
       return {
         ...INITIAL_ENTITY_STATE,
         lastUpdated: payload!.lastUpdated,
@@ -85,19 +85,19 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: Action) {
  * @param state
  * @param action
  */
-export default function entities(state = INITIAL_STATE, action: Action) {
+export default function entities(state = INITIAL_STATE, action: EntityAction) {
   const { type, entity } = action;
   switch (type) {
-    case ActionType.RESET: // fall through
-    case ActionType.SUCCESS: // fall through
-    case ActionType.FAILURE: // fall through
-    case ActionType.REQUEST: {
+    case EntityActionType.RESET: // fall through
+    case EntityActionType.SUCCESS: // fall through
+    case EntityActionType.FAILURE: // fall through
+    case EntityActionType.REQUEST: {
       return {
         ...state,
         [entity!]: entityReducer(state[entity!], action),
       };
     }
-    case ActionType.DELETE: {
+    case EntityActionType.DELETE: {
       const newState = { ...state };
       delete newState[entity!];
       return newState;

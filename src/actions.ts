@@ -1,4 +1,4 @@
-import { Action, ActionType, Payload, PayloadKey } from './types';
+import { EntityAction, EntityActionType, Payload, PayloadKey } from './types';
 
 const ENTITY = 'entity';
 
@@ -8,8 +8,8 @@ const ENTITY = 'entity';
  * @param keys
  * @param values
  */
-const generateAction = (action: Action, keys: PayloadKey[], values: any) => {
-  const generatedAction: Action = { ...action };
+const generateAction = (action: EntityAction, keys: PayloadKey[], values: any): EntityAction => {
+  const generatedAction: EntityAction = { ...action };
   if (keys && keys.length > 0) {
     const payload: Payload = {};
     keys.forEach((arg: any, index: number) => {
@@ -32,7 +32,7 @@ const generateAction = (action: Action, keys: PayloadKey[], values: any) => {
  * @param type  Redux action type
  * @param keys  Additional keys to append to the payload
  */
-export const makeActionCreator = (type: ActionType, ...keys: PayloadKey[]) => {
+export const makeActionCreator = (type: EntityActionType, ...keys: PayloadKey[]) => {
   if (!type) throw new Error('Type cannot be null/undefined');
   return function (...values: any) {
     return generateAction({ type }, keys, values);
@@ -46,7 +46,7 @@ export const makeActionCreator = (type: ActionType, ...keys: PayloadKey[]) => {
  * @param entity  Model entity name (e.g 'users', 'orders', 'foobar')
  * @param keys    Additional keys to append to the payload
  */
-export const makeEntityActionCreator = (type: ActionType, entity: string, ...keys: PayloadKey[]) => {
+export const makeEntityActionCreator = (type: EntityActionType, entity: string, ...keys: PayloadKey[]) => {
   if (!type) throw new Error('Type cannot be null/undefined');
   if (!entity) throw new Error('Entity cannot be null/undefined');
   return function (...values: any) {
@@ -59,7 +59,7 @@ export const makeEntityActionCreator = (type: ActionType, entity: string, ...key
  * @param  {string} entity  Entity name (e.g. 'users', 'orders', 'foobar')
  * @return {function}       Action creator
  */
-export const fetchRequestCreator = (entity: string) => makeEntityActionCreator(ActionType.REQUEST, entity);
+export const fetchRequestCreator = (entity: string) => makeEntityActionCreator(EntityActionType.REQUEST, entity);
 
 /**
  * Action creator for API fetch successes
@@ -67,7 +67,13 @@ export const fetchRequestCreator = (entity: string) => makeEntityActionCreator(A
  * @return {function}       Action creator
  */
 export const fetchSuccessCreator = (entity: string) =>
-  makeEntityActionCreator(ActionType.SUCCESS, entity, PayloadKey.DATA, PayloadKey.LAST_UPDATED, PayloadKey.APPEND);
+  makeEntityActionCreator(
+    EntityActionType.SUCCESS,
+    entity,
+    PayloadKey.DATA,
+    PayloadKey.LAST_UPDATED,
+    PayloadKey.APPEND
+  );
 
 /**
  * Action creator for API fetch failures
@@ -75,7 +81,7 @@ export const fetchSuccessCreator = (entity: string) =>
  * @return {function}       Action creator
  */
 export const fetchFailureCreator = (entity: string) =>
-  makeEntityActionCreator(ActionType.FAILURE, entity, PayloadKey.ERROR, PayloadKey.LAST_UPDATED);
+  makeEntityActionCreator(EntityActionType.FAILURE, entity, PayloadKey.ERROR, PayloadKey.LAST_UPDATED);
 
-export const ResetEntity = makeEntityActionCreator(ActionType.RESET, ENTITY, PayloadKey.LAST_UPDATED);
-export const DeleteEntity = makeEntityActionCreator(ActionType.DELETE, ENTITY);
+export const ResetEntity = makeEntityActionCreator(EntityActionType.RESET, ENTITY, PayloadKey.LAST_UPDATED);
+export const DeleteEntity = makeEntityActionCreator(EntityActionType.DELETE, ENTITY);

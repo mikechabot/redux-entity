@@ -6,7 +6,7 @@ import {
   makeEntityActionCreator,
 } from '../actions';
 
-import { ActionType } from '../types';
+import { EntityActionType } from '../types';
 
 describe('Action Creators', () => {
   const typeError = new Error('Type cannot be null/undefined');
@@ -19,18 +19,19 @@ describe('Action Creators', () => {
       });
 
       it('should return a function', () => {
-        expect(typeof makeActionCreator(ActionType.SUCCESS)).toEqual('function');
+        expect(typeof makeActionCreator(EntityActionType.SUCCESS)).toEqual('function');
       });
 
       it('should throw an error if a type is not passed', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         expect(() => makeActionCreator()).toThrow(typeError);
       });
 
       describe('Invoking the returned function', () => {
         it('should return an object containing the action type', () => {
-          const expectedAction = { type: ActionType.SUCCESS };
-          const action = makeActionCreator(ActionType.SUCCESS);
+          const expectedAction = { type: EntityActionType.SUCCESS };
+          const action = makeActionCreator(EntityActionType.SUCCESS);
           expect(action()).toEqual(expectedAction);
         });
 
@@ -42,14 +43,14 @@ describe('Action Creators', () => {
           const value2 = 'qux';
 
           const expectedAction = {
-            type: ActionType.SUCCESS,
+            type: EntityActionType.SUCCESS,
             payload: {
               [key1]: value1,
               [key2]: value2,
             },
           };
 
-          const action = makeActionCreator(ActionType.SUCCESS, key1 as any, key2 as any);
+          const action = makeActionCreator(EntityActionType.SUCCESS, key1 as any, key2 as any);
           expect(action(value1, value2)).toEqual(expectedAction);
         });
       });
@@ -62,23 +63,25 @@ describe('Action Creators', () => {
       });
 
       it('should return a function', () => {
-        expect(typeof makeEntityActionCreator(ActionType.SUCCESS, entity)).toEqual('function');
+        expect(typeof makeEntityActionCreator(EntityActionType.SUCCESS, entity)).toEqual('function');
       });
 
       it('should throw an error if a type is not passed', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         expect(() => makeEntityActionCreator()).toThrow(typeError);
       });
 
       it('should throw an error if entity is not passed', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        expect(() => makeEntityActionCreator(ActionType.SUCCESS)).toThrow(entityError);
+        expect(() => makeEntityActionCreator(EntityActionType.SUCCESS)).toThrow(entityError);
       });
 
       describe('Invoking the returned function', () => {
         it('should return an object containing the action type', () => {
-          const expectedAction = { type: ActionType.SUCCESS, entity };
-          const action = makeEntityActionCreator(ActionType.SUCCESS, entity);
+          const expectedAction = { type: EntityActionType.SUCCESS, entity };
+          const action = makeEntityActionCreator(EntityActionType.SUCCESS, entity);
           expect(action()).toEqual(expectedAction);
         });
 
@@ -91,14 +94,14 @@ describe('Action Creators', () => {
 
           const expectedAction = {
             entity,
-            type: ActionType.SUCCESS,
+            type: EntityActionType.SUCCESS,
             payload: {
               [key1]: value1,
               [key2]: value2,
             },
           };
 
-          const action = makeEntityActionCreator(ActionType.SUCCESS, entity, key1 as any, key2 as any);
+          const action = makeEntityActionCreator(EntityActionType.SUCCESS, entity, key1 as any, key2 as any);
           expect(action(value1, value2)).toEqual(expectedAction);
         });
       });
@@ -118,6 +121,7 @@ describe('Action Creators', () => {
       });
 
       it('should throw an error if a type is not passed', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         expect(() => fetchRequestCreator()).toThrow(entityError);
       });
@@ -126,7 +130,7 @@ describe('Action Creators', () => {
         it('should return a request action to be dispatched', () => {
           const expectedAction = {
             entity,
-            type: ActionType.REQUEST,
+            type: EntityActionType.REQUEST,
           };
           const action = fetchRequestCreator(entity);
           expect(action()).toEqual(expectedAction);
@@ -144,6 +148,7 @@ describe('Action Creators', () => {
       });
 
       it('should throw an error if a type is not passed', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         expect(() => fetchSuccessCreator()).toThrow(entityError);
       });
@@ -152,7 +157,7 @@ describe('Action Creators', () => {
         it('should return a success action to be dispatched, with an empty payload', () => {
           const expectedAction = {
             entity,
-            type: ActionType.SUCCESS,
+            type: EntityActionType.SUCCESS,
             payload: {
               data: undefined,
               append: undefined,
@@ -170,7 +175,7 @@ describe('Action Creators', () => {
 
           const expectedAction = {
             entity,
-            type: ActionType.SUCCESS,
+            type: EntityActionType.SUCCESS,
             payload: {
               data,
               append,
@@ -193,6 +198,7 @@ describe('Action Creators', () => {
       });
 
       it('should throw an error if a type is not passed', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         expect(() => fetchFailureCreator()).toThrow(entityError);
       });
@@ -201,7 +207,7 @@ describe('Action Creators', () => {
         it('should return a failure action to be dispatched, with an empty payload', () => {
           const expectedAction = {
             entity,
-            type: ActionType.FAILURE,
+            type: EntityActionType.FAILURE,
             payload: {
               error: undefined,
               lastUpdated: undefined,
@@ -214,11 +220,10 @@ describe('Action Creators', () => {
         it('should return a failure action to be dispatched, with a proper payload', () => {
           const lastUpdated = new Date();
           const error = new Error('API Error');
-          const append = true;
 
           const expectedAction = {
             entity,
-            type: ActionType.FAILURE,
+            type: EntityActionType.FAILURE,
             payload: {
               error,
               lastUpdated,

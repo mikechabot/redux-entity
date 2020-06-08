@@ -1,14 +1,7 @@
-import reducer from '../../src/reducer';
-import { Action, ActionType, Payload } from '../types';
+import reducer, { ReduxEntityState } from '../../src/reducer';
+import { EntityAction, EntityActionType, Payload } from '../types';
 
-const INITIAL_STATE = {};
-
-const INITIAL_ENTITY_STATE = {
-  data: undefined,
-  lastUpdated: undefined,
-  isFetching: false,
-  error: undefined,
-};
+const INITIAL_STATE: ReduxEntityState = {};
 
 describe('Reducer', () => {
   let entity: string;
@@ -20,14 +13,14 @@ describe('Reducer', () => {
 
   describe('Existing State', () => {
     it('should return the initial state when "state" is undefined, and the action "type" is unknown', () => {
-      const action: Action = { type: 'bar' as any };
+      const action: EntityAction = { type: 'bar' as any };
       const state = reducer(undefined, action);
       expect(state).toEqual(INITIAL_STATE);
     });
 
     it('should return state when "state" is defined, and the action "type" is unknown', () => {
       const existingState = { foo: { isFetching: true } };
-      const action: Action = { type: 'bar' as any };
+      const action: EntityAction = { type: 'bar' as any };
       const state = reducer(existingState, action);
       expect(state).toEqual(existingState);
     });
@@ -38,9 +31,9 @@ describe('Reducer', () => {
       const existingState = { [entity]: { isFetching: true, data: ['bar'] } };
       const expectedState = { [entity]: { isFetching: false, lastUpdated } };
 
-      const action: Action = {
+      const action: EntityAction = {
         entity,
-        type: ActionType.RESET,
+        type: EntityActionType.RESET,
         payload: { lastUpdated },
       };
 
@@ -62,9 +55,9 @@ describe('Reducer', () => {
         [entity2]: { isFetching: true, data: 123 },
       };
 
-      const action: Action = {
+      const action: EntityAction = {
         entity: entity,
-        type: ActionType.DELETE,
+        type: EntityActionType.DELETE,
       };
 
       const state = reducer(existingState, action);
@@ -77,9 +70,9 @@ describe('Reducer', () => {
       const existingState = { [entity]: { isFetching: false, error: new Error('Previous Failure') } };
       const expectedState = { [entity]: { isFetching: true, error: null } };
 
-      const action: Action = {
+      const action: EntityAction = {
         entity,
-        type: ActionType.REQUEST,
+        type: EntityActionType.REQUEST,
       };
 
       const state = reducer(existingState, action);
@@ -97,10 +90,10 @@ describe('Reducer', () => {
       const existingState = { [entity]: { isFetching: true, error: new Error('Previous Failure') } };
       const expectedState = { [entity]: { isFetching: false, error: null, data: payload.data, lastUpdated } };
 
-      const action: Action = {
+      const action: EntityAction = {
         entity,
         payload,
-        type: ActionType.SUCCESS,
+        type: EntityActionType.SUCCESS,
       };
 
       const state = reducer(existingState, action);
@@ -118,10 +111,10 @@ describe('Reducer', () => {
         const existingState = { [entity]: { isFetching: true, error: new Error('Previous Failure') } };
         const expectedState = { [entity]: { isFetching: false, error: null, data: [payload.data], lastUpdated } };
 
-        const action: Action = {
+        const action: EntityAction = {
           entity,
           payload,
-          type: ActionType.SUCCESS,
+          type: EntityActionType.SUCCESS,
         };
 
         const state = reducer(existingState, action);
@@ -138,10 +131,10 @@ describe('Reducer', () => {
         const existingState = { [entity]: { isFetching: true, error: new Error('Previous Failure') } };
         const expectedState = { [entity]: { isFetching: false, error: null, data: payload.data, lastUpdated } };
 
-        const action: Action = {
+        const action: EntityAction = {
           entity,
           payload,
-          type: ActionType.SUCCESS,
+          type: EntityActionType.SUCCESS,
         };
 
         const state = reducer(existingState, action);
@@ -162,10 +155,10 @@ describe('Reducer', () => {
           [entity]: { isFetching: false, error: null, data: [{ baz: 'qux' }, ...payload.data], lastUpdated },
         };
 
-        const action: Action = {
+        const action: EntityAction = {
           entity,
           payload,
-          type: ActionType.SUCCESS,
+          type: EntityActionType.SUCCESS,
         };
 
         const state = reducer(existingState, action);
@@ -186,10 +179,10 @@ describe('Reducer', () => {
           [entity]: { isFetching: false, error: null, data: [{ baz: 'qux' }, payload.data], lastUpdated },
         };
 
-        const action: Action = {
+        const action: EntityAction = {
           entity,
           payload,
-          type: ActionType.SUCCESS,
+          type: EntityActionType.SUCCESS,
         };
 
         const state = reducer(existingState, action);
@@ -210,10 +203,10 @@ describe('Reducer', () => {
       const existingState = { [entity]: { isFetching: true, data: { baz: 'qux' } } };
       const expectedState = { [entity]: { isFetching: false, error, data: null, lastUpdated } };
 
-      const action: Action = {
+      const action: EntityAction = {
         entity,
         payload,
-        type: ActionType.FAILURE,
+        type: EntityActionType.FAILURE,
       };
 
       const state = reducer(existingState, action);

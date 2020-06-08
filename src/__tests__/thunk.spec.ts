@@ -1,347 +1,363 @@
-import ReduxThunk from 'redux-thunk';
-import configureStore from 'redux-mock-store';
+import { Store } from 'redux';
+import ReduxThunk, { ThunkDispatch } from 'redux-thunk';
 
+import configureMockStore from 'redux-mock-store';
 import GetEntity from '../../src/thunk';
-import { ActionType, ProcessorType } from '../types';
+import { EntityAction, EntityActionType, ProcessorType, ReduxEntityOptions } from '../types';
+import { ReduxEntityState } from '../reducer';
 
-// Set up mock Redux store
+type DispatchExts = ThunkDispatch<ReduxEntityState, undefined, EntityAction>;
+
 const middlewares = [ReduxThunk];
-const mockStore = configureStore(middlewares);
+const mockStore = configureMockStore<ReduxEntityState, DispatchExts>(middlewares);
 
 describe('Thunk Action Creators', () => {
-  let store;
-  let entity;
+  const entity = 'mockEntity';
+  let store: Store;
   beforeEach(() => {
-    entity = 'mockEntity';
     store = mockStore({});
   });
 
-  it('should pass', () => {
-    expect(true).toBe(true);
-  });
+  describe('GetEntity()', () => {
+    describe('Valid Params', () => {
+      it('should not throw any errors', (done) => {
+        expect(() => {
+          store.dispatch<any>(GetEntity(entity, Promise.resolve())).then(done);
+        }).not.toThrow(Error);
+      });
+    });
 
-  // describe('GetEntity()', () => {
-  //   describe('Valid Params', () => {
-  //     it('should not throw any errors', (done) => {
-  //       expect(() => {
-  //         store
-  //           .dispatch(
-  //             GetEntity(entity, Promise.resolve(), {
-  //               silent: true,
-  //               append: false,
-  //               processors: {
-  //                 beforeSuccess: () => {},
-  //               },
-  //             })
-  //           )
-  //           .then(done)
-  //           .catch(done);
-  //       }).not.toThrow(Error);
-  //     });
-  //   });
-  //   describe('Invalid Params', () => {
-  //     it('should throw an error when passed no arguments', () => {
-  //       expect(() => {
-  //         store.dispatch(GetEntity());
-  //       }).toThrow('Missing required entityName');
-  //     });
-  //
-  //     it('should throw an error when "entityName" is null/undefined', () => {
-  //       [null, undefined].forEach((val) => {
-  //         expect(() => {
-  //           store.dispatch(GetEntity(val));
-  //         }).toThrow('Missing required entityName');
-  //       });
-  //     });
-  //
-  //     it('should throw an error when "entityName" not passed a String', () => {
-  //       [123, {}, new Date()].forEach((val) => {
-  //         expect(() => {
-  //           store.dispatch(GetEntity(val));
-  //         }).toThrow('Missing required entityName');
-  //       });
-  //     });
-  //
-  //     it('should throw an error with an undefined data promise', () => {
-  //       expect(() => {
-  //         store.dispatch(GetEntity(entity));
-  //       }).toThrow('Missing required entity promise');
-  //     });
-  //
-  //     it('should throw an error when a promise is not passed', () => {
-  //       expect(() => {
-  //         store.dispatch(GetEntity(entity, {}));
-  //       }).toThrow('Missing required entity promise');
-  //     });
-  //   });
-  //   describe('when GetEntity() succeeds', () => {
-  //     it('should dispatch FETCH_REQUEST and FETCH_SUCCESS actions', (done) => {
-  //       const data = { foo: 'bar' };
-  //       const promise = Promise.resolve(data);
-  //
-  //       const expectedFetch = {
-  //         type: ActionType.REQUEST,
-  //         entity,
-  //       };
-  //
-  //       const expectedSuccess = {
-  //         entity,
-  //         type: ActionType.SUCCESS,
-  //         payload: {
-  //           data,
-  //           lastUpdated: undefined, // Overwrite this in assertion
-  //           append: false,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store
-  //         .dispatch(GetEntity(entity, promise, null))
-  //         .then(() => {
-  //           // Assert 2 actions were invoked
-  //           const actions = store.getActions();
-  //           expect(actions.length).toEqual(2);
-  //
-  //           // Asset FETCH_REQUEST was well-formed
-  //           const request = actions[0];
-  //           expect(request).toEqual(expectedFetch);
-  //
-  //           // Assert timestamp is present and valid
-  //           const success = actions[1];
-  //
-  //           expect(success.payload.lastUpdated).toBeTruthy();
-  //           expect(typeof success.payload.lastUpdated).toBe('number');
-  //
-  //           // Force timestamps to match for easier assertion
-  //           expectedSuccess.payload.lastUpdated = success.payload.lastUpdated;
-  //
-  //           // Assert FETCH_SUCCESS was well-formed
-  //           expect(success).toEqual(expectedSuccess);
-  //         })
-  //         .then(done)
-  //         .catch(done);
-  //     });
-  //   });
-  //   describe('when GetEntity() fails', () => {
-  //     it('should dispatch FETCH_REQUEST and FETCH_FAILURE actions', (done) => {
-  //       const error = { message: 'foo' };
-  //       const promise = Promise.reject(error);
-  //
-  //       const expectedRequest = {
-  //         type: ActionType.REQUEST,
-  //         entity,
-  //       };
-  //
-  //       const expectedFailure = {
-  //         entity,
-  //         type: ActionType.FAILURE,
-  //         payload: {
-  //           lastUpdated: undefined, // Overwrite this in assertion
-  //           error,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store
-  //         .dispatch(GetEntity(entity, promise, false))
-  //         .catch(() => {
-  //           // Assert 2 actions were invoked
-  //           const actions = store.getActions();
-  //           expect(actions.length).toEqual(2);
-  //
-  //           // Asset FETCH_REQUEST was well-formed
-  //           const request = actions[0];
-  //           expect(request).toEqual(expectedRequest);
-  //
-  //           // Assert timestamp is present and valid
-  //           const failure = actions[1];
-  //           expect(failure.payload.lastUpdated).toBeTruthy();
-  //           expect(typeof failure.payload.lastUpdated).toBe('number');
-  //
-  //           // Force timestamps to match for easier assertion
-  //           expectedFailure.payload.lastUpdated = failure.payload.lastUpdated;
-  //
-  //           // Assert FETCH_FAILURE was well-formed
-  //           expect(failure).toEqual(expectedFailure);
-  //         })
-  //         .catch(done)
-  //         .then(done);
-  //     });
-  //   });
-  //   describe('when GetEntity() is configured to be silent', () => {
-  //     it('should not dispatch a FETCH_REQUEST action', (done) => {
-  //       const data = { foo: 'bar' };
-  //       const promise = Promise.resolve(data);
-  //
-  //       const expectedSuccess = {
-  //         entity,
-  //         type: ActionType.SUCCESS,
-  //         payload: {
-  //           lastUpdated: undefined, // Overwrite this in assertion
-  //           data,
-  //           append: false,
-  //         },
-  //       };
-  //
-  //       const configOptions = { silent: true };
-  //
-  //       // Under test
-  //       store
-  //         .dispatch(GetEntity(entity, promise, configOptions))
-  //         .then(() => {
-  //           // Assert 1 action was invoked
-  //           const actions = store.getActions();
-  //           expect(actions.length).toEqual(1);
-  //
-  //           // Assert timestamp is present and valid
-  //           const success = actions[0];
-  //           expect(success.payload.lastUpdated).toBeTruthy();
-  //           expect(typeof success.payload.lastUpdated).toBe('number');
-  //
-  //           // Force timestamps to match for easier assertion
-  //           expectedSuccess.payload.lastUpdated = success.payload.lastUpdated;
-  //
-  //           // Assert FETCH_SUCCESS was well-formed
-  //           expect(success).toEqual(expectedSuccess);
-  //         })
-  //         .then(done)
-  //         .catch(done);
-  //     });
-  //   });
-  //   describe('when GetEntity() is configured with stage processors', () => {
-  //     it('Stage BEFORE_SUCCESS', (done) => {
-  //       const spy = jest.fn().mockImplementation(() => () => ({ type: 'foo', data }));
-  //
-  //       const configOptions = {
-  //         processors: {
-  //           [ProcessorType.BEFORE_SUCCESS]: spy,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store
-  //         .dispatch(GetEntity(entity, Promise.resolve({}), configOptions))
-  //         .then(() => {
-  //           expect(spy).toHaveBeenCalled();
-  //         })
-  //         .then(done)
-  //         .catch(done);
-  //     });
-  //     it('Stage BEFORE_SUCCESS should return a new object', (done) => {
-  //       const beforeSuccess = {
-  //         _runBeforeSuccess(data, dispatch, getState) {
-  //           return Object.keys(data);
-  //         },
-  //       };
-  //
-  //       const configOptions = {
-  //         processors: {
-  //           [ProcessorType.BEFORE_SUCCESS]: beforeSuccess._runBeforeSuccess,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store
-  //         .dispatch(GetEntity(entity, Promise.resolve({ foo: 'bar' }), configOptions))
-  //         .then(() => {
-  //           const success = store.getActions()[1];
-  //           expect(success.payload.data).toEqual(['foo']);
-  //         })
-  //         .then(done)
-  //         .catch(done);
-  //     });
-  //     it('Stage BEFORE_SUCCESS should mutate the existing data object', (done) => {
-  //       const beforeSuccess = {
-  //         _runBeforeSuccess: (data, dispatch, getState) => {
-  //           data.foo = 'baz';
-  //           return data;
-  //         },
-  //       };
-  //
-  //       const configOptions = {
-  //         processors: {
-  //           [ProcessorType.BEFORE_SUCCESS]: beforeSuccess._runBeforeSuccess,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store
-  //         .dispatch(GetEntity(entity, Promise.resolve({ foo: 'bar' }), configOptions))
-  //         .then(() => {
-  //           const success = store.getActions()[1];
-  //           expect(success.payload.data).toEqual({ foo: 'baz' });
-  //         })
-  //         .then(done)
-  //         .catch(done);
-  //     });
-  //     it('Stage AFTER_SUCCESS', (done) => {
-  //       const spy = jest.fn().mockImplementation(() => () => ({ type: 'foo', data }));
-  //
-  //       const configOptions = {
-  //         processors: {
-  //           [ProcessorType.AFTER_SUCCESS]: spy,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store
-  //         .dispatch(GetEntity(entity, Promise.resolve({}), configOptions))
-  //         .then(() => {
-  //           expect(spy).toHaveBeenCalled();
-  //         })
-  //         .then(done)
-  //         .catch(done);
-  //     });
-  //     it('Stage BEFORE_FAILURE', (done) => {
-  //       const spy = jest.fn().mockImplementation(() => () => ({ type: 'foo', data }));
-  //
-  //       const configOptions = {
-  //         processors: {
-  //           [ProcessorType.BEFORE_FAILURE]: spy,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store.dispatch(GetEntity(entity, Promise.reject(new Error('Fake error')), configOptions)).catch(() => {
-  //         expect(spy).toHaveBeenCalled();
-  //         done();
-  //       });
-  //     });
-  //     it('Stage BEFORE_FAILURE should return a new object', (done) => {
-  //       const beforeFailure = {
-  //         _runBeforeFailure() {
-  //           return new Error('Fake error 2');
-  //         },
-  //       };
-  //
-  //       const configOptions = {
-  //         processors: {
-  //           [ProcessorType.BEFORE_FAILURE]: beforeFailure._runBeforeFailure,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store.dispatch(GetEntity(entity, Promise.reject(new Error('Fake error 1')), configOptions)).catch(() => {
-  //         const failure = store.getActions()[1];
-  //         expect(failure.payload.error).toEqual(new Error('Fake error 2'));
-  //         done();
-  //       });
-  //     });
-  //     it('Stage AFTER_FAILURE', (done) => {
-  //       const spy = jest.fn().mockImplementation(() => () => ({ type: 'foo', data }));
-  //
-  //       const configOptions = {
-  //         processors: {
-  //           [ProcessorType.BEFORE_FAILURE]: spy,
-  //         },
-  //       };
-  //
-  //       // Under test
-  //       store.dispatch(GetEntity(entity, Promise.reject(new Error('Fake Error')), configOptions)).catch(() => {
-  //         expect(spy).toHaveBeenCalled();
-  //         done();
-  //       });
-  //     });
-  //   });
-  // });
+    describe('Bad Arguments', () => {
+      it('should throw an error when no arguments are passed', () => {
+        expect(() => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          store.dispatch(GetEntity());
+        }).toThrow('Missing required entityName');
+      });
+
+      it('should throw an error when "entityName" is null/undefined', () => {
+        [null, undefined].forEach((val) => {
+          expect(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            store.dispatch(GetEntity(val));
+          }).toThrow('Missing required entityName');
+        });
+      });
+
+      it('should throw an error when "entityName" not passed a string"', () => {
+        [123, {}, new Date(), []].forEach((val) => {
+          expect(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            store.dispatch(GetEntity(val));
+          }).toThrow('Missing required entityName');
+        });
+      });
+
+      it('should throw an error with an undefined data promise', () => {
+        expect(() => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          store.dispatch(GetEntity(entity));
+        }).toThrow('Missing required entity promise');
+      });
+
+      it('should throw an error when a promise is not passed', () => {
+        expect(() => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          store.dispatch(GetEntity(entity, {}));
+        }).toThrow('Missing required entity promise');
+      });
+    });
+
+    describe('Promise Resolution', () => {
+      const data = { foo: 'bar' };
+
+      const expectedFetch = { entity, type: EntityActionType.REQUEST };
+
+      const expectedSuccess = {
+        entity,
+        type: EntityActionType.SUCCESS,
+        payload: {
+          data,
+          lastUpdated: undefined,
+          append: false,
+        },
+      };
+
+      const expectedActions = [expectedFetch, expectedSuccess];
+
+      it('should dispatch FETCH_REQUEST and FETCH_SUCCESS actions', (done) => {
+        const thunk = GetEntity(entity, Promise.resolve(data));
+        store.dispatch<any>(thunk).then(() => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          const actions = store.getActions();
+          expect(actions).toHaveLength(2);
+
+          expectedSuccess.payload.lastUpdated = actions[1].payload.lastUpdated;
+
+          expect(expectedActions).toEqual(actions);
+
+          done();
+        });
+      });
+    });
+    describe('Promise Rejection', () => {
+      const error = new Error('API Failure');
+
+      const expectedRequest = { entity, type: EntityActionType.REQUEST };
+
+      const expectedFailure = {
+        entity,
+        type: EntityActionType.FAILURE,
+        payload: {
+          lastUpdated: undefined,
+          error,
+        },
+      };
+
+      const expectedActions = [expectedRequest, expectedFailure];
+
+      it('should dispatch FETCH_REQUEST and FETCH_FAILURE actions', (done) => {
+        const thunk = GetEntity(entity, Promise.reject(error));
+        store.dispatch<any>(thunk).catch(() => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          const actions = store.getActions();
+          expect(actions).toHaveLength(2);
+
+          expectedFailure.payload.lastUpdated = actions[1].payload.lastUpdated;
+
+          expect(expectedActions).toEqual(actions);
+
+          done();
+        });
+      });
+    });
+    describe('Silent Option', () => {
+      const data = { foo: 'bar' };
+
+      const expectedSuccess = {
+        entity,
+        type: EntityActionType.SUCCESS,
+        payload: {
+          lastUpdated: undefined,
+          data,
+          append: false,
+        },
+      };
+
+      const configOptions: ReduxEntityOptions = { silent: true };
+
+      it('should not dispatch a FETCH_REQUEST action', (done) => {
+        const thunk = GetEntity(entity, Promise.resolve(data), configOptions);
+        store.dispatch<any>(thunk).then(() => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          const actions = store.getActions();
+          expect(actions).toHaveLength(1);
+
+          const successAction = actions[0];
+
+          // Force timestamps to match for easier assertion
+          expectedSuccess.payload.lastUpdated = successAction.payload.lastUpdated;
+
+          // Assert FETCH_SUCCESS was well-formed
+          expect(successAction).toEqual(expectedSuccess);
+
+          done();
+        });
+      });
+    });
+    describe('Processor Types', () => {
+      describe('Processor Invocation', () => {
+        it('should invoke the Success processor types', (done) => {
+          const beforeSpy = jest.fn().mockImplementation(() => ({}));
+          const afterSpy = jest.fn().mockImplementation(() => ({}));
+
+          const options: ReduxEntityOptions = {
+            processors: {
+              [ProcessorType.BEFORE_SUCCESS]: beforeSpy,
+              [ProcessorType.AFTER_SUCCESS]: afterSpy,
+            },
+          };
+
+          const thunk = GetEntity(entity, Promise.resolve({}), options);
+          store.dispatch<any>(thunk).then(() => {
+            expect(beforeSpy).toHaveBeenCalledTimes(1);
+            expect(afterSpy).toHaveBeenCalledTimes(1);
+            done();
+          });
+        });
+
+        it('should invoke the Failure processor types', (done) => {
+          const beforeSpy = jest.fn().mockImplementation(() => ({}));
+          const afterSpy = jest.fn().mockImplementation(() => ({}));
+
+          const options: ReduxEntityOptions = {
+            processors: {
+              [ProcessorType.BEFORE_FAILURE]: beforeSpy,
+              [ProcessorType.AFTER_FAILURE]: afterSpy,
+            },
+          };
+
+          const thunk = GetEntity(entity, Promise.reject({}), options);
+          store.dispatch<any>(thunk).catch(() => {
+            expect(beforeSpy).toHaveBeenCalledTimes(1);
+            expect(afterSpy).toHaveBeenCalledTimes(1);
+            done();
+          });
+        });
+
+        it('should invoke the Success processor types with data, dispatch, and getState', (done) => {
+          const promiseData = { foo: 'bar' };
+
+          const options: ReduxEntityOptions = {
+            processors: {
+              [ProcessorType.BEFORE_SUCCESS]: (data: any, dispatch, getState) => {
+                expect(data).toEqual(promiseData);
+                expect(typeof dispatch).toEqual('function');
+                expect(typeof getState).toEqual('function');
+                dispatch({ type: 'In_Before_Success' });
+                return data;
+              },
+              [ProcessorType.AFTER_SUCCESS]: (data: any, dispatch, getState) => {
+                expect(data).toEqual(promiseData);
+                expect(typeof dispatch).toEqual('function');
+                expect(typeof getState).toEqual('function');
+                dispatch({ type: 'In_After_Success' });
+              },
+            },
+          };
+
+          const thunk = GetEntity(entity, Promise.resolve(promiseData), options);
+          store.dispatch<any>(thunk).then(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const actions = store.getActions();
+            expect(actions).toHaveLength(4);
+            done();
+          });
+        });
+
+        it('should invoke the Failure processor types with data, dispatch, and getState', (done) => {
+          const promiseError = new Error('API Error');
+
+          const options: ReduxEntityOptions = {
+            processors: {
+              [ProcessorType.BEFORE_FAILURE]: (error: any, dispatch, getState) => {
+                expect(error).toEqual(promiseError);
+                expect(typeof dispatch).toEqual('function');
+                expect(typeof getState).toEqual('function');
+                dispatch({ type: 'In_Before_Failure' });
+                return error;
+              },
+              [ProcessorType.AFTER_FAILURE]: (error: any, dispatch, getState) => {
+                expect(error).toEqual(promiseError);
+                expect(typeof dispatch).toEqual('function');
+                expect(typeof getState).toEqual('function');
+                dispatch({ type: 'In_After_Failure' });
+              },
+            },
+          };
+
+          const thunk = GetEntity(entity, Promise.reject(promiseError), options);
+          store.dispatch<any>(thunk).catch(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const actions = store.getActions();
+            expect(actions).toHaveLength(4);
+
+            done();
+          });
+        });
+      });
+
+      describe('BEFORE_SUCCESS', () => {
+        it('should return the data as modified in the processor', (done) => {
+          const data = { foo: 'bar', baz: 'qux' };
+          const expectedArray = Object.keys(data);
+
+          const options: ReduxEntityOptions = {
+            processors: {
+              [ProcessorType.BEFORE_SUCCESS]: (data: any) => Object.keys(data),
+            },
+          };
+
+          const thunk = GetEntity(entity, Promise.resolve(data), options);
+          store.dispatch<any>(thunk).then(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const actions = store.getActions();
+            expect(actions).toHaveLength(2);
+
+            const success = actions[1];
+            expect(success.payload.data).toEqual(expectedArray);
+
+            done();
+          });
+        });
+
+        it('should return the mutated data as modified in the processor', (done) => {
+          const data = { foo: 'bar' };
+          const mutatedData = {
+            foo: 'foo',
+            baz: 'qux',
+          };
+
+          const options: ReduxEntityOptions = {
+            processors: {
+              [ProcessorType.BEFORE_SUCCESS]: (data: any) => ({
+                ...data,
+                foo: 'foo',
+                baz: 'qux',
+              }),
+            },
+          };
+
+          const thunk = GetEntity(entity, Promise.resolve(data), options);
+          store.dispatch<any>(thunk).then(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const actions = store.getActions();
+            expect(actions).toHaveLength(2);
+
+            const success = actions[1];
+            expect(success.payload.data).toEqual(mutatedData);
+
+            done();
+          });
+        });
+      });
+
+      describe('BEFORE_FAILURE', () => {
+        const apiError = new Error('Fake error 1');
+        const newError = new Error('Fake error 2');
+
+        it('should return a new error', (done) => {
+          const options: ReduxEntityOptions = {
+            processors: {
+              [ProcessorType.BEFORE_FAILURE]: () => newError,
+            },
+          };
+
+          const thunk = GetEntity(entity, Promise.reject(apiError), options);
+          store.dispatch<any>(thunk).catch(() => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const actions = store.getActions();
+            expect(actions).toHaveLength(2);
+
+            const failure = actions[1];
+            expect(failure.payload.error).toEqual(newError);
+            done();
+          });
+        });
+      });
+    });
+  });
 });
