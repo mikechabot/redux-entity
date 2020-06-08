@@ -269,13 +269,13 @@ Optionally pass a configuration with any of the following properties:
 The options configuration must adhere to the following interface:
 
 ```typescript
-export interface ReduxEntityOptions {
+interface ReduxEntityOptions {
   [OptionKey.Silent]?: boolean;
   [OptionKey.Append]?: boolean;
   [OptionKey.Processors]?: Processors;
 }
 
-export enum OptionKey {
+enum OptionKey {
   Silent = 'silent',
   Append = 'append',
   Processors = 'processors',
@@ -319,11 +319,11 @@ Processors are  optional and in most cases won't be needed, however you can take
 The processor object must adhere to the following interface:
 
 ```typescript
-export type Processors = {
+type Processors = {
   [key in ProcessorType]?: (data: any, dispatch: ThunkDispatch<any, any, any>, getState: GetState) => void;
 };
 
-export enum ProcessorType {
+enum ProcessorType {
   BeforeSuccess = 'beforeSuccess',
   AfterSuccess = 'afterSuccess',
   BeforeFailure = 'beforeFailure',
