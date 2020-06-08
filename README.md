@@ -201,9 +201,7 @@ import OrderService from './services/order-service';
 const key = 'orders';
 const promise = OrderService.getOrders();
 
-export function loadOrders() {
-  return loadEntity(key, promise);
-}
+export const loadOrders = () => GeEntity(key, promise);
 ```
 
 ### 3. Create a React component
@@ -266,7 +264,7 @@ Optionally pass a configuration with any of the following properties:
 | ------------ | ------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `silent`     | boolean | `false` | If `true`, don't toggle `isFetching` when the thunk is invoked                                                                                                                                 |
 | `append`     | boolean | `false` | If `true`, attach the results of each invocation to the existing `data` property instead of overwriting it                                                                                     |
-| `processors` | object  | `null`  | Hook into the `loadEntity` lifecycle. Each processor has access to Redux `dispatch` and `getState` along with either the `data` or `error` object of the entity. See [Processors](#processors) |
+| `processors` | object  | `null`  | Hook into the `GetEntity` lifecycle. Each processor has access to Redux's `dispatch` and `getState` along with either the `data` or `error` object of the entity. See [Processors](#processors) |
 
 The options configuration must adhere to the following interface:
 
@@ -296,9 +294,7 @@ const key = 'orders';
 const promise = OrderService.getOrders();
 const options = { silent: true, append: true };
 
-export function loadOrders() {
-  return loadEntity(key, promise, options);
-}
+export const loadOrders = () => GetEntity(key, promise, options)
 ```
 
 Dynamically pass a configuration:
@@ -307,9 +303,7 @@ Dynamically pass a configuration:
 const key = 'orders';
 const promise = OrderService.getOrders();
 
-export function loadOrders(options) {
-  return loadEntity(key, promise, options);
-}
+export const loadOrders = (options) => GetEntity(key, promise, options);
 ```
 
 ---
@@ -365,9 +359,7 @@ const options = {
   },
 };
 
-export function loadOrders() {
-  return loadEntity(key, promise, options);
-}
+export const loadOrders = () => GetEntity(key, promise, options);
 ```
 
 ---
@@ -412,8 +404,8 @@ const Orders = ({ entityKey, orders, resetEntity, deleteEntity }) => {
           <li key={index}> {value.label}</li>
         ))}
       </ul>
-      <button onClick={() => resetEntity(entityKey, Date.now())}>Reset</button>
-      <button onClick={() => deleteEntity(entityKey, Date.now())}>Delete</button>
+      <button onClick={() => resetEntity(entityKey)}>Reset</button>
+      <button onClick={() => deleteEntity(entityKey)}>Delete</button>
     </div>
   );
 }
@@ -427,8 +419,8 @@ Entity.propTypes = {
 
 const mapStateToProps = (state) => ({ orders: state.entities && state.entities.orders });
 const mapDispatchToProps = {
-  resetEntity,
-  deleteEntity,
+  resetEntity: ResetEntity
+  deleteEntity: DeleteEntity
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Orders);
