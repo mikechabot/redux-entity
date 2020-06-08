@@ -12,8 +12,8 @@ Most web applications need to handle a variety of domain entities such as orders
   <a href="https://travis-ci.org/mikechabot/redux-entity">
     <img src="https://travis-ci.org/mikechabot/redux-entity.svg?branch=master" alt="build status" />
   </a>
-  <a href="https://coveralls.io/github/mikechabot/maybe-baby?branch=master">
-    <img src="https://coveralls.io/repos/github/mikechabot/maybe-baby/badge.svg?branch=master&cacheBuster=1" alt="coverage status" />
+  <a href="https://coveralls.io/github/mikechabot/redux-entity?branch=master">
+    <img src="https://coveralls.io/repos/github/mikechabot/redux-entity/badge.svg?branch=master&cacheBuster=1" alt="coverage status" />
   </a>
   <a href="https://david-dm.org/mikechabot/redux-entity">
     <img src="https://david-dm.org/mikechabot/redux-entity.svg" alt="dependency status" />
