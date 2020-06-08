@@ -320,19 +320,13 @@ Processors are  optional and in most cases won't be needed, however you can take
 The processor object must adhere to the following interface:
 
 ```typescript
-export type Processors = {
+type Processors = {
   [key in ProcessorType]?: (
     data: any,
-    dispatch: ThunkDispatch<ReduxEntityState, unknown, EntityAction>,
+    dispatch: ThunkDispatch<ReduxEntityState, unknown, AnyAction>,
     getState: GetState
   ) => any | void;
 };
-
-export enum OptionKey {
-  Silent = 'silent',
-  Append = 'append',
-  Processors = 'processors',
-}
 
 enum ProcessorType {
   BeforeSuccess = 'beforeSuccess',
