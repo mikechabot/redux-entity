@@ -6,7 +6,7 @@
  *  statements, and comment out the "redux-entity" require statements.
  */
 
-const { entities, GetEntity } = require('redux-entity');
+const { reducer, GetEntity } = require('redux-entity');
 
 const chalk = require('chalk');
 
@@ -19,7 +19,7 @@ let state = {};
  */
 function dispatch(action) {
   _logDetails(action);
-  state = entities(state, action);
+  state = reducer(state, action);
   _logDetails();
 }
 
