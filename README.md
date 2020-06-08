@@ -53,13 +53,18 @@ The API is very simplistic; a thunk called [`GetEntity`](#GetEntity-promise-opti
 
 > Every entity you fetch is automatically associated with the following properties to ensure predictability. No need to track these yourself.
 
-| Property      | Description                                       |
-| ------------- | ------------------------------------------------- |
-| `data`        | The entity's data (i.e. Products, Orders, etc)    |
-| `error`       | Error if the entity fetch failed                  |
-| `isFetching`  | Whether the entity is currently fetching          |
-| `lastUpdated` | Date/time of the entity's last success or failure |
-
+```typescript
+interface EntityState {
+  /** Data returned from the resolved promise */
+  data?: any;
+  /** Error returned from the rejected promise */
+  error?: Error;
+  /** Whether the entity promise is pending */
+  isFetching: boolean;
+  /** Timestamp of the promise's last resolution or rejection */
+  lastUpdated?: Date | undefined;
+}
+```
 
 ### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a>
 
@@ -370,7 +375,7 @@ The following actions can be use to reset or delete your entity.
 
 | Action creator | Description                                    |
 | -------------: | :----------------------------------------------|
-|  `ResetEntity` | Reset the entity to the original `EntityState` |
+|  `ResetEntity` | Reset the entity to the original `EntityState`, and set `lastUpdated` |
 | `DeleteEntity` | Delete the entity from `state`                 | 
 
 ### Example usage
