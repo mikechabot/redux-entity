@@ -43,9 +43,9 @@ Most web applications need to handle a variety of domain entities such as orders
 
 ## <a name="redux-entity#install">Install</a>
 
-- `$ npm install redux-entity`
+`$ npm install redux-entity`
 
----
+`$ yarn add redux-entity`
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
 
@@ -60,7 +60,6 @@ The API is very simplistic; a thunk called [`GetEntity`](#GetEntity-promise-opti
 | `isFetching`  | Whether the entity is currently fetching          |
 | `lastUpdated` | Date/time of the entity's last success or failure |
 
----
 
 ### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a>
 
@@ -80,8 +79,6 @@ export default combineReducers({
 ```
 
 Now we're ready to use [`GetEntity`](#GetEntity-promise-options).
-
----
 
 ### <a name="redux-entity#GetEntity-promise-options">`GetEntity(key, promise, options)`</a>
 
