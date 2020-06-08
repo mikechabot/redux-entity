@@ -49,7 +49,7 @@ Most web applications need to handle a variety of domain entities such as orders
 
 ## <a name="redux-entity#getting-started">Getting Started</a>
 
-The API is very simplistic; a single thunk called [`GetEntity`](#GetEntity-promise-options) is exposed, which does all the heavy lifting.
+The API is very simplistic; a thunk called [`GetEntity`](#GetEntity-promise-options) is exposed, which does all the heavy lifting.
 
 > Every entity you fetch is automatically associated with the following properties to ensure predictability. No need to track these yourself.
 
