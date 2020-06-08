@@ -353,14 +353,15 @@ const promise = OrderService.getOrders();
 const options = {
   silent: true,
   processors: {
-    beforeSuccess: function (data, dispatch, getState) {
+    beforeSuccess: (data, dispatch, getState) => {
       // Do synchronous stuff
-      // *Must* return )
+      // *Must* return data to be dispatched to the store
       return Object.keys(data);
     },
-    afterFailure: function (error, dispatch, getState) {
+    beforeFailure: (error, dispatch, getState) => {
       // Do synchronous stuff
-      // **Must return data (e.g. return new Error('Uh oh!');)
+      // *Must* return an error to the dispatched to the store
+      return new Error('Intercepted error!');
     },
   },
 };
