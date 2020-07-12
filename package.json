@@ -1,12 +1,13 @@
 {
   "name": "redux-entity",
-  "version": "7.1.1",
+  "version": "8.0.0",
   "description": "A predictable approach to managing domain entities in Redux.",
   "main": "index.js",
   "scripts": {
     "build": "npm run clean && npm run compile",
     "compile": "babel src -d lib --extensions .ts,.js",
     "test": "jest --coverage",
+    "coveralls": "jest --coverage && coveralls < coverage/lcov.info",
     "test:watch": "jest --coverage --watchAll",
     "clean": "rm -rf ./lib",
     "example": "node example.js"
