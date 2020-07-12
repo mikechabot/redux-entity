@@ -14,4 +14,4 @@ dist
 /*.iml
 
 # Coverage reports
-/coverage
+coverage

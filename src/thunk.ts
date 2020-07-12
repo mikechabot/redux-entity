@@ -28,6 +28,10 @@ const GetEntity = (
   const entityLifecycle = new EntityLifecycle({ entityName, options });
 
   return (dispatch, getState: GetState) => {
+    /**
+     * Don't dispatch a fetch action if "GetEntity"
+     * was invoked silently.
+     */
     if (!options || !options[OptionKey.Silent]) {
       const fetchAction = fetchRequestCreator(entityName);
       dispatch(fetchAction());
