@@ -219,7 +219,7 @@ export const loadOrders = () => GetEntity(key, promise);
 
 Here's a full React component that utilizes our `loadOrders` example. At this point, `loadOrders` is no different than any other Redux thunk.
 
-> [CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
+> Check out the [CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
 
 ```javascript
 import React, { useEffect } from "react";
