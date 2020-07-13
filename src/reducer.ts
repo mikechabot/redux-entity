@@ -35,7 +35,7 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: EntityAction) {
       return {
         ...state,
         isFetching: true,
-        error: null,
+        error: undefined,
       };
     }
     case EntityActionType.Success: {
@@ -45,7 +45,7 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: EntityAction) {
         isFetching: false,
         lastUpdated: payload!.lastUpdated,
         data: newData,
-        error: null,
+        error: undefined,
       };
     }
     case EntityActionType.Failure: {
@@ -53,7 +53,7 @@ function entityReducer(state = INITIAL_ENTITY_STATE, action: EntityAction) {
         ...state,
         isFetching: false,
         lastUpdated: payload!.lastUpdated,
-        data: null,
+        data: undefined,
         error: payload!.error,
       };
     }

@@ -66,9 +66,9 @@ describe('Reducer', () => {
   });
 
   describe('Request', () => {
-    it('should set "isFetching" to true, and null the error', () => {
+    it('should set "isFetching" to true, and undefine the error', () => {
       const existingState = { [entity]: { isFetching: false, error: new Error('Previous Failure') } };
-      const expectedState = { [entity]: { isFetching: true, error: null } };
+      const expectedState = { [entity]: { isFetching: true, error: undefined } };
 
       const action: EntityAction = {
         entity,
@@ -81,14 +81,14 @@ describe('Reducer', () => {
   });
 
   describe('Success', () => {
-    it('should set "isFetching" to false, null the error, and set the payload', () => {
+    it('should set "isFetching" to false, undefine the error, and set the payload', () => {
       const payload: Payload = {
         lastUpdated,
         data: 123,
       };
 
       const existingState = { [entity]: { isFetching: true, error: new Error('Previous Failure') } };
-      const expectedState = { [entity]: { isFetching: false, error: null, data: payload.data, lastUpdated } };
+      const expectedState = { [entity]: { isFetching: false, error: undefined, data: payload.data, lastUpdated } };
 
       const action: EntityAction = {
         entity,
@@ -109,7 +109,7 @@ describe('Reducer', () => {
         };
 
         const existingState = { [entity]: { isFetching: true, error: new Error('Previous Failure') } };
-        const expectedState = { [entity]: { isFetching: false, error: null, data: [payload.data], lastUpdated } };
+        const expectedState = { [entity]: { isFetching: false, error: undefined, data: [payload.data], lastUpdated } };
 
         const action: EntityAction = {
           entity,
@@ -129,7 +129,7 @@ describe('Reducer', () => {
         };
 
         const existingState = { [entity]: { isFetching: true, error: new Error('Previous Failure') } };
-        const expectedState = { [entity]: { isFetching: false, error: null, data: payload.data, lastUpdated } };
+        const expectedState = { [entity]: { isFetching: false, error: undefined, data: payload.data, lastUpdated } };
 
         const action: EntityAction = {
           entity,
@@ -152,7 +152,7 @@ describe('Reducer', () => {
           [entity]: { isFetching: true, data: [{ baz: 'qux' }], error: new Error('Previous Failure') },
         };
         const expectedState = {
-          [entity]: { isFetching: false, error: null, data: [{ baz: 'qux' }, ...payload.data], lastUpdated },
+          [entity]: { isFetching: false, error: undefined, data: [{ baz: 'qux' }, ...payload.data], lastUpdated },
         };
 
         const action: EntityAction = {
@@ -176,7 +176,7 @@ describe('Reducer', () => {
           [entity]: { isFetching: true, data: [{ baz: 'qux' }], error: new Error('Previous Failure') },
         };
         const expectedState = {
-          [entity]: { isFetching: false, error: null, data: [{ baz: 'qux' }, payload.data], lastUpdated },
+          [entity]: { isFetching: false, error: undefined, data: [{ baz: 'qux' }, payload.data], lastUpdated },
         };
 
         const action: EntityAction = {
@@ -192,7 +192,7 @@ describe('Reducer', () => {
   });
 
   describe('Failure', () => {
-    it('should set "isFetching" to false, null the data, and set the error', () => {
+    it('should set "isFetching" to false, undefine the data, and set the error', () => {
       const error = new Error('API Error');
 
       const payload: Payload = {
@@ -201,7 +201,7 @@ describe('Reducer', () => {
       };
 
       const existingState = { [entity]: { isFetching: true, data: { baz: 'qux' } } };
-      const expectedState = { [entity]: { isFetching: false, error, data: null, lastUpdated } };
+      const expectedState = { [entity]: { isFetching: false, error, data: undefined, lastUpdated } };
 
       const action: EntityAction = {
         entity,
