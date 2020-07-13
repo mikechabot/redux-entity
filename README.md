@@ -73,7 +73,7 @@ interface EntityState {
 
 ### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a>
 
-To get started, import `reducers` from `redux-entity`, and combine with your existing reducers.
+To get started, import the `reducer` from `redux-entity`, and combine with your existing reducers.
 
 > By default, we're carving out a space in the Redux tree with the key of `entities`, but you can rename it to whatever you'd like.
 
