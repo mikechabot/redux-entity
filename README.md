@@ -385,6 +385,8 @@ The following actions can be use to reset or delete your entity.
 
 ### Example usage
 
+> Check out the [CodeSandbox(https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
+
 ```javascript
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
