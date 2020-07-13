@@ -1,4 +1,4 @@
-import { EntityAction, EntityActionType, Payload, PayloadKey } from './types';
+import { PayloadKeys, EntityAction, EntityActionType, Payload, Entity } from './types';
 
 const ENTITY = 'entity';
 
@@ -8,7 +8,7 @@ const ENTITY = 'entity';
  * @param keys
  * @param values
  */
-const generateAction = (action: EntityAction, keys: PayloadKey[], values: any): EntityAction => {
+const generateAction = (action: EntityAction, keys: PayloadKeys[], values: any): EntityAction => {
   const generatedAction: EntityAction = { ...action };
   if (keys && keys.length > 0) {
     const payload: Payload = {};
@@ -21,18 +21,12 @@ const generateAction = (action: EntityAction, keys: PayloadKey[], values: any): 
 };
 
 /**
- * Generate action creators based on input arguments. The first argument is always
- * treated as the Redux action type; all other passed arguments are treated
- * as property on the action object itself.
- *
- *   Example: const type = 'DO_IT';
- *            const action = makeActionCreator(type, 'data');
- *            action(123); --> { type, data: 123 }
+
  *
  * @param type  Redux action type
  * @param keys  Additional keys to append to the payload
  */
-export const makeActionCreator = (type: EntityActionType, ...keys: PayloadKey[]) => {
+export const makeActionCreator = (type: EntityActionType, ...keys: PayloadKeys[]) => {
   if (!type) throw new Error('Type cannot be null/undefined');
   return function (...values: any) {
     return generateAction({ type }, keys, values);
@@ -40,13 +34,19 @@ export const makeActionCreator = (type: EntityActionType, ...keys: PayloadKey[])
 };
 
 /**
- * Identical to makeActionCreator(), however this function expects the second
- * argument to be the name of an entity.
+ * Generate action creators based on input arguments. The first argument is always
+ * treated as the Redux action type; the second argument to be the name of an entity.
+ * All other passed arguments are treated as property on the action object itself.
+ *
+ *   Example: const type = 'DO_IT';
+ *            const action = makeActionCreator(type, 'orders', 'data');
+ *            action(123); --> { type, entity: 'orders', data: 123 }
+ *
  * @param type    Redux action type
  * @param entity  Model entity name (e.g 'users', 'orders', 'foobar')
  * @param keys    Additional keys to append to the payload
  */
-export const makeEntityActionCreator = (type: EntityActionType, entity: string, ...keys: PayloadKey[]) => {
+export const makeEntityActionCreator = (type: EntityActionType, entity: string, ...keys: PayloadKeys[]) => {
   if (!type) throw new Error('Type cannot be null/undefined');
   if (!entity) throw new Error('Entity cannot be null/undefined');
   return function (...values: any) {
@@ -67,7 +67,13 @@ export const fetchRequestCreator = (entity: string) => makeEntityActionCreator(E
  * @return {function}       Action creator
  */
 export const fetchSuccessCreator = (entity: string) =>
-  makeEntityActionCreator(EntityActionType.Success, entity, PayloadKey.Data, PayloadKey.LastUpdated, PayloadKey.Append);
+  makeEntityActionCreator(
+    EntityActionType.Success,
+    entity,
+    PayloadKeys.Data,
+    PayloadKeys.LastUpdated,
+    PayloadKeys.Append
+  );
 
 /**
  * Action creator for API fetch failures
@@ -75,9 +81,9 @@ export const fetchSuccessCreator = (entity: string) =>
  * @return {function}       Action creator
  */
 export const fetchFailureCreator = (entity: string) =>
-  makeEntityActionCreator(EntityActionType.Failure, entity, PayloadKey.Error, PayloadKey.LastUpdated);
+  makeEntityActionCreator(EntityActionType.Failure, entity, PayloadKeys.Error, PayloadKeys.LastUpdated);
 
 export const ResetEntity = (entity: string, lastUpdated: Date = new Date()) =>
-  makeEntityActionCreator(EntityActionType.Reset, entity, PayloadKey.LastUpdated)();
+  makeEntityActionCreator(EntityActionType.Reset, entity, PayloadKeys.LastUpdated)(lastUpdated);
 
 export const DeleteEntity = (entity: string) => makeEntityActionCreator(EntityActionType.Delete, entity)();

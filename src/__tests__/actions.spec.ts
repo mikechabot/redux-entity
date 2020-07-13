@@ -1,10 +1,4 @@
-import {
-  fetchFailureCreator,
-  fetchRequestCreator,
-  fetchSuccessCreator,
-  makeActionCreator,
-  makeEntityActionCreator,
-} from '../actions';
+import { fetchFailureCreator, fetchRequestCreator, fetchSuccessCreator, makeEntityActionCreator } from '../actions';
 
 import { EntityActionType } from '../types';
 
@@ -13,48 +7,6 @@ describe('Action Creators', () => {
   const entityError = new Error('Entity cannot be null/undefined');
 
   describe('Generic', () => {
-    describe('makeActionCreator', () => {
-      it('should be a function', () => {
-        expect(typeof makeActionCreator).toEqual('function');
-      });
-
-      it('should return a function', () => {
-        expect(typeof makeActionCreator(EntityActionType.Success)).toEqual('function');
-      });
-
-      it('should throw an error if a type is not passed', () => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        expect(() => makeActionCreator()).toThrow(typeError);
-      });
-
-      describe('Invoking the returned function', () => {
-        it('should return an object containing the action type', () => {
-          const expectedAction = { type: EntityActionType.Success };
-          const action = makeActionCreator(EntityActionType.Success);
-          expect(action()).toEqual(expectedAction);
-        });
-
-        it('should return an object containing the action type, and the payload keys', () => {
-          const key1 = 'foo';
-          const key2 = 'bar';
-
-          const value1 = 'bar';
-          const value2 = 'qux';
-
-          const expectedAction = {
-            type: EntityActionType.Success,
-            payload: {
-              [key1]: value1,
-              [key2]: value2,
-            },
-          };
-
-          const action = makeActionCreator(EntityActionType.Success, key1 as any, key2 as any);
-          expect(action(value1, value2)).toEqual(expectedAction);
-        });
-      });
-    });
     describe('makeEntityActionCreator', () => {
       const entity = 'foo';
 

@@ -38,7 +38,9 @@ export enum ProcessorType {
   AfterFailure = 'afterFailure',
 }
 
-export enum PayloadKey {
+export type Entity = 'entity';
+
+export enum PayloadKeys {
   Data = 'data',
   Error = 'error',
   LastUpdated = 'lastUpdated',
@@ -46,15 +48,14 @@ export enum PayloadKey {
 }
 
 export interface Payload {
-  [PayloadKey.Data]?: any;
   /** Data for the entity */
-  [PayloadKey.Data]?: any;
+  [PayloadKeys.Data]?: any;
   /** Timestamp indicating the last time the entity was updated */
-  [PayloadKey.LastUpdated]?: Date;
+  [PayloadKeys.LastUpdated]?: Date;
   /** The error returned from a rejected promise */
-  [PayloadKey.Error]?: Error;
+  [PayloadKeys.Error]?: Error;
   /** Determine whether data is overwritten of appended in the entity state */
-  [PayloadKey.Append]?: boolean;
+  [PayloadKeys.Append]?: boolean;
 }
 
 export interface EntityAction extends ReduxAction {

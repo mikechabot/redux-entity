@@ -6,7 +6,7 @@
  *  statements, and comment out the "redux-entity" require statements.
  */
 
-const { reducer, GetEntity, DeleteEntity } = require('./lib');
+const { reducer, GetEntity } = require('redux-entity');
 
 const chalk = require('chalk');
 
@@ -53,8 +53,6 @@ function fetchFoobar() {
 
 // Invoke your custom thunk
 fetchFoobar()(dispatch, getState);
-
-console.log(DeleteEntity('foo'));
 
 /**
  * Log Redux actions
