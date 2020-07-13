@@ -37,11 +37,11 @@ Most web applications need to handle a variety of domain entities such as orders
 
 ## <a name="redux-entity#demo">Demo</a>
 
-[Click here to see a live demo](http://mikechabot.github.io/react-boilerplate/dist/)
+[Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
 
-[CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
+[Simple CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
 
 ## <a name="redux-entity#install">Install</a>
 
