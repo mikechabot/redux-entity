@@ -385,34 +385,52 @@ The following actions can be use to reset or delete your entity.
 
 ### Example usage
 
-```javascript
-import React from "react";
-import { useSelector } from "react-redux";
+> Check out the [CodeSandbox(https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
 
-export default function App() {
-  const entity = useSelector(state => state.entities.orders || {});
+```javascript
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ResetEntity, DeleteEntity } from "redux-entity";
+
+import { loadOrders } from "./thunks";
+
+export default function Orders() {
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(loadOrders());
+  }, [dispatch]);
+
+  const entity = useSelector(state => state.entities.orders);
+
+  if (!entity) {
+    return null;
+  }
 
   const { isFetching, data, error, lastUpdated } = entity;
 
-  let body;
-
   if (isFetching) {
-    body = <span>Fetching!</span>;
+    return <span>Fetching!</span>;
   } else if (error) {
-    body = <span>{error.message}</span>;
-  } else {
-    body = (
-      <div>
-        <code>data: {JSON.stringify(data)}</code>
-        <br />
-        <code>lastUpdated: {new Date(lastUpdated).toString()}</code>
-      </div>
-    );
+    return <span>{error.message}</span>;
   }
-
+  
   return (
     <div>
-      {body}
+      {!data && <span>No Data!</span>}
+      {data && (
+        <ul>
+          {data.map(({ orderId, name }) => (
+            <li key={orderId}>
+              Order {orderId}: {name}
+            </li>
+          ))}
+        </ul>
+      )}
+      <br />
+      <code>lastUpdated: {new Date(lastUpdated).toString()}</code>
+      <button onClick={() => dispatch(ResetEntity(entityKey))}>Reset</button>
+      <button onClick={() => dispatch(DeleteEntity(entityKey))}>Delete</button>
     </div>
   );
 }
