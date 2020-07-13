@@ -25,7 +25,7 @@ Most web applications need to handle a variety of domain entities such as orders
 
 <hr />
 
-- [Demo](#demo)
+- [Demos](#demo)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
   - [Integrate into Redux](#integrate-into-redux)
@@ -35,13 +35,13 @@ Most web applications need to handle a variety of domain entities such as orders
 - [Configuration Options](#configuration-options)
 - [Additional Thunks](#additional-thunks)
 
-## <a name="redux-entity#demo">Demo</a>
+## <a name="redux-entity#demo">Demos</a>
 
-[Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
+* [Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
 
-[Simple CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
+* [Simple CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
 
 ## <a name="redux-entity#install">Install</a>
 
