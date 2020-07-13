@@ -209,7 +209,7 @@ Create a thunk using `GetEntity`. You only need to provide a key that uniquely i
 import { GetEntity } from 'redux-entity';
 import OrderService from './services/order-service';
 
-const key = 'orders';
+const entityKey = 'orders';
 const promise = OrderService.getOrders();
 
 export const loadOrders = () => GetEntity(key, promise);
@@ -220,51 +220,46 @@ export const loadOrders = () => GetEntity(key, promise);
 Here's a full React component that utilizes our `loadOrders` example. At this point, `loadOrders` is no different than any other Redux thunk.
 
 ```javascript
-// Orders.jsx
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { loadOrders } from '../redux/thunks';
-import { connect } from 'react-redux';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-class Orders extends Component {
-  componentDidMount() {
-    this.props.loadOrders();
+import { loadOrders } from "./thunks";
+
+export default function Orders() {
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(loadOrders());
+  }, [dispatch]);
+
+  const entity = useSelector(state => state.entities.orders);
+
+  if (!entity) {
+    return null;
   }
 
-  render() {
-    const { orders } = this.props;
+  const { isFetching, data, error, lastUpdated } = entity;
 
-    if (!orders) {
-      return null;
-    }
-
-    const { error, data, isFetching } = orders;
-
-    if (isFetching) {
-      return <span>Loading!</span>;
-    } else if (error) {
-      return <span>{error.message}</span>;
-    }
-
-    return (
+  if (isFetching) {
+    return <span>Fetching!</span>;
+  } else if (error) {
+    return <span>{error.message}</span>;
+  }
+  
+  return (
+    <div>
       <ul>
-        {data.map(({ orderId, name }) => (
-          <li key={orderId}> {name}</li>
+        {data.map(({ id, productName }) => (
+          <li key={id}>
+            Product {id}: {productName}
+          </li>
         ))}
       </ul>
-    );
-  }
+      <br />
+      <code>lastUpdated: {new Date(lastUpdated).toString()}</code>
+    </div>
+  );
 }
-
-Orders.propTypes = {
-  orders: PropTypes.object,
-  loadOrders: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({ orders: state.entities && state.entities.orders });
-const mapDispatchToProps = { loadOrders };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Orders);
 ```
 
 ---
