@@ -113,9 +113,9 @@ In the context of React, let's say we have an `<Orders />` component; when the c
 > See [Detailed Usage](#detailed-usage) for the full React component.
 
 ```javascript
-componentDidMount() {
-   this.props.loadOrders();
-}
+useEffect(() => {
+  dispatch(loadOrders());
+}, [dispatch]);
 ```
 
 While `loadOrders` is pending, `isFetching` is set to true:
