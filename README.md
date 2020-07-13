@@ -210,7 +210,7 @@ import OrderService from './services/order-service';
 const key = 'orders';
 const promise = OrderService.getOrders();
 
-export const loadOrders = () => GeEntity(key, promise);
+export const loadOrders = () => GetEntity(key, promise);
 ```
 
 ### 3. Create a React component
