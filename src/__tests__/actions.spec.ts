@@ -1,4 +1,11 @@
-import { fetchFailureCreator, fetchRequestCreator, fetchSuccessCreator, makeEntityActionCreator } from '../actions';
+import {
+  fetchFailureCreator,
+  fetchRequestCreator,
+  fetchSuccessCreator,
+  makeEntityActionCreator,
+  ResetEntity,
+  DeleteEntity,
+} from '../actions';
 
 import { EntityActionType } from '../types';
 
@@ -184,6 +191,43 @@ describe('Action Creators', () => {
           const action = fetchFailureCreator(entity);
           expect(action(error, lastUpdated)).toEqual(expectedAction);
         });
+      });
+    });
+
+    describe('Reset', () => {
+      it('should be a function', () => {
+        expect(typeof ResetEntity).toEqual('function');
+      });
+
+      it('should return an action object', () => {
+        const date = new Date();
+
+        const expectedAction = {
+          entity,
+          type: EntityActionType.Reset,
+          payload: {
+            lastUpdated: date,
+          },
+        };
+        const action = ResetEntity(entity, date);
+        expect(action).toEqual(expectedAction);
+      });
+    });
+
+    describe('Delete', () => {
+      it('should be a function', () => {
+        expect(typeof DeleteEntity).toEqual('function');
+      });
+
+      it('should return an action object', () => {
+        const date = new Date();
+
+        const expectedAction = {
+          entity,
+          type: EntityActionType.Delete,
+        };
+        const action = DeleteEntity(entity);
+        expect(action).toEqual(expectedAction);
       });
     });
   });

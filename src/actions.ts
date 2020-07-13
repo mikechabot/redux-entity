@@ -21,19 +21,6 @@ const generateAction = (action: EntityAction, keys: PayloadKeys[], values: any):
 };
 
 /**
-
- *
- * @param type  Redux action type
- * @param keys  Additional keys to append to the payload
- */
-export const makeActionCreator = (type: EntityActionType, ...keys: PayloadKeys[]) => {
-  if (!type) throw new Error('Type cannot be null/undefined');
-  return function (...values: any) {
-    return generateAction({ type }, keys, values);
-  };
-};
-
-/**
  * Generate action creators based on input arguments. The first argument is always
  * treated as the Redux action type; the second argument to be the name of an entity.
  * All other passed arguments are treated as property on the action object itself.
