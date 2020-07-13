@@ -46,6 +46,7 @@ export enum PayloadKey {
 }
 
 export interface Payload {
+  [PayloadKey.Data]?: any;
   /** Data for the entity */
   [PayloadKey.Data]?: any;
   /** Timestamp indicating the last time the entity was updated */
