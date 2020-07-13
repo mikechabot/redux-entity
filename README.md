@@ -25,7 +25,7 @@ Most web applications need to handle a variety of domain entities such as orders
 
 <hr />
 
-- [Demo](#demo)
+- [Demos](#demo)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
   - [Integrate into Redux](#integrate-into-redux)
@@ -35,11 +35,13 @@ Most web applications need to handle a variety of domain entities such as orders
 - [Configuration Options](#configuration-options)
 - [Additional Thunks](#additional-thunks)
 
-## <a name="redux-entity#demo">Demo</a>
+## <a name="redux-entity#demo">Demos</a>
 
-[Click here to see a live demo](http://mikechabot.github.io/react-boilerplate/dist/)
+* [Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
+
+* [Simple CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
 
 ## <a name="redux-entity#install">Install</a>
 
@@ -71,7 +73,7 @@ interface EntityState {
 
 ### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a>
 
-To get started, import `reducers` from `redux-entity`, and combine with your existing reducers.
+To get started, import the `reducer` from `redux-entity`, and combine with your existing reducers.
 
 > By default, we're carving out a space in the Redux tree with the key of `entities`, but you can rename it to whatever you'd like.
 
@@ -111,9 +113,9 @@ In the context of React, let's say we have an `<Orders />` component; when the c
 > See [Detailed Usage](#detailed-usage) for the full React component.
 
 ```javascript
-componentDidMount() {
-   this.props.loadOrders();
-}
+useEffect(() => {
+  dispatch(loadOrders());
+}, [dispatch]);
 ```
 
 While `loadOrders` is pending, `isFetching` is set to true:
@@ -207,7 +209,7 @@ Create a thunk using `GetEntity`. You only need to provide a key that uniquely i
 import { GetEntity } from 'redux-entity';
 import OrderService from './services/order-service';
 
-const key = 'orders';
+const entityKey = 'orders';
 const promise = OrderService.getOrders();
 
 export const loadOrders = () => GetEntity(key, promise);
@@ -217,52 +219,49 @@ export const loadOrders = () => GetEntity(key, promise);
 
 Here's a full React component that utilizes our `loadOrders` example. At this point, `loadOrders` is no different than any other Redux thunk.
 
-```javascript
-// Orders.jsx
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { loadOrders } from '../redux/thunks';
-import { connect } from 'react-redux';
+> Check out the [CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
 
-class Orders extends Component {
-  componentDidMount() {
-    this.props.loadOrders();
+```javascript
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { loadOrders } from "./thunks";
+
+export default function Orders() {
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(loadOrders());
+  }, [dispatch]);
+
+  const entity = useSelector(state => state.entities.orders);
+
+  if (!entity) {
+    return null;
   }
 
-  render() {
-    const { orders } = this.props;
+  const { isFetching, data, error, lastUpdated } = entity;
 
-    if (!orders) {
-      return null;
-    }
-
-    const { error, data, isFetching } = orders;
-
-    if (isFetching) {
-      return <span>Loading!</span>;
-    } else if (error) {
-      return <span>{error.message}</span>;
-    }
-
-    return (
+  if (isFetching) {
+    return <span>Fetching!</span>;
+  } else if (error) {
+    return <span>{error.message}</span>;
+  }
+  
+  return (
+    <div>
       <ul>
-        {data.map(({ orderId, name }) => (
-          <li key={orderId}> {name}</li>
+        {data.map(({ id, productName }) => (
+          <li key={id}>
+            Product {id}: {productName}
+          </li>
         ))}
       </ul>
-    );
-  }
+      <br />
+      <code>lastUpdated: {new Date(lastUpdated).toString()}</code>
+    </div>
+  );
 }
-
-Orders.propTypes = {
-  orders: PropTypes.object,
-  loadOrders: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({ orders: state.entities && state.entities.orders });
-const mapDispatchToProps = { loadOrders };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Orders);
 ```
 
 ---
@@ -377,7 +376,7 @@ export const loadOrders = () => GetEntity(key, promise, options);
 
 The following actions can be use to reset or delete your entity.
 
-> Check out the [Demo](#demo) to see these in action.
+> Check out the [Demos](#demo) to see these in action.
 
 | Action creator | Description                                                           |
 | -------------: | :-------------------------------------------------------------------- |
@@ -387,50 +386,34 @@ The following actions can be use to reset or delete your entity.
 ### Example usage
 
 ```javascript
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import { ResetEntity, DeleteEntity } from 'redux-entity';
+export default function App() {
+  const entity = useSelector(state => state.entities.orders || {});
 
-const Orders = ({ entityKey, orders, resetEntity, deleteEntity }) => {
-  if (!orders) {
-    return <span />;
-  }
+  const { isFetching, data, error, lastUpdated } = entity;
 
-  const { error, data, isFetching } = orders;
+  let body;
 
   if (isFetching) {
-    return <span>Loading!</span>;
+    body = <span>Fetching!</span>;
   } else if (error) {
-    return <span>{error.message}</span>;
+    body = <span>{error.message}</span>;
+  } else {
+    body = (
+      <div>
+        <code>data: {JSON.stringify(data)}</code>
+        <br />
+        <code>lastUpdated: {new Date(lastUpdated).toString()}</code>
+      </div>
+    );
   }
 
   return (
     <div>
-      <ul>
-        {data.map((value, index) => (
-          <li key={index}> {value.label}</li>
-        ))}
-      </ul>
-      <button onClick={() => resetEntity(entityKey)}>Reset</button>
-      <button onClick={() => deleteEntity(entityKey)}>Delete</button>
+      {body}
     </div>
   );
 }
-
-Entity.propTypes = {
-  entityKey: PropTypes.string.isRequired,
-  orders: PropTypes.object,
-  resetEntity: PropTypes.func.isRequired,
-  deleteEntity: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({ orders: state.entities && state.entities.orders });
-const mapDispatchToProps = {
-  resetEntity: ResetEntity
-  deleteEntity: DeleteEntity
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Orders);
 ```
