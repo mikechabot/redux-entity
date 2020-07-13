@@ -39,6 +39,8 @@ Most web applications need to handle a variety of domain entities such as orders
 
 [Click here to see a live demo](http://mikechabot.github.io/react-boilerplate/dist/)
 
+[CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
+
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
 
 ## <a name="redux-entity#install">Install</a>
