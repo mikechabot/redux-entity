@@ -379,7 +379,7 @@ export const loadOrders = () => GetEntity(key, promise, options);
 
 The following actions can be use to reset or delete your entity.
 
-> Check out the [Demo](#demo) to see these in action.
+> Check out the [Demos](#demo) to see these in action.
 
 | Action creator | Description                                                           |
 | -------------: | :-------------------------------------------------------------------- |
@@ -389,50 +389,34 @@ The following actions can be use to reset or delete your entity.
 ### Example usage
 
 ```javascript
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import { ResetEntity, DeleteEntity } from 'redux-entity';
+export default function App() {
+  const entity = useSelector(state => state.entities.orders || {});
 
-const Orders = ({ entityKey, orders, resetEntity, deleteEntity }) => {
-  if (!orders) {
-    return <span />;
-  }
+  const { isFetching, data, error, lastUpdated } = entity;
 
-  const { error, data, isFetching } = orders;
+  let body;
 
   if (isFetching) {
-    return <span>Loading!</span>;
+    body = <span>Fetching!</span>;
   } else if (error) {
-    return <span>{error.message}</span>;
+    body = <span>{error.message}</span>;
+  } else {
+    body = (
+      <div>
+        <code>data: {JSON.stringify(data)}</code>
+        <br />
+        <code>lastUpdated: {new Date(lastUpdated).toString()}</code>
+      </div>
+    );
   }
 
   return (
     <div>
-      <ul>
-        {data.map((value, index) => (
-          <li key={index}> {value.label}</li>
-        ))}
-      </ul>
-      <button onClick={() => resetEntity(entityKey)}>Reset</button>
-      <button onClick={() => deleteEntity(entityKey)}>Delete</button>
+      {body}
     </div>
   );
 }
-
-Entity.propTypes = {
-  entityKey: PropTypes.string.isRequired,
-  orders: PropTypes.object,
-  resetEntity: PropTypes.func.isRequired,
-  deleteEntity: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({ orders: state.entities && state.entities.orders });
-const mapDispatchToProps = {
-  resetEntity: ResetEntity
-  deleteEntity: DeleteEntity
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Orders);
 ```
