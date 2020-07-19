@@ -66,7 +66,7 @@ interface EntityState {
   isFetching: boolean;
 
   /** Timestamp of the promise's last resolution or rejection */
-  lastUpdated?: Date | undefined;
+  lastUpdated?: Date;
 }
 ```
 
