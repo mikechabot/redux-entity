@@ -1,4 +1,0 @@
-{
-  "ignore": ["**/*.spec.ts"],
-  "presets": ["@babel/env", "@babel/preset-typescript"]
-}
