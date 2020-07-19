@@ -109,40 +109,28 @@ Let's take a look at what the Redux store looks like when `loadOrders` is invoke
 
 In the context of React, let's say we have an `<Orders />` component; when the component mounts, we'll want to fetch our data:
 
-```javascript
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-
-export default function Orders() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadOrders());
-  }, [dispatch]);
-
-  ...
-```
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/react.png' alt='react' aria-label='https://github.com/mikechabot/redux-entity' />
 
 > See [Detailed Usage](#detailed-usage) for the full React component.
 
 
 While `loadOrders` is pending, `isFetching` is set to true:
 
-<img height="400px" src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/fetching.png' alt='fetching' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/fetching.png' alt='fetching' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If `loadOrders` **succeeds**, the results are stamped on the store at `entities.orders.data`, and `lastUpdated` is set:
 
-<img height="400px" src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/succeed.png' alt='succeed' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/successful.png' alt='succeed' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If `loadOrders` **fails**, the results are stamped on the store at `entities.orders.error`, and `lastUpdated` is set:
 
-<img height="400px" src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/fail.png' alt='fail' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/fail.png' alt='fail' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If we need to load more entities, we just create additional thunks with [`GetEntity`](#GetEntity-promise-options), and invoke them as described above.
 
 > Every entity we fetch will be stamped on the `entities` tree.
 
-<img height="400px" src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/state.png' alt='state' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/repos/state.png' alt='state' aria-label='https://github.com/mikechabot/redux-entity' />
 
 ---
 
