@@ -211,11 +211,11 @@ export default function Orders() {
 
 Optionally pass a configuration with any of the following properties:
 
-| Argument     | Type    | Default | Description                                                                                                                                                                                     |
-| ------------ | ------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `silent`     | boolean | `false` | If `true`, don't toggle `isFetching` when the thunk is invoked                                                                                                                                  |
-| `append`     | boolean | `false` | If `true`, append the results of each invocation to the existing `data` property instead of overwriting it                                                                                      |
-| `processors` | object  | `null`  | Hook into the `GetEntity` lifecycle. Each processor has access to Redux's `dispatch` and `getState` along with either the `data` or `error` object of the entity. See [Processors](#processors) |
+| Argument  |Default | Description                                                                                                                                                                                     |
+| ------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `silent`     | `false` | If `true`, don't toggle `isFetching` when the thunk is invoked                                                                                                                                  |
+| `append`     | `false` | If `true`, append the results of each invocation to the existing `data` property instead of overwriting it                                                                                      |
+| `processors` | `undefined`  | Hook into the `GetEntity` lifecycle. Each processor has access to Redux's `dispatch` and `getState` along with either the `data` or `error` object of the entity. See [Processors](#processors) |
 
 The options configuration must adhere to the following interface:
 
