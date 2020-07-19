@@ -116,7 +116,7 @@ In the context of React, let's say we have an `<Orders />` component; when the c
 
 While `loadOrders` is pending, `isFetching` is set to true:
 
-<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/action-request.png' alt='fetching' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/action-fetch.png' alt='fetching' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If `loadOrders` **succeeds**, the results are stamped on the store at `entities.orders.data`, and `lastUpdated` is set:
 
