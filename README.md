@@ -37,11 +37,10 @@ Most web applications need to handle a variety of domain entities such as orders
 
 ## <a name="redux-entity#demo">Demos</a>
 
+* [CodeSandbox](https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
 * [Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
-
-* [Simple CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
 
 ## <a name="redux-entity#install">Install</a>
 
@@ -219,49 +218,50 @@ export const loadOrders = () => GetEntity(key, promise);
 
 Here's a full React component that utilizes our `loadOrders` example. At this point, `loadOrders` is no different than any other Redux thunk.
 
-> Check out the [CodeSandbox](https://codesandbox.io/s/keen-dew-72i3g?file=/src/App.js)
+> Check out the [CodeSandbox](https://codesandbox.io/s/redux-entity-mrk5u)
 
 ```javascript
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { loadOrders } from "./thunks";
+import { loadOrders } from "./utils";
+
+import Buttons from "./Buttons";
+import State from "./State";
 
 export default function Orders() {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(loadOrders());
   }, [dispatch]);
 
-  const entity = useSelector(state => state.entities.orders);
+  const { orders } = useSelector(state => state.entities);
 
-  if (!entity) {
-    return null;
+  let body, isFetching;
+
+  if (orders) {
+    isFetching = orders.isFetching;
+    const { data, error } = orders;
+    if (isFetching) {
+      body = 'Fetching Orders...';
+    } else if (error) {
+      body = error.message;
+    } else if (data) {
+      body = `Found ${orders.data.length} Orders!`;
+    }
   }
 
-  const { isFetching, data, error, lastUpdated } = entity;
-
-  if (isFetching) {
-    return <span>Fetching!</span>;
-  } else if (error) {
-    return <span>{error.message}</span>;
-  }
-  
   return (
     <div>
-      <ul>
-        {data.map(({ id, productName }) => (
-          <li key={id}>
-            Product {id}: {productName}
-          </li>
-        ))}
-      </ul>
+      {body}
       <br />
-      <code>lastUpdated: {new Date(lastUpdated).toString()}</code>
+      <Buttons disabled={isFetching} />
+      <State />
     </div>
   );
 }
+
 ```
 
 ---
@@ -385,52 +385,49 @@ The following actions can be use to reset or delete your entity.
 
 ### Example usage
 
-> Check out the [CodeSandbox(https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
+> Check out the [CodeSandbox](https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
 
 ```javascript
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ResetEntity, DeleteEntity } from "redux-entity";
 
-import { loadOrders } from "./thunks";
+import Buttons from "./Buttons";
+import State from "./State";
 
-export default function Orders() {
+import { loadOrders } from "./utils";
+
+export default function App() {
+  const { orders } = useSelector(state => state.entities);
+
   const dispatch = useDispatch();
-  
   useEffect(() => {
     dispatch(loadOrders());
   }, [dispatch]);
 
-  const entity = useSelector(state => state.entities.orders);
+  let body, isFetching;
 
-  if (!entity) {
-    return null;
+  if (orders) {
+    isFetching = orders.isFetching;
+    const { data, error } = orders;
+    if (isFetching) {
+      body = <em>Fetching Orders...</em>;
+    } else if (error) {
+      body = <span className="error">{error.message}</span>;
+    } else if (data) {
+      body = `Found ${orders.data.length} Orders!`;
+    } else {
+      body = "No Data!";
+    }
+  } else {
+    body = "No Entity!";
   }
 
-  const { isFetching, data, error, lastUpdated } = entity;
-
-  if (isFetching) {
-    return <span>Fetching!</span>;
-  } else if (error) {
-    return <span>{error.message}</span>;
-  }
-  
   return (
-    <div>
-      {!data && <span>No Data!</span>}
-      {data && (
-        <ul>
-          {data.map(({ orderId, name }) => (
-            <li key={orderId}>
-              Order {orderId}: {name}
-            </li>
-          ))}
-        </ul>
-      )}
-      <br />
-      <code>lastUpdated: {new Date(lastUpdated).toString()}</code>
-      <button onClick={() => dispatch(ResetEntity(entityKey))}>Reset</button>
-      <button onClick={() => dispatch(DeleteEntity(entityKey))}>Delete</button>
+    <div className="app">
+      <h3>Playground</h3>
+      <div className="body">{body}</div>
+      <Buttons disabled={isFetching} />
+      <State />
     </div>
   );
 }
