@@ -9,7 +9,7 @@ node_modules
 # Build
 dist
 
-./lib
+lib
 
 # IntelliJ
 .idea
