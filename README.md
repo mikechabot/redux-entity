@@ -107,12 +107,10 @@ export const loadOrders = () => GetEntity(key, promise);
 
 Let's take a look at what the Redux store looks like when `loadOrders` is invoked.
 
-In the context of React, let's say we have an `<Orders />` component; when the component mounts, we'll want to fetch our data:
-
-<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/react.png' alt='react' aria-label='https://github.com/mikechabot/redux-entity' />
-
+> In the context of React, let's say we have an `<Orders />` component; when the component mounts, we'll want to fetch our data.
 > See [Detailed Usage](#detailed-usage) for the full React component.
 
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/react.png' alt='react' aria-label='https://github.com/mikechabot/redux-entity' />
 
 While `loadOrders` is pending, `isFetching` is set to true:
 
