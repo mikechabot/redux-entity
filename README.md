@@ -35,20 +35,20 @@ Most web applications need to handle a variety of domain entities such as orders
 - [Configuration Options](#configuration-options)
 - [Additional Thunks](#additional-thunks)
 
-## <a name="redux-entity#demo">Demos</a>
+# <a name="redux-entity#demo">Demos</a>
 
 - [CodeSandbox](https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
 - [Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
 
-## <a name="redux-entity#install">Install</a>
+# <a name="redux-entity#install">Install</a>
 
 `$ npm install redux-entity`
 
 `$ yarn add redux-entity`
 
-## <a name="redux-entity#getting-started">Getting Started</a>
+# <a name="redux-entity#getting-started">Getting Started</a>
 
 The API is very simplistic; a thunk called [`GetEntity`](#GetEntity-promise-options) is exposed, which does all the heavy lifting.
 
@@ -190,7 +190,7 @@ If we need to load more entities, we just create additional thunks with [`GetEnt
 
 ---
 
-## <a name="redux-entity#detailed-usage">Detailed Usage</a>
+# <a name="redux-entity#detailed-usage">Detailed Usage</a>
 
 The guide below assumes you've already injected the Redux store into your React application.
 
@@ -265,7 +265,7 @@ export default function Orders() {
 
 ---
 
-## <a name="redux-entity#configuration-options">Configuration Options</a>
+# <a name="redux-entity#configuration-options">Configuration Options</a>
 
 Optionally pass a configuration with any of the following properties:
 
@@ -371,7 +371,7 @@ export const loadOrders = () => GetEntity(key, promise, options);
 
 ---
 
-## <a name="redux-entity#additional-thunks">Additional Thunks</a>
+# <a name="redux-entity#additional-thunks">Additional Thunks</a>
 
 The following actions can be use to reset or delete your entity.
 
