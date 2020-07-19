@@ -35,20 +35,20 @@ Most web applications need to handle a variety of domain entities such as orders
 - [Configuration Options](#configuration-options)
 - [Additional Thunks](#additional-thunks)
 
-# <a name="redux-entity#demo">Demos</a>
+## <a name="redux-entity#demo">Demos</a>
 
 - [CodeSandbox](https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
 - [Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
 
-# <a name="redux-entity#install">Install</a>
+## <a name="redux-entity#install">Install</a>
 
 `$ npm install redux-entity`
 
 `$ yarn add redux-entity`
 
-# <a name="redux-entity#getting-started">Getting Started</a>
+## <a name="redux-entity#getting-started">Getting Started</a>
 
 The API is very simplistic; a thunk called [`GetEntity`](#GetEntity-promise-options) is exposed, which does all the heavy lifting.
 
@@ -70,7 +70,7 @@ interface EntityState {
 }
 ```
 
-### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a>
+#### <a name="redux-entity#integrate-into-redux">Integrate into Redux</a>
 
 To get started, import the `reducer` from `redux-entity`, and combine with your existing reducers.
 
@@ -89,7 +89,7 @@ export default combineReducers({
 
 Now we're ready to use [`GetEntity`](#GetEntity-promise-options).
 
-### <a name="redux-entity#GetEntity-promise-options">`GetEntity(key, promise, options)`</a>
+#### <a name="redux-entity#GetEntity-promise-options">`GetEntity(key, promise, options)`</a>
 
 When using `GetEntity`, you only need to provide two elements: a key to uniquely identify the entity, and a promise to fetch the data.
 
@@ -103,7 +103,7 @@ const promise = OrderService.getOrders();
 export const loadOrders = () => GetEntity(key, promise);
 ```
 
-### <a name="redux-entity#redux-store">Redux Store</a>
+#### <a name="redux-entity#redux-store">Redux Store</a>
 
 Let's take a look at what the Redux store looks like when `loadOrders` is invoked.
 
@@ -190,15 +190,15 @@ If we need to load more entities, we just create additional thunks with [`GetEnt
 
 ---
 
-# <a name="redux-entity#detailed-usage">Detailed Usage</a>
+## <a name="redux-entity#detailed-usage">Detailed Usage</a>
 
 The guide below assumes you've already injected the Redux store into your React application.
 
-### 1. Configure the root reducer
+#### 1. Configure the root reducer
 
 Follow along with [Integrate into Redux](#integrate-into-redux) to integrate the reducer into your existing Redux store.
 
-### 2. Create a custom thunk
+#### 2. Create a custom thunk
 
 Create a thunk using `GetEntity`. You only need to provide a key that uniquely identifies the entity, and a data promise.
 
@@ -214,7 +214,7 @@ const promise = OrderService.getOrders();
 export const loadOrders = () => GetEntity(key, promise);
 ```
 
-### 3. Create a React component
+#### 3. Create a React component
 
 Here's a full React component that utilizes our `loadOrders` example. At this point, `loadOrders` is no different than any other Redux thunk.
 
@@ -265,7 +265,7 @@ export default function Orders() {
 
 ---
 
-# <a name="redux-entity#configuration-options">Configuration Options</a>
+## <a name="redux-entity#configuration-options">Configuration Options</a>
 
 Optionally pass a configuration with any of the following properties:
 
@@ -371,7 +371,7 @@ export const loadOrders = () => GetEntity(key, promise, options);
 
 ---
 
-# <a name="redux-entity#additional-thunks">Additional Thunks</a>
+## <a name="redux-entity#additional-thunks">Additional Thunks</a>
 
 The following actions can be use to reset or delete your entity.
 
@@ -382,7 +382,7 @@ The following actions can be use to reset or delete your entity.
 |  `ResetEntity` | Reset the entity to the original `EntityState`, and set `lastUpdated` |
 | `DeleteEntity` | Delete the entity from `state`                                        |
 
-### Example usage
+#### Example usage
 
 > Check out the [CodeSandbox](https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
 
