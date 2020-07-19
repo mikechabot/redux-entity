@@ -9,7 +9,7 @@ export interface ReduxEntityState {
 
 export interface EntityState {
   data?: any;
-  lastUpdated: Date;
+  lastUpdated?: Date;
   isFetching: boolean;
   error?: Error;
 }

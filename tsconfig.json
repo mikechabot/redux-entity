@@ -1,11 +1,13 @@
 {
   "include": ["./src/**/*"],
+  "exclude": ["./src/**/*.spec.ts"],
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
     "lib": ["es6"],
     "allowJs": true,
-    "outDir": "build",
+    "declaration": true,
+    "outDir": "lib",
     "rootDir": "src",
     "strict": true,
     "noImplicitAny": true,

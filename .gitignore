@@ -9,6 +9,8 @@ node_modules
 # Build
 dist
 
+lib
+
 # IntelliJ
 .idea
 /*.iml

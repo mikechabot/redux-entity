@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run clean && npm run compile",
-    "compile": "babel src -d lib --extensions .ts,.js",
+    "compile": "tsc",
     "test": "jest --coverage",
     "coveralls": "jest --coverage && coveralls < coverage/lcov.info",
     "test:watch": "jest --coverage --watchAll",
@@ -32,7 +32,9 @@
   "keywords": [
     "redux",
     "redux-thunk",
-    "asynchronous"
+    "asynchronous state management",
+    "state management",
+    "react state"
   ],
   "author": "Mike Chabot",
   "license": "MIT",
@@ -60,12 +62,12 @@
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
-    "redux": "^4.0.5",
     "redux-mock-store": "^1.5.4",
-    "redux-thunk": "^2.3.0",
     "ts-jest": "^26.1.1",
     "typescript": "^3.9.6"
   },
-  "tonicExampleFilename": "example.js",
-  "dependencies": {}
+  "dependencies": {
+    "redux-thunk": "^2.3.0",
+    "redux": "^4.0.5"
+  }
 }
