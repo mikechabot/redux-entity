@@ -109,13 +109,22 @@ Let's take a look at what the Redux store looks like when `loadOrders` is invoke
 
 In the context of React, let's say we have an `<Orders />` component; when the component mounts, we'll want to fetch our data:
 
+```javascript
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
+export default function Orders() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadOrders());
+  }, [dispatch]);
+
+  ...
+```
+
 > See [Detailed Usage](#detailed-usage) for the full React component.
 
-```javascript
-useEffect(() => {
-  dispatch(loadOrders());
-}, [dispatch]);
-```
 
 While `loadOrders` is pending, `isFetching` is set to true:
 
