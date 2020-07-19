@@ -95,6 +95,7 @@ describe('Thunk Action Creators', () => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           const actions = store.getActions();
+
           expect(actions).toHaveLength(2);
 
           expectedSuccess.payload.lastUpdated = actions[1].payload.lastUpdated;

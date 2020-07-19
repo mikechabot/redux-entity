@@ -32,7 +32,7 @@ const GetEntity = (
      * Don't dispatch a fetch action if "GetEntity"
      * was invoked silently.
      */
-    if (lifecycle.silent) {
+    if (!lifecycle.silent) {
       const fetchAction = fetchRequestCreator(entityName);
       dispatch(fetchAction());
     }
