@@ -1,7 +1,5 @@
 import { PayloadKeys, EntityAction, EntityActionType, Payload, Entity } from './types';
 
-const ENTITY = 'entity';
-
 /**
  * Generate a Redux action object
  * @param action

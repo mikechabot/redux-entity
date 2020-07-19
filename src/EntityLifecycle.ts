@@ -1,12 +1,12 @@
 import { Dispatch } from 'redux';
 
-import { fetchRequestCreator, fetchSuccessCreator, fetchFailureCreator } from './actions';
-import { Processors, ReduxEntityProps, ReduxEntityOptions, ProcessorType, GetState } from './types';
+import { fetchSuccessCreator, fetchFailureCreator } from './actions';
+import { Processors, ReduxEntityProps, ProcessorType, GetState } from './types';
 
 class EntityLifecycle {
   private readonly entityName: string;
   private readonly append: boolean;
-  private readonly silent: boolean;
+  public readonly silent: boolean;
   private readonly processors: Processors;
 
   constructor({ entityName, options }: ReduxEntityProps) {
