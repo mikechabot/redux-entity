@@ -130,7 +130,7 @@ If we need to load more entities, we just create additional thunks with [`GetEnt
 
 > Every entity we fetch will be stamped on the `entities` tree.
 
-<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/repos/state.png' alt='state' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/state.png' alt='state' aria-label='https://github.com/mikechabot/redux-entity' />
 
 ---
 
