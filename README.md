@@ -37,8 +37,8 @@ Most web applications need to handle a variety of domain entities such as orders
 
 ## <a name="redux-entity#demo">Demos</a>
 
-* [CodeSandbox](https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
-* [Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
+- [CodeSandbox](https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
+- [Live Demo via `react-boilerplate`](http://mikechabot.github.io/react-boilerplate/dist/)
 
 > Check out the demo repository at https://github.com/mikechabot/react-boilerplate
 
@@ -66,7 +66,7 @@ interface EntityState {
   isFetching: boolean;
 
   /** Timestamp of the promise's last resolution or rejection */
-  lastUpdated: Date;
+  lastUpdated?: Date;
 }
 ```
 
@@ -221,13 +221,13 @@ Here's a full React component that utilizes our `loadOrders` example. At this po
 > Check out the [CodeSandbox](https://codesandbox.io/s/redux-entity-mrk5u)
 
 ```javascript
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { loadOrders } from "./utils";
+import { loadOrders } from './utils';
 
-import Buttons from "./Buttons";
-import State from "./State";
+import Buttons from './Buttons';
+import State from './State';
 
 export default function Orders() {
   const dispatch = useDispatch();
@@ -236,7 +236,7 @@ export default function Orders() {
     dispatch(loadOrders());
   }, [dispatch]);
 
-  const { orders } = useSelector(state => state.entities);
+  const { orders } = useSelector((state) => state.entities);
 
   let body, isFetching;
 
@@ -261,7 +261,6 @@ export default function Orders() {
     </div>
   );
 }
-
 ```
 
 ---
@@ -388,16 +387,16 @@ The following actions can be use to reset or delete your entity.
 > Check out the [CodeSandbox](https://codesandbox.io/s/redux-entity-reset-delete-h94yo)
 
 ```javascript
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Buttons from "./Buttons";
-import State from "./State";
+import Buttons from './Buttons';
+import State from './State';
 
-import { loadOrders } from "./utils";
+import { loadOrders } from './utils';
 
 export default function App() {
-  const { orders } = useSelector(state => state.entities);
+  const { orders } = useSelector((state) => state.entities);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -416,10 +415,10 @@ export default function App() {
     } else if (data) {
       body = `Found ${orders.data.length} Orders!`;
     } else {
-      body = "No Data!";
+      body = 'No Data!';
     }
   } else {
-    body = "No Entity!";
+    body = 'No Entity!';
   }
 
   return (
