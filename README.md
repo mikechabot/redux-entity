@@ -128,74 +128,21 @@ export default function Orders() {
 
 While `loadOrders` is pending, `isFetching` is set to true:
 
-```javascript
-{
-  "entities": {
-    "orders": {
-      "isFetching": true,
-      "lastUpdated": null,
-      "data": null,
-      "error:" null
-    }
-  }
-}
-```
+<img height="500px" src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/fetching.png' alt='fetching' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If `loadOrders` **succeeds**, the results are stamped on the store at `entities.orders.data`, and `lastUpdated` is set:
 
-```
-{
-  "entities": {
-    "orders": {
-      "isFetching": false,
-      "data": [
-      	{ orderId: 1, name: 'Coke' },
-      	{ orderId: 2, name: 'Pepsi' },
-      	{ orderId: 3, name: 'Dr. Pepper' }
-      ],
-      "lastUpdated": 1494092038176,
-      "error": null,
-    }
-  }
-}
-```
+<img height="500px" src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/succeed.png' alt='succeed' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If `loadOrders` **fails**, the results are stamped on the store at `entities.orders.error`, and `lastUpdated` is set:
 
-```javascript
-{
-  "entities": {
-    "orders": {
-      "isFetching": false,
-      "error": {
-        "message": "Error fetching data!"
-      },
-      "lastUpdated": 1494094113880,
-      "data": null
-    }
-  }
-}
-```
+<img height="500px" src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/fail.png' alt='fail' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If we need to load more entities, we just create additional thunks with [`GetEntity`](#GetEntity-promise-options), and invoke them as described above.
 
 > Every entity we fetch will be stamped on the `entities` tree.
 
-```javascript
-{
-  "entities": {
-    "orders": {
-      ...
-    },
-    "products": {
-      ...
-    },
-    "customers": {
-      ...
-    }
-  }
-}
-```
+<img height="500px" src='https://raw.githubusercontent.com/mikechabot/image-assets/master/redux-entity/state.png' alt='state' aria-label='https://github.com/mikechabot/redux-entity' />
 
 ---
 
