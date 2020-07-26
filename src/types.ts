@@ -16,15 +16,15 @@ export interface EntityState {
 
 export enum EntityActionType {
   /** Fetching the entity */
-  Request = 'FETCH_REQUEST',
+  Request = '__redux-entity__FETCH_REQUEST',
   /** Promise has resolved */
-  Success = 'FETCH_SUCCESS',
+  Success = '__redux-entity__FETCH_SUCCESS',
   /** Promise has failed */
-  Failure = 'FETCH_FAILURE',
+  Failure = '__redux-entity__FETCH_FAILURE',
   /** Entity reset to initial state */
-  Reset = 'RESET_ENTITY',
+  Reset = '__redux-entity__RESET_ENTITY',
   /** Entity removed from redux-entity state */
-  Delete = 'DELETE_ENTITY',
+  Delete = '__redux-entity__DELETE_ENTITY',
 }
 
 export enum ProcessorType {
