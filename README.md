@@ -114,15 +114,15 @@ Let's take a look at what the Redux store looks like when `loadOrders` is invoke
 
 While `loadOrders` is pending, `isFetching` is set to true:
 
-<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/action-fetch.png' alt='fetching' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/entity-fetching.png' alt='fetching' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If `loadOrders` **succeeds**, the results are stamped on the store at `entities.orders.data`, and `lastUpdated` is set:
 
-<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/action-success.png' alt='succeed' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/entity-fetched.png' alt='succeed' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If `loadOrders` **fails**, the results are stamped on the store at `entities.orders.error`, and `lastUpdated` is set:
 
-<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/action-fail.png' alt='fail' aria-label='https://github.com/mikechabot/redux-entity' />
+<img src='https://raw.githubusercontent.com/mikechabot/image-assets/master/repos/redux-entity/entity-failed.png' alt='fail' aria-label='https://github.com/mikechabot/redux-entity' />
 
 If we need to load more entities, we just create additional thunks with [`GetEntity`](#GetEntity-promise-options), and invoke them as described above.
 
