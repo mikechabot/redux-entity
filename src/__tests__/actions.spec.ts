@@ -209,7 +209,7 @@ describe('Action Creators', () => {
             lastUpdated: date,
           },
         };
-        const action = ResetEntity(entity, date);
+        const action = ResetEntity(entity);
         expect(action).toEqual(expectedAction);
       });
     });
