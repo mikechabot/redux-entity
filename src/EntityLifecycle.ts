@@ -33,7 +33,7 @@ class EntityLifecycle {
      * Create and dispatch the success action
      */
     const successAction = fetchSuccessCreator(this.entityName);
-    dispatch(successAction(dispatchedData, Date.now(), this.append));
+    dispatch(successAction(dispatchedData, new Date(), this.append));
     /**
      * Process the "afterSuccess" stage, which is invoked after the success
      * action has been dispatched.
@@ -62,7 +62,7 @@ class EntityLifecycle {
      * Create and dispatch the failure action
      */
     const failureAction = fetchFailureCreator(this.entityName);
-    dispatch(failureAction(dispatchedError, Date.now()));
+    dispatch(failureAction(dispatchedError, new Date()));
     /**
      * Process the "afterFailure" stage, which is invoked after the failure
      * action has been dispatched.

@@ -68,7 +68,7 @@ export const fetchSuccessCreator = (entity: string) =>
 export const fetchFailureCreator = (entity: string) =>
   makeEntityActionCreator(EntityActionType.Failure, entity, PayloadKeys.Error, PayloadKeys.LastUpdated);
 
-export const ResetEntity = (entity: string, lastUpdated: Date = new Date()) =>
-  makeEntityActionCreator(EntityActionType.Reset, entity, PayloadKeys.LastUpdated)(lastUpdated);
+export const ResetEntity = (entity: string) =>
+  makeEntityActionCreator(EntityActionType.Reset, entity, PayloadKeys.LastUpdated)(new Date());
 
 export const DeleteEntity = (entity: string) => makeEntityActionCreator(EntityActionType.Delete, entity)();
