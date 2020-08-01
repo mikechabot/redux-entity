@@ -3,6 +3,7 @@
   "version": "8.0.18",
   "description": "A predictable approach to managing domain entities in Redux.",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run compile",
     "compile": "tsc",

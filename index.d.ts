@@ -23,4 +23,8 @@
  *
  */
 
-export * from './lib';
+export { default as GetEntity } from './lib/thunk';
+export { ResetEntity, DeleteEntity } from './lib/actions';
+export { default as reducer } from './lib/reducer';
+
+export { ProcessorType, OptionKey, EntityState, ReduxEntityOptions, Processors, ReduxEntityProps } from './lib/types';

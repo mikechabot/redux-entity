@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 
 import { fetchSuccessCreator, fetchFailureCreator } from './actions';
-import { Processors, ReduxEntityProps, ProcessorType, GetState } from './types';
+import { Processors, ReduxEntityProps, ProcessorType } from './types';
 
 class EntityLifecycle {
   private readonly entityName: string;
@@ -22,7 +22,7 @@ class EntityLifecycle {
    * @param dispatch
    * @param getState
    */
-  onSuccess(data: any, dispatch: Dispatch, getState: GetState): any {
+  onSuccess(data: any, dispatch: Dispatch, getState: any): any {
     /**
      * Process the "beforeSuccess" stage, which is able to mutate the response
      * from the promise, dispatch additional actions, or getState(), before
@@ -51,7 +51,7 @@ class EntityLifecycle {
    * @param dispatch
    * @param getState
    */
-  onFailure(error: any, dispatch: Dispatch, getState: GetState): Error {
+  onFailure(error: any, dispatch: Dispatch, getState: any): Error {
     /**
      * Process the "beforeFailure" stage, which is able to mutate the response
      * from the promise, dispatch additional actions, or getState(), before
@@ -79,7 +79,7 @@ class EntityLifecycle {
    * @param dispatch
    * @param getState
    */
-  processStage(processorType: ProcessorType, data: any, dispatch: Dispatch, getState: GetState): any {
+  processStage(processorType: ProcessorType, data: any, dispatch: Dispatch, getState: any): any {
     if (!processorType) {
       throw new Error('Missing required processorType');
     }

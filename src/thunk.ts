@@ -5,7 +5,7 @@ import EntityLifecycle from './EntityLifecycle';
 import { validate } from './util/validator';
 import { fetchRequestCreator } from './actions';
 
-import { GetState, ReduxEntityOptions, EntityAction, ReduxEntityState } from './types';
+import { ReduxEntityOptions, EntityAction, ReduxEntityState } from './types';
 
 /**
  * Redux thunk action creator for performing asynchronous actions.
@@ -27,7 +27,7 @@ const GetEntity = (
 
   const lifecycle = new EntityLifecycle({ entityName, options });
 
-  return (dispatch, getState: GetState) => {
+  return (dispatch, getState: any) => {
     /**
      * Don't dispatch a fetch action if "GetEntity"
      * was invoked silently.
