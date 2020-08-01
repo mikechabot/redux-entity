@@ -1,9 +1,9 @@
 {
   "name": "redux-entity",
-  "version": "8.0.18-alpha.0",
+  "version": "8.0.19",
   "description": "A predictable approach to managing domain entities in Redux.",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "./lib/index.js",
+  "typings": "./index.d.ts",
   "scripts": {
     "build": "npm run clean && npm run compile",
     "compile": "tsc",
@@ -13,6 +13,9 @@
     "clean": "rm -rf ./lib",
     "example": "node example.js"
   },
+  "files": [
+    "/lib"
+  ],
   "engines": {
     "node": ">= 10.0.0",
     "npm": ">= 6.0.0"
@@ -48,7 +51,6 @@
     "@types/redux-mock-store": "^1.0.2",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
     "@typescript-eslint/parser": "^3.6.0",
-    "chalk": "^4.1.0",
     "coveralls": "^3.1.0",
     "eslint": "^7.4.0",
     "eslint-config-standard": "^14.1.1",
