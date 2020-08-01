@@ -1,6 +1,6 @@
 {
   "name": "redux-entity",
-  "version": "8.0.19",
+  "version": "8.0.20",
   "description": "A predictable approach to managing domain entities in Redux.",
   "main": "./lib/index.js",
   "typings": "./index.d.ts",
@@ -14,7 +14,8 @@
     "example": "node example.js"
   },
   "files": [
-    "/lib"
+    "/lib",
+    "index.d.ts"
   ],
   "engines": {
     "node": ">= 10.0.0",
