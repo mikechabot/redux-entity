@@ -1,6 +1,6 @@
 {
   "name": "redux-entity",
-  "version": "8.0.18",
+  "version": "8.0.18-alpha.0",
   "description": "A predictable approach to managing domain entities in Redux.",
   "main": "index.js",
   "types": "index.d.ts",
